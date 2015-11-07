@@ -2,18 +2,18 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class ChatServer
+public class GameServer
 {
-   final int PORT = 16789;
+   final int PORT = 4444;
    
    private Vector<PrintWriter> clientWriteList = new Vector<PrintWriter>();
    
    public static void main(String[] args)
    {
-      new ChatServer();
+      new GameServer();
    }
    
-   public ChatServer()
+   public GameServer()
    {
       ServerSocket server = null;
       
@@ -75,14 +75,6 @@ public class ChatServer
       
       public void broadcastToClients(String message)
       {
-//          Iterator it = clientWriteList.iterator();
-//          
-//          while(it.hasNext())
-//          {
-//             PrintWriter clientWriter = (PrintWriter) it.next();
-//             clientWriter.println(message);
-//             clientWriter.flush();
-//          }
          for(PrintWriter pw : clientWriteList)
          {
             pw.println(message);

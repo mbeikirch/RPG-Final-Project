@@ -15,6 +15,8 @@ public class GameClient extends JFrame
    BufferedReader br;
    PrintWriter pw;
 
+   private Icon background = new ImageIcon("test.png");
+
    public static void main(String[] args)
    {
       if( args.length == 1)
@@ -33,12 +35,25 @@ public class GameClient extends JFrame
    public GameClient()
    {
       setTitle("RPG Client");
-      setSize(800,600);
 
       JPanel jpChatBox = new JPanel(new GridLayout(0,1));
-      JPanel jpFightArea = new JPanel(new FlowLayout());
 
-      jtaMessages = new JTextArea(20,30);
+      JPanel jpPlayerList = new JPanel(new GridLayout(0,1));
+      JLabel name1 = new JLabel("Matt");
+      JLabel name2 = new JLabel("Zihao");
+      JLabel name3 = new JLabel("Nicholas Lightburn");
+      JLabel name4 = new JLabel("Josh");
+      jpPlayerList.add(name1);
+      jpPlayerList.add(name2);
+      jpPlayerList.add(name3);
+      jpPlayerList.add(name4);
+
+      JPanel jpFightArea = new JPanel(new GridLayout());
+      JButton bla = new JButton();
+      bla.setIcon(background);
+      jpFightArea.add(bla);
+
+      jtaMessages = new JTextArea(10,10);
       jtaMessages.setLineWrap(true);
       jtaMessages.setWrapStyleWord(true);
       jtaMessages.setEditable(false);
@@ -46,7 +61,7 @@ public class GameClient extends JFrame
       JScrollPane jspText = new JScrollPane(jtaMessages);
       jpChatBox.add(jspText);
 
-      JPanel jpSendingInfo = new JPanel();
+      JPanel jpSendingInfo = new JPanel(new FlowLayout());
       jtfSendMessage = new JTextField(25);
       jpSendingInfo.add(jtfSendMessage);
       JButton jpSend = new JButton("Send");
@@ -54,7 +69,8 @@ public class GameClient extends JFrame
       jpSendingInfo.add(jpSend);
 
       jpChatBox.add(jpSendingInfo);
-      add(jpFightArea, BorderLayout.NORTH);
+      add(jpFightArea, BorderLayout.CENTER);
+      add(jpPlayerList, BorderLayout.EAST);
       add(jpChatBox, BorderLayout.SOUTH);
 
       setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -66,6 +82,8 @@ public class GameClient extends JFrame
 
       Thread brInputThread = new Thread(new ReceiveMessages());
       brInputThread.start();
+
+      pack();
    }
 
    private void connectToServer()

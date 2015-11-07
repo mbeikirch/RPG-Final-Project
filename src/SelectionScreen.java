@@ -15,7 +15,6 @@ public class SelectionScreen {
         clsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         clsFrame.setSize(500,300);
         
-        
         JPanel basePanel = new JPanel();
         JPanel leftPanel = new JPanel();
         JPanel rightPanel = new JPanel();
@@ -27,16 +26,13 @@ public class SelectionScreen {
         Font statsFont = new Font("Apple Casual", Font.PLAIN, 14);
         Map<TextAttribute, Object> map = new Hashtable<TextAttribute, Object>();
         map.put(TextAttribute.UNDERLINE,TextAttribute.UNDERLINE_ON);
-        
-        
+
         Icon clsDefault = new ImageIcon("Icons/Default.jpg");
         JLabel jlCLSName = new JLabel(clsDefault);
         jlCLSName.setText("Select Your Class");
         jlCLSName.setHorizontalTextPosition(JLabel.CENTER);
         jlCLSName.setVerticalTextPosition(JLabel.TOP);
-        
-        
-        
+
         JLabel jlCLSStats = new JLabel("Base Stats");
         jlCLSStats.setFont(titleFont.deriveFont(map));
         
@@ -67,9 +63,5 @@ public class SelectionScreen {
         basePanel.add(rightPanel);
         basePanel.add(bottomPanel, BorderLayout.SOUTH);
         clsFrame.add(basePanel);
-        
-       
-
     }
-
 }
