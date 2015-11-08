@@ -15,7 +15,7 @@ public class GameClient extends JFrame
    BufferedReader br;
    PrintWriter pw;
 
-   private Icon background = new ImageIcon("test.png");
+   private Icon background = new ImageIcon("..\\RPG Final Project\\media\\fightArea.png");
 
    public static void main(String[] args)
    {
@@ -49,11 +49,11 @@ public class GameClient extends JFrame
       jpPlayerList.add(name4);
 
       JPanel jpFightArea = new JPanel(new GridLayout());
-      JButton bla = new JButton();
+      JLabel bla = new JLabel();
       bla.setIcon(background);
       jpFightArea.add(bla);
 
-      jtaMessages = new JTextArea(10,10);
+      jtaMessages = new JTextArea(10,5);
       jtaMessages.setLineWrap(true);
       jtaMessages.setWrapStyleWord(true);
       jtaMessages.setEditable(false);
