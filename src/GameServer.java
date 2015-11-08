@@ -7,7 +7,8 @@ public class GameServer
    final int PORT = 4444;
    
    private Vector<PrintWriter> clientWriteList = new Vector<PrintWriter>();
-   
+   private Vector<String> clientList = new Vector<String>();
+
    public static void main(String[] args)
    {
       new GameServer();
@@ -31,29 +32,32 @@ public class GameServer
          {
             Socket client = server.accept();
             
-            Thread cmh = new ClientMessageHandler(client);
-            cmh.start();
-            
-            System.out.println("New client connected!" + client);
+            Thread ch = new ClientHandler(client);
+            ch.start();
          }
-         catch(Exception e){ System.out.println("Literally anything could have happened."); }
+         catch(IOException ioe){ ioe.printStackTrace(); }
       } 
    }
    
-   class ClientMessageHandler extends Thread
+   class ClientHandler extends Thread
    {
       Socket cs;
       BufferedReader clientBuffer;
       
-      public ClientMessageHandler(Socket _cs)
+      public ClientHandler(Socket _cs)
       {
          cs = _cs;
          
          try
          {
+            //add a reader for each client as they connnect
             clientBuffer = new BufferedReader(new InputStreamReader(cs.getInputStream()));
-            
+
+            //add client to the printwriter vector, allows chat to be sent to it
             clientWriteList.add(new PrintWriter(cs.getOutputStream()));
+
+            //add info about the client( class, name, level, etc.) to the vector clientList
+            //clientList.add(client info)
          }
          catch(IOException ioe){ ioe.printStackTrace(); }
       }
@@ -75,6 +79,7 @@ public class GameServer
       
       public void broadcastToClients(String message)
       {
+         //print out the received message to each client that is connected
          for(PrintWriter pw : clientWriteList)
          {
             pw.println(message);
