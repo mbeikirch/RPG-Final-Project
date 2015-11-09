@@ -11,7 +11,6 @@ public class SelectionScreen {
 
     public static void main(String[] args){
         JFrame clsFrame = new JFrame("Class Selection Screen");
-        clsFrame.setVisible(true);
         clsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         clsFrame.setSize(500,300);
         
@@ -63,5 +62,7 @@ public class SelectionScreen {
         basePanel.add(rightPanel);
         basePanel.add(bottomPanel, BorderLayout.SOUTH);
         clsFrame.add(basePanel);
+        clsFrame.setLocationRelativeTo(null);
+        clsFrame.setVisible(true);
     }
 }
