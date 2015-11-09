@@ -80,13 +80,15 @@ public class MainMenu extends JFrame implements ActionListener{
       else if(choice == jbNew)
       {
          //just trying out making a warrior, this will actually need to be done through the selection scree, but whatevs
-         Warrior test = new Warrior("Matt");
+         Rogue test = new Rogue("Matt");
 
          System.out.println("Base Health: " + test.baseHealth + "\n" +
                             "Base Power: " + test.basePower);
          test.levelUp();
          System.out.println("Base Health: " + test.baseHealth+ "\n" +
                             "Base Power: " + test.basePower);
+
+         System.out.println(test.getInfo());
       }
       else if(choice == jbExit)
       {
