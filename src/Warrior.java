@@ -4,6 +4,11 @@ public class Warrior extends Player
    protected int level;
    protected int experience;
 
+
+   protected String description = "Class: Warrior\n" +
+                                  "Starting Stats: Health - 10 Power - 7\n" +
+                                  "On Level Up: +5 Health, +3 Power";
+
    //making a new Warrior, only parameter that's needed is name
    protected Warrior(String _name)
    {

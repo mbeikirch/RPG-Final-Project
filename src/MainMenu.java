@@ -79,8 +79,10 @@ public class MainMenu extends JFrame implements ActionListener{
       }
       else if(choice == jbNew)
       {
-         //just trying out making a warrior, this will actually need to be done through the selection scree, but whatevs
+         //just trying out making a warrior, this will actually need to be done through the selection screen, but whatevs
          Rogue test = new Rogue("Matt");
+
+         System.out.println(test.description);
 
          System.out.println("Base Health: " + test.baseHealth + "\n" +
                             "Base Power: " + test.basePower);

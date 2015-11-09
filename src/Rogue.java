@@ -4,6 +4,10 @@ public class Rogue extends Player
    protected int level;
    protected int experience;
 
+   protected String description = "Class: Rogue\n" +
+           "Starting Stats: Health - 5 , Power - 12\n" +
+           "On Level Up: +2 Health, +7 Power";
+
    //making a new Rogue, only parameter that's needed is name
    protected Rogue(String _name)
    {
