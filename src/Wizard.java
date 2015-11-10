@@ -5,7 +5,7 @@ public class Wizard extends Player
    protected int experience;
 
    protected String description = "Class: Wizard\n" +
-           "Starting Stats: Health - 7 , Power - 10\n" +
+           "Starting Stats: Health: 7 , Power: 10\n" +
            "On Level Up: +3 Health, +5 Power";
 
    //making a new Wizard, only parameter that's needed is name

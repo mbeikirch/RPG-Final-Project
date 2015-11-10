@@ -29,8 +29,6 @@ public class Warrior extends Player
       changeCurrentPower(basePower);
       level++;
       experience = 0;
-
-      //asdflkjasdf;lkjasd;fklasdfasdfasdfasdfasdfasdfas
    }
 
    //returns player name, class, and level (probably only needed for the client list)
