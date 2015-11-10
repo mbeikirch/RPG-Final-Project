@@ -50,7 +50,6 @@ public class MainMenu extends JFrame implements ActionListener{
       jbNew.addActionListener(this);
       jbExit.addActionListener(this);
       
-      
       //General stuff for frames
       setLocationRelativeTo(null);
       setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -87,7 +86,7 @@ public class MainMenu extends JFrame implements ActionListener{
          System.out.println("Base Health: " + test.baseHealth + "\n" +
                             "Base Power: " + test.basePower);
          test.levelUp();
-         System.out.println("Base Health: " + test.baseHealth+ "\n" +
+         System.out.println("Base Health: " + test.baseHealth + "\n" +
                             "Base Power: " + test.basePower);
 
          System.out.println(test.getInfo());
