@@ -19,7 +19,7 @@ public class Fighter
         currentHealth += amount;
     }
 
-    //changes fighter's base power based on amount parameter, used during level up
+    //changes fighter's base power based on amount parameter, used during level down
     protected void changeBasePower(int amount)
     {
         basePower += amount;
