@@ -15,7 +15,7 @@ public class GameClient extends JFrame
    BufferedReader br;
    PrintWriter pw;
 
-   private Icon background = new ImageIcon("..\\RPG Final Project\\media\\fightArea.png");
+   private Icon background = new ImageIcon("..\\media\\fightArea.png");
 
    public static void main(String[] args)
    {
@@ -35,46 +35,74 @@ public class GameClient extends JFrame
    public GameClient()
    {
       setTitle("RPG Client");
+      setResizable(false);
 
-      JPanel jpChatBox = new JPanel(new GridLayout(0,1));
-
+      //holds the player list
       JPanel jpPlayerList = new JPanel(new GridLayout(0,1));
-      JLabel name1 = new JLabel("Matt");
-      JLabel name2 = new JLabel("Zihao");
-      JLabel name3 = new JLabel("Nicholas Lightburn");
-      JLabel name4 = new JLabel("Josh");
-      jpPlayerList.add(name1);
-      jpPlayerList.add(name2);
-      jpPlayerList.add(name3);
-      jpPlayerList.add(name4);
+         JLabel name1 = new JLabel("Matt");
+         JLabel name2 = new JLabel("Zihao");
+         JLabel name3 = new JLabel("Nicholas Lightburn");
+         JLabel name4 = new JLabel("Josh");
+         jpPlayerList.add(name1);
+         jpPlayerList.add(name2);
+         jpPlayerList.add(name3);
+         jpPlayerList.add(name4);
 
-      JPanel jpFightArea = new JPanel(new GridLayout());
-      JLabel bla = new JLabel();
-      bla.setIcon(background);
-      jpFightArea.add(bla);
+      //holds the fight screen, just a place holder picture for now
+      JPanel jpFightArea = new JPanel(new FlowLayout());
+         JLabel bla = new JLabel();
+         bla.setIcon(background);
+         jpFightArea.add(bla);
 
-      jtaMessages = new JTextArea(10,5);
-      jtaMessages.setLineWrap(true);
-      jtaMessages.setWrapStyleWord(true);
-      jtaMessages.setEditable(false);
+      //holds the sending info panel, abilities panel, and text box
+      JPanel jpBottom = new JPanel(new GridLayout(0,2));
+         jtaMessages = new JTextArea(6,0);
+         jtaMessages.setLineWrap(true);
+         jtaMessages.setWrapStyleWord(true);
+         jtaMessages.setEditable(false);
+         JScrollPane jspText = new JScrollPane(jtaMessages);
+         jpBottom.add(jspText);
 
-      JScrollPane jspText = new JScrollPane(jtaMessages);
-      jpChatBox.add(jspText);
+      //holds the user text field/send button and the ability buttons
+      JPanel jpBottomRight = new JPanel(new GridLayout(2,0));
 
+      //holds the ability buttons
+      JPanel jpAbilities = new JPanel(new GridLayout());
+
+      JButton jbAbility1 = new JButton("!");
+      jbAbility1.setToolTipText("Ability 1 info");
+
+      JButton jbAbility2 = new JButton("@");
+      jbAbility2.setToolTipText("Ability 2 info");
+
+      JButton jbAbility3 = new JButton("#");
+      jbAbility3.setToolTipText("Ability 3 info");
+
+      JButton jbAbility4 = new JButton("$");
+      jbAbility4.setToolTipText("Ability 4 info");
+
+      jpAbilities.add(jbAbility1);
+      jpAbilities.add(jbAbility2);
+      jpAbilities.add(jbAbility3);
+      jpAbilities.add(jbAbility4);
+      jpBottomRight.add(jpAbilities);
+
+      //holds the user text field/send button
       JPanel jpSendingInfo = new JPanel(new FlowLayout());
-      jtfSendMessage = new JTextField(25);
-      jpSendingInfo.add(jtfSendMessage);
-      JButton jpSend = new JButton("Send");
-      jpSend.addActionListener(new SendButtonListener());
-      jpSendingInfo.add(jpSend);
+         jtfSendMessage = new JTextField(25);
+         jpSendingInfo.add(jtfSendMessage);
+         JButton jbSend = new JButton("Send");
+         jbSend.addActionListener(new SendButtonListener());
+         jpSendingInfo.add(jbSend);
+         jpBottomRight.add(jpSendingInfo);
 
-      jpChatBox.add(jpSendingInfo);
+      jpBottom.add(jpBottomRight);
       add(jpFightArea, BorderLayout.CENTER);
       add(jpPlayerList, BorderLayout.EAST);
-      add(jpChatBox, BorderLayout.SOUTH);
+      add(jpBottom, BorderLayout.SOUTH);
 
       setDefaultCloseOperation(EXIT_ON_CLOSE);
-      setLocationRelativeTo(null);
+      setLocation(500,300);
       setVisible(true);
       jtfSendMessage.requestFocus();
 
