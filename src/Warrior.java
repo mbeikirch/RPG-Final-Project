@@ -37,9 +37,7 @@ public class Warrior extends Player
    protected void levelUp()
    {
       changeBaseHealth(5);
-      changeCurrentHealth(baseHealth);
       changeBasePower(3);
-      changeCurrentPower(basePower);
       level++;
       experience = 0;
    }

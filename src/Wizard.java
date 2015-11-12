@@ -36,9 +36,7 @@ public class Wizard extends Player
    protected void levelUp()
    {
       changeBaseHealth(3);
-      changeCurrentHealth(baseHealth);
       changeBasePower(5);
-      changeCurrentPower(basePower);
       level++;
       experience = 0;
    }

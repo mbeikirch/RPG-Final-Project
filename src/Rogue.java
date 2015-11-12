@@ -36,9 +36,7 @@ public class Rogue extends Player
    protected void levelUp()
    {
       changeBaseHealth(2);
-      changeCurrentHealth(baseHealth);
       changeBasePower(7);
-      changeCurrentPower(basePower);
       level++;
       experience = 0;
    }
