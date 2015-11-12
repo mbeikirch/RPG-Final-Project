@@ -8,6 +8,7 @@ public class GameServer
    
    private Vector<PrintWriter> clientWriteList = new Vector<PrintWriter>();
    private Vector<String> clientList = new Vector<String>();
+   protected Fighter bossMan = new Diablo();
 
    public static void main(String[] args)
    {
@@ -57,7 +58,8 @@ public class GameServer
             clientWriteList.add(new PrintWriter(cs.getOutputStream()));
 
             //add info about the client( class, name, level, etc.) to the vector clientList
-            //clientList.add(client info)
+            String charInfo = clientBuffer.readLine();
+            clientList.add(charInfo);
          }
          catch(IOException ioe){ ioe.printStackTrace(); }
       }
@@ -72,6 +74,13 @@ public class GameServer
             {
                System.out.println("New message: " + message);
                broadcastToClients(message);
+
+               bossMan.changeCurrentHealth(-25);
+
+               if(bossMan.currentHealth == 0)
+               {
+                  broadcastToClients("You win!");
+               }
             }
          }
          catch(IOException ioe) { ioe.printStackTrace(); }

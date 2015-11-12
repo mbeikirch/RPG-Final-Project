@@ -14,11 +14,13 @@ public class GameClient extends JFrame
    Socket client;
    BufferedReader br;
    PrintWriter pw;
+   Player myFighter;
 
-   private Icon background = new ImageIcon("..\\media\\fightArea.png");
+   private Icon background = new ImageIcon(".\\media\\fightArea.png");
 
    public static void main(String[] args)
    {
+      /**
       if( args.length == 1)
       {
          IP_ADDR = args[0];
@@ -28,12 +30,27 @@ public class GameClient extends JFrame
          System.out.println("No IP address on command line, using localhost.");
          System.out.println("Usage: java GameClient <IPAddress>");
          IP_ADDR = "localhost";
-      }
+      }**/
+      IP_ADDR = "localhost";
       new GameClient();
    }
 
    public GameClient()
    {
+      String className = JOptionPane.showInputDialog(null, "Type in class(testing only)");
+
+      if(className.equals("Warrior"))
+      {
+         myFighter = new Warrior("Warrior");
+      }
+      else if(className.equals("Wizard"))
+      {
+         myFighter = new Wizard("Wizard");
+      }
+      else if(className.equals("Rogue"))
+      {
+         myFighter = new Rogue("Rogue");
+      }
       setTitle("RPG Client");
       setResizable(false);
 
@@ -69,17 +86,24 @@ public class GameClient extends JFrame
       //holds the ability buttons
       JPanel jpAbilities = new JPanel(new GridLayout());
 
-      JButton jbAbility1 = new JButton("!");
+      //making the action listener for the abilities to use
+      AbilityListener abilityCaster = new AbilityListener();
+
+      JButton jbAbility1 = new JButton("Ability 1");
       jbAbility1.setToolTipText("Ability 1 info");
+      jbAbility1.addActionListener(abilityCaster);
 
-      JButton jbAbility2 = new JButton("@");
+      JButton jbAbility2 = new JButton("Ability 2");
       jbAbility2.setToolTipText("Ability 2 info");
+      jbAbility2.addActionListener(abilityCaster);
 
-      JButton jbAbility3 = new JButton("#");
+      JButton jbAbility3 = new JButton("Ability 3");
       jbAbility3.setToolTipText("Ability 3 info");
+      jbAbility3.addActionListener(abilityCaster);
 
-      JButton jbAbility4 = new JButton("$");
+      JButton jbAbility4 = new JButton("Ability 4");
       jbAbility4.setToolTipText("Ability 4 info");
+      jbAbility4.addActionListener(abilityCaster);
 
       jpAbilities.add(jbAbility1);
       jpAbilities.add(jbAbility2);
@@ -122,6 +146,10 @@ public class GameClient extends JFrame
 
          br = new BufferedReader(new InputStreamReader(client.getInputStream()));
          pw = new PrintWriter(client.getOutputStream());
+
+         //once connected, send over character info(name, level, class)
+         pw.println(myFighter.getInfo());
+         pw.flush();
       }
       catch(IOException ioe) { ioe.printStackTrace(); }
    }
@@ -130,11 +158,28 @@ public class GameClient extends JFrame
    {
       public void actionPerformed(ActionEvent ae)
       {
-         pw.println("Matt: " + jtfSendMessage.getText());
+         pw.println(myFighter.getName() + ": " + jtfSendMessage.getText());
          pw.flush();
 
          jtfSendMessage.setText("");
          jtfSendMessage.requestFocus();
+      }
+   }
+
+   public class AbilityListener implements ActionListener
+   {
+      public void actionPerformed(ActionEvent ae)
+      {
+         String abilityChoice = ae.getActionCommand();
+
+         if(abilityChoice.equals("Ability 1"))
+         {
+            jtaMessages.append(myFighter.getName() + " attacked for " + myFighter.ability1() + " damage!\n");
+         }
+         else if(abilityChoice.equals("Ability 2"))
+         {
+            jtaMessages.append(myFighter.getName() + " healed for " + myFighter.ability2() + " hp!\n");
+         }
       }
    }
 
@@ -147,6 +192,11 @@ public class GameClient extends JFrame
          {
             while((message = br.readLine()) != null)
             {
+               if(message.equals("You win!"))
+               {
+
+               }
+
                jtaMessages.append(message + "\n");
             }
          }

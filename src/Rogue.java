@@ -13,10 +13,24 @@ public class Rogue extends Player
    {
       name = _name;
       level = 1;
+
       //setting level 1 health/power to 5/12 respectively
       changeBaseHealth(5);
       changeBasePower(12);
+      changeCurrentHealth(5);
+      changeCurrentPower(12);
+
       System.out.println("Rogue named " + name + " created!");
+   }
+
+   protected String getName()
+   {
+      return name;
+   }
+
+   protected void setName(String name)
+   {
+      this.name = name;
    }
 
    protected void levelUp()
@@ -32,7 +46,7 @@ public class Rogue extends Player
    //returns player name, class, and level (probably only needed for the client list)
    protected String getInfo()
    {
-      return (name + ":" + "Level " + level + " Rogue" + ":");
+      return (name + "Level: " + level + " Rogue");
    }
 
    //place holder abilities for now, 1 attack/1 heal
@@ -40,9 +54,10 @@ public class Rogue extends Player
    {
       return (currentPower * 5);
    }
-   protected void ability2()
+   protected int ability2()
    {
       //messing around with heals
       changeCurrentHealth((currentPower / 4));
+      return (currentHealth);
    }
 }
