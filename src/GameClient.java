@@ -7,6 +7,7 @@ import java.util.*;
 
 public class GameClient extends JFrame
 {
+   //Attributes
    JTextArea jtaMessages;
    JTextField jtfSendMessage;
    static String IP_ADDR;
@@ -16,7 +17,9 @@ public class GameClient extends JFrame
    PrintWriter pw;
    Player myFighter;
 
+   //Game Area
    private Icon background = new ImageIcon(".\\media\\fightArea.png");
+
 
    public static void main(String[] args)
    {
@@ -33,8 +36,9 @@ public class GameClient extends JFrame
       }**/
       IP_ADDR = "localhost";
       new GameClient();
-   }
+   }//end main
 
+   //Constructor
    public GameClient()
    {
       String className = JOptionPane.showInputDialog(null, "Type in class(testing only)");
@@ -56,29 +60,31 @@ public class GameClient extends JFrame
 
       //holds the player list
       JPanel jpPlayerList = new JPanel(new GridLayout(0,1));
-         JLabel name1 = new JLabel("Matt");
-         JLabel name2 = new JLabel("Zihao");
-         JLabel name3 = new JLabel("Nicholas Lightburn");
-         JLabel name4 = new JLabel("Josh");
-         jpPlayerList.add(name1);
-         jpPlayerList.add(name2);
-         jpPlayerList.add(name3);
-         jpPlayerList.add(name4);
+
+      JLabel name1 = new JLabel("Matt");
+      JLabel name2 = new JLabel("Zihao");
+      JLabel name3 = new JLabel("Nicholas Lightburn");
+      JLabel name4 = new JLabel("Josh");
+
+      jpPlayerList.add(name1);
+      jpPlayerList.add(name2);
+      jpPlayerList.add(name3);
+      jpPlayerList.add(name4);
 
       //holds the fight screen, just a place holder picture for now
       JPanel jpFightArea = new JPanel(new FlowLayout());
-         JLabel bla = new JLabel();
-         bla.setIcon(background);
-         jpFightArea.add(bla);
+      JLabel bla = new JLabel();
+      bla.setIcon(background);
+      jpFightArea.add(bla);
 
       //holds the sending info panel, abilities panel, and text box
       JPanel jpBottom = new JPanel(new GridLayout(0,2));
-         jtaMessages = new JTextArea(6,0);
-         jtaMessages.setLineWrap(true);
-         jtaMessages.setWrapStyleWord(true);
-         jtaMessages.setEditable(false);
-         JScrollPane jspText = new JScrollPane(jtaMessages);
-         jpBottom.add(jspText);
+      jtaMessages = new JTextArea(6,0);
+      jtaMessages.setLineWrap(true);
+      jtaMessages.setWrapStyleWord(true);
+      jtaMessages.setEditable(false);
+      JScrollPane jspText = new JScrollPane(jtaMessages);
+      jpBottom.add(jspText);
 
       //holds the user text field/send button and the ability buttons
       JPanel jpBottomRight = new JPanel(new GridLayout(2,0));
@@ -113,12 +119,12 @@ public class GameClient extends JFrame
 
       //holds the user text field/send button
       JPanel jpSendingInfo = new JPanel(new FlowLayout());
-         jtfSendMessage = new JTextField(25);
-         jpSendingInfo.add(jtfSendMessage);
-         JButton jbSend = new JButton("Send");
-         jbSend.addActionListener(new SendButtonListener());
-         jpSendingInfo.add(jbSend);
-         jpBottomRight.add(jpSendingInfo);
+      jtfSendMessage = new JTextField(25);
+      jpSendingInfo.add(jtfSendMessage);
+      JButton jbSend = new JButton("Send");
+      jbSend.addActionListener(new SendButtonListener());
+      jpSendingInfo.add(jbSend);
+      jpBottomRight.add(jpSendingInfo);
 
       jpBottom.add(jpBottomRight);
       add(jpFightArea, BorderLayout.CENTER);
@@ -136,7 +142,9 @@ public class GameClient extends JFrame
       brInputThread.start();
 
       pack();
-   }
+   }//end constructor
+
+   //Methods
 
    private void connectToServer()
    {
@@ -164,7 +172,7 @@ public class GameClient extends JFrame
          jtfSendMessage.setText("");
          jtfSendMessage.requestFocus();
       }
-   }
+   }//end inner class 1 (action listeners)
 
    public class AbilityListener implements ActionListener
    {
@@ -181,7 +189,7 @@ public class GameClient extends JFrame
             jtaMessages.append(myFighter.getName() + " healed for " + myFighter.ability2() + " hp!\n");
          }
       }
-   }
+   }//end inner class 2 (action listeners)
 
    public class ReceiveMessages implements Runnable
    {
@@ -192,15 +200,16 @@ public class GameClient extends JFrame
          {
             while((message = br.readLine()) != null)
             {
-               if(message.equals("You win!"))
-               {
-
-               }
+               /*if(*/message.equals("You win!");
+               /*{
+                  //for later
+               }*/
 
                jtaMessages.append(message + "\n");
             }
          }
          catch(IOException ioe) { ioe.printStackTrace(); }
       }
-   }
-}
+   }//end inner class 3 (threadz)
+
+}//end class
