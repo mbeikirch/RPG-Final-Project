@@ -7,9 +7,10 @@ import java.awt.font.TextAttribute;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class SelectionScreen {
-
-    public static void main(String[] args){
+public class SelectionScreen
+{
+    public SelectionScreen()
+    {
         JFrame clsFrame = new JFrame("Class Selection Screen");
         clsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         clsFrame.setSize(500,300);
@@ -36,12 +37,16 @@ public class SelectionScreen {
         jlCLSStats.setFont(titleFont.deriveFont(map));
         
         Icon strIcon = new ImageIcon("Icons/Strength.png");
-        JLabel jlStr = new JLabel(strIcon); jlStr.setText("Strength: "); jlStr.setFont(statsFont);
-        JLabel jlInt = new JLabel("Intelligence: "); jlInt.setFont(statsFont);
-        JLabel jlDex = new JLabel("Dexterity: "); jlDex.setFont(statsFont);
-        JLabel jlAP = new JLabel("Attack Power: "); jlAP.setFont(statsFont);
-        JLabel jlSP = new JLabel("Spell Power: "); jlSP.setFont(statsFont);
-        JLabel jlDP = new JLabel("Defense Power: "); jlDP.setFont(statsFont);
+        JLabel jlAP = new JLabel("Power: ");
+           jlAP.setFont(statsFont);
+        JLabel jlHealth = new JLabel("Health");
+           jlHealth.setFont(statsFont);
+
+        //JLabel jlStr = new JLabel(strIcon); jlStr.setText("Strength: "); jlStr.setFont(statsFont);
+        //JLabel jlInt = new JLabel("Intelligence: "); jlInt.setFont(statsFont);
+        //JLabel jlDex = new JLabel("Dexterity: "); jlDex.setFont(statsFont);
+        //JLabel jlSP = new JLabel("Spell Power: "); jlSP.setFont(statsFont);
+        //JLabel jlDP = new JLabel("Defense Power: "); jlDP.setFont(statsFont);
         
         //JTextArea jtaCLSImage = new JTextArea(5,20);
         
@@ -49,17 +54,16 @@ public class SelectionScreen {
         leftPanel.add(jlCLSName);
         //leftPanel.add(jtaCLSImage);
         
-        
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
-        rightPanel.add(jlCLSStats); rightPanel.add(jlStr); rightPanel.add(jlInt); rightPanel.add(jlDex); rightPanel.add(jlAP);
-        rightPanel.add(jlSP); rightPanel.add(jlDP);
+        //rightPanel.add(jlCLSStats); rightPanel.add(jlStr); rightPanel.add(jlInt); rightPanel.add(jlDex); rightPanel.add(jlAP);
+        rightPanel.add(jlAP);
         
         bottomPanel.add(jtfName);
         
         basePanel.setLayout(new GridLayout(1,1,4,4));
         
-        basePanel.add(leftPanel);
-        basePanel.add(rightPanel);
+        basePanel.add(leftPanel, BorderLayout.WEST);
+        basePanel.add(rightPanel, BorderLayout.EAST);
         basePanel.add(bottomPanel, BorderLayout.SOUTH);
         clsFrame.add(basePanel);
         clsFrame.setLocationRelativeTo(null);
