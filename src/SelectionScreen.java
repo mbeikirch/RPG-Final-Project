@@ -7,9 +7,14 @@ import java.awt.font.TextAttribute;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class SelectionScreen {
+public class SelectionScreen
+{
 
-    public static void main(String[] args){
+    //Attributes
+
+    public SelectionScreen()
+    {
+
         JFrame clsFrame = new JFrame("Class Selection Screen");
         clsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         clsFrame.setSize(500,300);
@@ -55,14 +60,39 @@ public class SelectionScreen {
         rightPanel.add(jlSP); rightPanel.add(jlDP);
         
         bottomPanel.add(jtfName);
-        
+
         basePanel.setLayout(new GridLayout(1,1,4,4));
         
         basePanel.add(leftPanel);
         basePanel.add(rightPanel);
+
+
+        //JButton jbLoad = new JButton("Load");
+        //jpNewButtons.add(jbLoad);
+
+        JButton jbPrev = new JButton("<=");
+        bottomPanel.add(jbPrev);
+
+        JButton jbNext = new JButton("=>");
+        bottomPanel.add(jbNext);
+
+        //Adding "new" buttons to Panel 2
+        //bottomPanel.add(jpNewButtons,BorderLayout.SOUTH);
+
+        //Adding Panel 2
+        //add(jpButton,BorderLayout.SOUTH);
+
         basePanel.add(bottomPanel, BorderLayout.SOUTH);
+
         clsFrame.add(basePanel);
         clsFrame.setLocationRelativeTo(null);
         clsFrame.setVisible(true);
+
+    }//end constructor
+
+    public static void main (String[]args)
+    {
+        new SelectionScreen();
+
     }
 }
