@@ -4,10 +4,6 @@ public class Rogue extends Player
    protected int level;
    protected int experience;
 
-   protected String description = "Class: Rogue\n" +
-           "Starting Stats: Health: 5 , Power: 12\n" +
-           "On Level Up: +2 Health, +7 Power";
-
    //making a new Rogue, only parameter that's needed is name
    protected Rogue(String _name)
    {
@@ -26,6 +22,12 @@ public class Rogue extends Player
    protected String getName()
    {
       return name;
+   }
+
+   protected String getDescription()
+   {
+      //Class name, base power, power on level, base health, health on level
+      return  ("Rogue,12,7,5,2");
    }
 
    protected void setName(String name)
@@ -58,4 +60,6 @@ public class Rogue extends Player
       changeCurrentHealth((currentPower / 4));
       return (currentHealth);
    }
+   protected int ability3(){return -1;}
+   protected int ability4(){return -1;}
 }

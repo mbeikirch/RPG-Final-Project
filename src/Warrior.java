@@ -4,11 +4,6 @@ public class Warrior extends Player
    protected int level;
    protected int experience;
 
-
-   protected String description = "Class: Warrior\n" +
-                                  "Starting Stats: Health: 10 Power: 7\n" +
-                                  "On Level Up: +5 Health, +3 Power";
-
    //making a new Warrior, only parameter that's needed is name
    protected Warrior(String _name)
    {
@@ -27,6 +22,12 @@ public class Warrior extends Player
    protected String getName()
    {
       return name;
+   }
+
+   protected String getDescription()
+   {
+      //Class name, base power, power on level, base health, health on level
+      return  ("Warrior,7,3,10,5");
    }
 
    protected void setName(String name)
@@ -59,4 +60,6 @@ public class Warrior extends Player
       changeCurrentHealth((currentPower + (baseHealth - currentHealth) / 3));
       return (currentHealth);
    }
+   protected int ability3(){return -1;}
+   protected int ability4(){return -1;}
 }

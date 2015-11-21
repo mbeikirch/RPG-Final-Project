@@ -1,11 +1,14 @@
-public class Player extends Fighter
+public abstract class Player extends Fighter
 {
-    public Player()
-    {
-    }
+   public Player()
+   {}
 
-    protected int ability1(){ return -1; };
-    protected int ability2(){ return -1; };
-    protected String getName(){ return null; };
-    protected String getInfo(){ return null; };
+   abstract int ability1();
+   abstract int ability2();
+   abstract int ability3();
+   abstract int ability4();
+
+   abstract String getName();
+   abstract String getInfo();
+   abstract String getDescription();
 }

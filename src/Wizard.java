@@ -4,10 +4,6 @@ public class Wizard extends Player
    protected int level;
    protected int experience;
 
-   protected String description = "Class: Wizard\n" +
-           "Starting Stats: Health: 7 , Power: 10\n" +
-           "On Level Up: +3 Health, +5 Power";
-
    //making a new Wizard, only parameter that's needed is name
    protected Wizard(String _name)
    {
@@ -26,6 +22,12 @@ public class Wizard extends Player
    protected String getName()
    {
       return name;
+   }
+
+   protected String getDescription()
+   {
+      //Class name, base power, power on level, base health, health on level
+      return  ("Wizard,10,5,7,3");
    }
 
    protected void setName(String name)
@@ -58,4 +60,6 @@ public class Wizard extends Player
       changeCurrentHealth((currentPower + (baseHealth - currentHealth) / 4));
       return (currentHealth);
    }
+   protected int ability3(){return -1;}
+   protected int ability4(){return -1;}
 }
