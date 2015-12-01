@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<gamedata>
+  <players>
+    <player>
+      <name>Wizard</name>
+      <power>10</power>
+      <health>7</health>
+      <icon>../images/classes/wizard.png</icon>
+      <abilities>
+        <ability caston="enemy">
+          <abilityname>power up</abilityname>
+          <damagevalue>30</damagevalue>
+          <healingvalue>0</healingvalue>
+        </ability>
+        <ability caston="friendly">
+          <abilityname>healing surge</abilityname>
+          <damagevalue>0</damagevalue>
+          <healingvalue>5</healingvalue>
+        </ability>
+      </abilities>
+    </player>
+    <player>
+      <name>Warrior</name>
+      <power>7</power>
+      <health>10</health>
+      <icon>../images/classes/warrior.png</icon>
+      <abilities>
+        <ability caston="enemy">
+          <abilityname>power up</abilityname>
+          <damagevalue>14</damagevalue>
+          <healingvalue></healingvalue>
+        </ability>
+        <ability caston="friendly">
+          <abilityname>healing surge</abilityname>
+          <damagevalue>0</damagevalue>
+          <healingvalue>15</healingvalue>
+        </ability>
+      </abilities>
+    </player>
+    <player>
+      <name>Rogue</name>
+      <power>12</power>
+      <health>5</health>
+      <icon>../images/classes/Rogue.png</icon>
+      <abilities>
+        <ability caston="enemy">
+          <abilityname>power up</abilityname>
+          <damagevalue>60</damagevalue>
+          <healingvalue>0</healingvalue>
+        </ability>
+        <ability caston="friendly">
+          <abilityname>healing surge</abilityname>
+          <damagevalue>0</damagevalue>
+          <healingvalue>15</healingvalue>
+        </ability>
+      </abilities>
+    </player>
+  </players>  
+  <bosses>
+    <boss>
+      <bossid>0</bossid>
+      <name>Tank</name>
+      <power>40</power>
+      <health>150</health>
+      <Defence>10</Defence>
+      <icon>../images/bosses/Tank.png</icon>
+      <abilities>
+        <ability caston="defence">
+          <abilitynumber>0</abilitynumber>
+          <abilityname>spell shield</abilityname>
+          <damagevalue>0</damagevalue>
+          <healingvalue>0</healingvalue>
+          <Defence>30</Defence>
+        </ability>
+        <ability caston="healing">
+          <abilitynumber>1</abilitynumber>
+          <abilityname>inner vitality</abilityname>
+          <damagevalue>0</damagevalue>
+          <healingvalue>40</healingvalue>
+          <Defence>0</Defence>
+        </ability>        
+      </abilities>
+    </boss>
+    <boss>
+      <bossid>1</bossid>
+      <name>Class Cannon</name>
+      <power>100</power>
+      <health>70</health>
+      <Defence>0</Defence>
+      <icon>../images/bosses/Class Cannon.png</icon>
+      <abilities>
+        <ability caston="power">
+          <abilitynumber>0</abilitynumber>
+          <abilityname>rage</abilityname>
+          <damagevalue>50</damagevalue>
+          <healingvalue>0</healingvalue>
+          <Defence>-20</Defence>
+        </ability>
+        <ability caston="attack">
+          <abilitynumber>1</abilitynumber>
+          <abilityname>split shot</abilityname>
+          <damagevalue>25</damagevalue>
+          <healingvalue>0</healingvalue>
+          <Defence>0</Defence>
+        </ability>        
+      </abilities>
+    </boss>
+        <boss>
+      <bossid>2</bossid>
+      <name>Balanced</name>
+      <power>70</power>
+      <health>90</health>
+      <Defence>5</Defence>
+      <icon>../images/bosses/Balanced.png</icon>
+      <abilities>
+        <ability caston="attack">
+          <abilitynumber>0</abilitynumber>
+          <abilityname>rage</abilityname>
+          <damagevalue>30</damagevalue>
+          <healingvalue>0</healingvalue>
+          <Defence>-10</Defence>
+        </ability>
+        <ability caston="healing">
+          <abilitynumber>1</abilitynumber>
+          <abilityname>inner vitality</abilityname>
+          <damagevalue>0</damagevalue>
+          <healingvalue>20</healingvalue>
+          <Defence>0</Defence>
+        </ability>        
+      </abilities>
+    </boss>
+  </bosses>  
+</gamedata>
