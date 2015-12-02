@@ -67,10 +67,10 @@ public class GameClient extends JFrame
       //holds the player list
       JPanel jpPlayerList = new JPanel(new GridLayout(0,1));
 
-      JLabel name1 = new JLabel("Matt");
-      JLabel name2 = new JLabel("Zihao");
-      JLabel name3 = new JLabel("Nicholas Lightburn");
-      JLabel name4 = new JLabel("Josh");
+      JLabel name1 = new JLabel(myFighter.getInfo());
+      JLabel name2 = new JLabel(myFighter.getInfo());
+      JLabel name3 = new JLabel(myFighter.getInfo());
+      JLabel name4 = new JLabel(myFighter.getInfo());
 
       jpPlayerList.add(name1);
       jpPlayerList.add(name2);
