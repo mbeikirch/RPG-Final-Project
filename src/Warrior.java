@@ -1,4 +1,6 @@
-public class Warrior extends Player
+import java.io.Serializable;
+
+public class Warrior extends Player implements Serializable
 {
    protected String name;
    protected int level;
@@ -12,9 +14,7 @@ public class Warrior extends Player
 
       //setting level 1 health/power to 10/7 respectively
       changeBaseHealth(10);
-      changeCurrentHealth(10);
       changeBasePower(7);
-      changeCurrentPower(7);
 
       System.out.println("Warrior named " + name + " created!");
    }

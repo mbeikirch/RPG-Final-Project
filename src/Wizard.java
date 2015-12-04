@@ -1,4 +1,6 @@
-public class Wizard extends Player
+import java.io.Serializable;
+
+public class Wizard extends Player implements Serializable
 {
    protected String name;
    protected int level;
@@ -13,8 +15,6 @@ public class Wizard extends Player
       //setting level 1 health/power to 7/10 respectively
       changeBaseHealth(7);
       changeBasePower(10);
-      changeCurrentHealth(7);
-      changeCurrentPower(10);
 
       System.out.println("Wizard named " + name + " created!");
    }

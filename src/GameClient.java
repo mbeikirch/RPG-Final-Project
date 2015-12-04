@@ -9,14 +9,18 @@ import java.util.*;
 public class GameClient extends JFrame
 {
    //Attributes
-   JTextArea jtaMessages;
-   JTextField jtfSendMessage;
-   static String IP_ADDR;
+   private JTextArea jtaMessages;
+   private JTextField jtfSendMessage;
+   private static String IP_ADDR;
    private final int PORT = 4444;
-   Socket client;
-   BufferedReader br;
-   PrintWriter pw;
-   Player myFighter;
+   private Socket client;
+
+   private Vector<Fighter> clientList = new Vector<Fighter>();
+
+   ObjectOutputStream oos;
+   ObjectInputStream ois;
+
+   protected Fighter myFighter;
 
    private Icon boss = new ImageIcon(".\\media\\boss1.png");
    private Icon warrior = new ImageIcon(".\\media\\warrior.png");
@@ -59,7 +63,9 @@ public class GameClient extends JFrame
          myFighter = new Rogue("Rogue");
       }*/
 
-      myFighter = new Warrior("Matt-TESTONLY");
+      myFighter = new Wizard("TESTONLY");
+
+      System.out.println(myFighter.getCurrentHealth());
 
       setTitle("RPG Client");
       setResizable(false);
@@ -179,8 +185,17 @@ public class GameClient extends JFrame
 
       connectToServer();
 
-      Thread brInputThread = new Thread(new ReceiveMessages());
-      brInputThread.start();
+      try
+      {
+         oos.writeObject(myFighter);
+         oos.flush();
+
+         // TODO: 12/3/2015 Receive back the vector with yourself added 
+      }
+      catch(IOException ioe){ ioe.printStackTrace(); }
+
+      Thread inputThread = new Thread(new ReceiveObjects());
+      inputThread.start();
 
       pack();
    }//end constructor
@@ -193,12 +208,8 @@ public class GameClient extends JFrame
       {
          client = new Socket(IP_ADDR, PORT);
 
-         br = new BufferedReader(new InputStreamReader(client.getInputStream()));
-         pw = new PrintWriter(client.getOutputStream());
-
-         //once connected, send over character info(name, level, class)
-         pw.println(myFighter.getInfo());
-         pw.flush();
+         oos = new ObjectOutputStream(new DataOutputStream(client.getOutputStream()));
+         ois = new ObjectInputStream(new DataInputStream(client.getInputStream()));
       }
       catch(IOException ioe) { ioe.printStackTrace(); }
    }
@@ -207,8 +218,13 @@ public class GameClient extends JFrame
    {
       public void actionPerformed(ActionEvent ae)
       {
-         pw.println(myFighter.getName() + ": " + jtfSendMessage.getText());
-         pw.flush();
+         try
+         {
+            String message = myFighter.getName() + ": " + jtfSendMessage.getText();
+            oos.writeObject(message);
+            oos.flush();
+         }
+         catch(IOException ioe){ ioe.printStackTrace(); }
 
          jtfSendMessage.setText("");
          jtfSendMessage.requestFocus();
@@ -229,27 +245,42 @@ public class GameClient extends JFrame
          {
             jtaMessages.append(myFighter.getName() + " healed for " + myFighter.ability2() + " hp!\n");
          }
+         else if(abilityChoice.equals("Ability 3"))
+         {
+            try
+            {
+               oos.writeObject(clientList);
+            }
+            catch(IOException ioe){ ioe.printStackTrace(); }
+         }
       }
    }//end inner class 2 (action listeners)
 
-   public class ReceiveMessages implements Runnable
+   //tweaked this so we can use one stream for everything and just check which type of data came in I know we previously
+   //were planning to use multiple streams but I was running into issues with creating more than one I/O stream per socket
+   public class ReceiveObjects implements Runnable
    {
       public void run()
       {
-         String message;
+         Object obj;
          try
          {
-            while((message = br.readLine()) != null)
+            while(((obj = ois.readObject()) != null))
             {
-               /*if(*/message.equals("You win!");
-               /*{
-                  //for later
-               }*/
-
-               jtaMessages.append(message + "\n");
+               if(obj instanceof String)
+               {
+                  jtaMessages.append((String)obj +"\n");
+               }
+               if(obj instanceof Vector)
+               {
+                  clientList = (Vector)obj;
+                  System.out.println("got a vector back");
+                  System.out.println(clientList.get(0).getCurrentHealth());
+               }
             }
          }
          catch(IOException ioe) { ioe.printStackTrace(); }
+         catch(ClassNotFoundException cnfe){ cnfe.printStackTrace(); }
       }
    }//end inner class 3 (threadz)
 

@@ -1,4 +1,6 @@
-public class Rogue extends Player
+import java.io.Serializable;
+
+public class Rogue extends Player implements Serializable
 {
    protected String name;
    protected int level;
