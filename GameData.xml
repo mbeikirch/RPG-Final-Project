@@ -7,7 +7,7 @@
       <abilities>
         <ability caston="enemy">
           <abilityname>Wizardly Strike</abilityname>
-          <abilitydescription>Being a master in all areas of wizardry, the Wizardly Strike is a wizard's go to ability. The wizard strikes their opponent with force that can only be describes as magical.</abilitydescription>
+          <abilitydescription> Being a master in all areas of wizardry, the Wizardly Strike is a wizard's go to ability. The wizard strikes their opponent with force that can only be describes as magical.</abilitydescription>
           <value>16</value>
         </ability>
         <ability caston="friendly">
