@@ -6,13 +6,18 @@ import org.w3c.dom.*;
 /**
  * I can push again.
  */
-public class GameDataParser
+public class GameDataParser implements Serializable
 {
    private DocumentBuilder builder;
    private XPath path;
+   private Document doc;
+   private String classPath;
+   private String FILE = "GameData.xml";
 
-   public GameDataParser()
+   public GameDataParser(String _classPath)
    {
+      classPath = _classPath;
+
       try
       {
          DocumentBuilderFactory dbFactory =
@@ -21,17 +26,20 @@ public class GameDataParser
          builder = dbFactory.newDocumentBuilder();
          XPathFactory xpFactory = XPathFactory.newInstance();
          
-         path = xpFactory.newXPath();   
+         path = xpFactory.newXPath();
+
+         parse();
       }
-      catch(ParserConfigurationException pce){pce.printStackTrace();}
+      catch(ParserConfigurationException pce){ pce.printStackTrace(); }
    }
    
-   public void parse(String fileName)
+   public void parse()
    {
       try
       {
-         Document doc = builder.parse(new File(fileName));
-      
+         doc = builder.parse(new File(FILE));
+
+         /*
          int playersCount = 
             Integer.parseInt(path.evaluate("count(/gamedata/players/player)",doc));
             
@@ -62,18 +70,54 @@ public class GameDataParser
             int bossHealth = 
                Integer.parseInt(path.evaluate("/gamedata/bosses/boss[" + i + "]/health",doc)); 
 
-            System.out.printf("Name: %-10s     Power: %d    health: %d%n", bossName, bossPower, bossHealth);               
-            
-            
-         }    
-      
+            System.out.printf("Name: %-10s     Power: %d    health: %d%n", bossName, bossPower, bossHealth);
+         }*/
       }
-      catch(Exception ex){ex.printStackTrace();}
+      catch(Exception ex){ ex.printStackTrace(); }
    }
-   
-   public static void main(String[] args)
+
+   //TODO: 12/4/2015 getBaseHealth(); getAbility(); getAbilityDescription();
+   public int getAbilityDamage(int num)
    {
-      GameDataParser sp = new GameDataParser();
-      sp.parse("GameData new.xml");
+      try
+      {
+         return Integer.parseInt(path.evaluate(classPath + "/abilities/ability["+num+"]/damagevalue",doc));
+      }
+      catch(XPathExpressionException xpe){ xpe.printStackTrace(); }
+
+      return -1;
+   }
+
+   public String getAbilityDescription(int num)
+   {
+      try
+      {
+         return path.evaluate(classPath + "/abilities/ability["+num+"]/description",doc);
+      }
+      catch(XPathExpressionException xpe){ xpe.printStackTrace(); }
+
+      return "nope";
+   }
+
+   public String getAbilityName(int num)
+   {
+      try
+      {
+         return path.evaluate(classPath + "/abilities/ability["+num+"]/abilityname",doc);
+      }
+      catch(XPathExpressionException xpe){ xpe.printStackTrace(); }
+
+      return "nope";
+   }
+
+   public int getBaseHealth()
+   {
+      try
+      {
+         return Integer.parseInt(path.evaluate(classPath + "/health", doc));
+      }
+      catch(XPathExpressionException xpe){ xpe.printStackTrace(); }
+
+      return -1;
    }
 }
