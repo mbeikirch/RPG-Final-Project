@@ -16,26 +16,19 @@ public class Wizard extends Fighter implements Serializable
       setBaseHealth(myParser.getBaseHealth());
 
       System.out.println("Wizard named " + getName() + " created!");
-
-      System.out.println("Health: " + getBaseHealth() +
-              "   Ability 1 Damage: " + ability1() +
-              "   Ability 1 Description:" + getAbilityDescription(1));
-
    }
 
    protected String getName()
    {
       return name;
    }
+   protected void setName(String _name) { name = _name; }
 
    protected int ability1()
    {
       return (myParser.getAbilityDamage(1));
    }
-   protected int ability2()
-   {
-      return (myParser.getAbilityDamage(2));
-   }
+   protected int ability2() { return (myParser.getAbilityDamage(2)); }
    protected int ability3()
    {
       return (myParser.getAbilityDamage(3));

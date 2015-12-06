@@ -1,14 +1,15 @@
 import java.io.*;
 import java.awt.*;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.*;
 import javax.swing.*;
 import java.awt.event.*;
 
 
 public class MainMenu extends JFrame implements ActionListener{
-   
-   //Attributes
-   
+
    //Server Info panel
    public JPanel jpServerInfo;
    public JLabel jlServerIP;
@@ -21,10 +22,25 @@ public class MainMenu extends JFrame implements ActionListener{
    public JButton jbLoad;
    public JButton jbNew;
    public JButton jbExit;
-   
-   
+
+   private Fighter myFighter;
+
+   public static void main (String[]args)
+   {
+      new MainMenu(new Warrior("Default"));
+   }//end main
+
    //Constructor
-   public MainMenu()
+   public MainMenu() { drawMenu(); }
+
+   public MainMenu(Fighter _myFighter)
+   {
+      myFighter = _myFighter;
+      System.out.println(myFighter.getName());
+      drawMenu();
+   }
+
+   private void drawMenu()
    {
       //Panel 1
       jpServerInfo = new JPanel(new FlowLayout());
@@ -34,7 +50,7 @@ public class MainMenu extends JFrame implements ActionListener{
       jpServerInfo.add(jtfPort = new JTextField(5));
       //Insertion of panel 1
       add(jpServerInfo, BorderLayout.NORTH);
-      
+
       //Panel 2
       jpButtons = new JPanel(new BorderLayout());
       jpButtons.add(jbJoin = new JButton("Join!"), BorderLayout.NORTH);
@@ -43,24 +59,19 @@ public class MainMenu extends JFrame implements ActionListener{
       jpButtons.add(jbExit = new JButton("Exit"), BorderLayout.SOUTH);
       //Insertion of panel 2
       add(jpButtons, BorderLayout.SOUTH);
-      
+
       //Adding action listeners
       jbJoin.addActionListener(this);
       jbLoad.addActionListener(this);
       jbNew.addActionListener(this);
       jbExit.addActionListener(this);
-      
+
       //General stuff for frames
       setLocationRelativeTo(null);
       setDefaultCloseOperation(EXIT_ON_CLOSE);
       setVisible(true);
       pack();
    }
-   
-   public static void main (String[]args)
-   {
-      new MainMenu();
-   }//end main
    
    //Methods
    public void actionPerformed(ActionEvent ae)
@@ -70,7 +81,27 @@ public class MainMenu extends JFrame implements ActionListener{
       
       if(choice == jbJoin)
       {
-         System.exit(0);
+         String ipAddr = jtfServerIP.getText();
+         String port = jtfPort.getText();
+
+         try
+         {
+            if(ipAddr.equals("") || port.equals(""))
+            {
+               JOptionPane.showMessageDialog(jbJoin, "You must enter a valid IP address and port number.");
+            }
+            else
+            {
+               Socket s = new Socket(ipAddr, Integer.parseInt(port));
+               s.close();
+
+               new GameClient(ipAddr, Integer.parseInt(port), myFighter);
+               dispose();
+            }
+         }
+         catch(NullPointerException npe){ JOptionPane.showMessageDialog(jbJoin, "You must select a character."); }
+         catch(IOException ioe){ JOptionPane.showMessageDialog(jbJoin, "Couldn't connect to server."); }
+
       }
       else if(choice == jbLoad)
       {

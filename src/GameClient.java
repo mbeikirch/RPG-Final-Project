@@ -11,8 +11,9 @@ public class GameClient extends JFrame
    //Attributes
    private JTextArea jtaMessages;
    private JTextField jtfSendMessage;
-   private static String IP_ADDR;
-   private final int PORT = 4444;
+   private String ipAddr = "localhost";
+   private int port = 4444;
+   private Fighter myFighter;
    private Socket client;
 
    private Vector<Fighter> clientList = new Vector<Fighter>();
@@ -20,50 +21,18 @@ public class GameClient extends JFrame
    ObjectOutputStream oos;
    ObjectInputStream ois;
 
-   protected Fighter myFighter;
-
    private Icon boss = new ImageIcon(".\\media\\boss1.png");
    private Icon warrior = new ImageIcon(".\\media\\warrior.png");
    private Icon wizard = new ImageIcon(".\\media\\wizard.png");
    private Icon rogue = new ImageIcon(".\\media\\rogue.png");
 
-   public static void main(String[] args)
-   {
-      /**
-      if( args.length == 1)
-      {
-         IP_ADDR = args[0];
-      }
-      else
-      {
-         System.out.println("No IP address on command line, using localhost.");
-         System.out.println("Usage: java GameClient <IPAddress>");
-         IP_ADDR = "localhost";
-      }**/
-      IP_ADDR = "localhost";
-      new GameClient();
-   }//end main
-
    //Constructor
-   public GameClient()
+   public GameClient(String _ipAddr, int _port, Fighter _myFighter)
    {
-/*      //Testing code for choosing class
-      String className = JOptionPane.showInputDialog(null, "Type in class(testing only)");
 
-      if(className.equals("Warrior"))
-      {
-         myFighter = new Warrior("Warrior");
-      }
-      else if(className.equals("Wizard"))
-      {
-         myFighter = new Wizard("Wizard");
-      }
-      else if(className.equals("Rogue"))
-      {
-         myFighter = new Rogue("Rogue");
-      }*/
-
-      myFighter = new Wizard("TESTONLY");
+      myFighter = _myFighter;
+      ipAddr = _ipAddr;
+      port = _port;
 
       System.out.println(myFighter.getCurrentHealth());
 
@@ -206,7 +175,7 @@ public class GameClient extends JFrame
    {
       try
       {
-         client = new Socket(IP_ADDR, PORT);
+         client = new Socket(ipAddr, port);
 
          oos = new ObjectOutputStream(new DataOutputStream(client.getOutputStream()));
          ois = new ObjectInputStream(new DataInputStream(client.getInputStream()));

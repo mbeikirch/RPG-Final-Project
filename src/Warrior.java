@@ -16,10 +16,6 @@ public class Warrior extends Fighter implements Serializable
       setBaseHealth(myParser.getBaseHealth());
 
       System.out.println("Warrior named " + getName() + " created!");
-
-      System.out.println("Health: " + getBaseHealth() +
-                         "   Ability 1 Damage: " + ability1() +
-                         "   Ability 1 Description:" + getAbilityDescription(1));
    }
 
    public static void main(String[] args)
@@ -31,6 +27,7 @@ public class Warrior extends Fighter implements Serializable
    {
       return name;
    }
+   protected void setName(String _name) { name = _name; }
 
    protected int ability1() { return (myParser.getAbilityDamage(1)); }
    protected int ability2()

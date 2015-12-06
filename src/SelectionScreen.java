@@ -17,7 +17,7 @@ public class SelectionScreen implements ActionListener
 {
    private final int ABILITIES_ROWS = 5;
    private final int ABILITES_COLUMNS = 2;
-   private final int TABLE_PADDING = 7; //x & y padding
+   private final int TABLE_PADDING = 1; //x & y padding
 
    private int listPosition;
 
@@ -28,6 +28,7 @@ public class SelectionScreen implements ActionListener
    private JLabel className;
    private JLabel baseHealth;
    private JTextField jtfName;
+   private JFrame clsFrame;
 
    // TODO: 11/20/2015 takeout when finished testing
    public static void main(String[] args)
@@ -37,7 +38,7 @@ public class SelectionScreen implements ActionListener
 
    public SelectionScreen()
    {
-      JFrame clsFrame = new JFrame("Choose your class");
+      clsFrame = new JFrame("Choose your class");
       clsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
       Font titleFont = new Font("Book Antiqua", Font.BOLD, 20);
@@ -51,7 +52,6 @@ public class SelectionScreen implements ActionListener
       classList.add(new Rogue("Rogue"));
 
       listPosition = classList.size() - 1;
-      JTextField jtfName;
 
       //making a label for the class name
       className = new JLabel();
@@ -94,7 +94,6 @@ public class SelectionScreen implements ActionListener
       JPanel bottomPanel = new JPanel(new GridLayout(2,0));
 
          JPanel namePanel = new JPanel(new FlowLayout());
-            //textfield to hold the player name
             jtfName = new JTextField("Fighter Name",15);
 
             //clears the textfield when the user clicks in the name text field
@@ -143,17 +142,22 @@ public class SelectionScreen implements ActionListener
       className.setText(classList.get(listPosition).getName());
       baseHealth.setText("Health: " + classList.get(listPosition).getBaseHealth());
 
-      jlAbilities[1][0].setText(classList.get(listPosition).getAbilityName(1));
-      jlAbilities[1][1].setText(classList.get(listPosition).getAbilityDescription(1));
+      jlAbilities[1][0].setText(getCurrentFighter().getAbilityName(1));
+      jlAbilities[1][1].setText(getCurrentFighter().getAbilityDescription(1));
 
-      jlAbilities[2][0].setText(classList.get(listPosition).getAbilityName(2));
-      jlAbilities[2][1].setText(classList.get(listPosition).getAbilityDescription(2));
+      jlAbilities[2][0].setText(getCurrentFighter().getAbilityName(2));
+      jlAbilities[2][1].setText(getCurrentFighter().getAbilityDescription(2));
 
-      jlAbilities[3][0].setText(classList.get(listPosition).getAbilityName(3));
-      jlAbilities[3][1].setText(classList.get(listPosition).getAbilityDescription(3));
+      jlAbilities[3][0].setText(getCurrentFighter().getAbilityName(3));
+      jlAbilities[3][1].setText(getCurrentFighter().getAbilityDescription(3));
 
-      jlAbilities[4][0].setText(classList.get(listPosition).getAbilityName(4));
-      jlAbilities[4][1].setText(classList.get(listPosition).getAbilityDescription(4));
+      jlAbilities[4][0].setText(getCurrentFighter().getAbilityName(4));
+      jlAbilities[4][1].setText(getCurrentFighter().getAbilityDescription(4));
+   }
+
+   private Fighter getCurrentFighter()
+   {
+      return classList.get(listPosition);
    }
 
    public void actionPerformed(ActionEvent ae)
@@ -189,7 +193,10 @@ public class SelectionScreen implements ActionListener
 
       else if (choice == "Create!")
       {
-         new MainMenu();
+         getCurrentFighter().setName(jtfName.getText());
+
+         new MainMenu(getCurrentFighter());
+         clsFrame.dispose();
          // TODO: 11/21/2015 set the class name to whatever the user entered, and write out(object output stream) the appropriate player
       }
    }
