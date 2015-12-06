@@ -1,8 +1,7 @@
-public class Diablo extends Boss
+public class Diablo extends Fighter
 {
    public Diablo()
    {
-      changeBasePower(50);
-      changeBaseHealth(100);
+      setBaseHealth(100);
    }
 }
