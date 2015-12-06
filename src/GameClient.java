@@ -13,6 +13,7 @@ public class GameClient extends JFrame
    private JTextField jtfSendMessage;
    private static String IP_ADDR;
    private final int PORT = 4444;
+   Integer clientTurnNumber = new Integer(1);
    private Socket client;
 
    private Vector<Fighter> clientList = new Vector<Fighter>();
@@ -41,7 +42,12 @@ public class GameClient extends JFrame
          IP_ADDR = "localhost";
       }**/
       IP_ADDR = "localhost";
-      new GameClient();
+      if(GameServer.emptyGame) {
+         new GameClient();
+      }
+      else if (GameServer.emptyGame == false){
+         System.exit(0);
+      }
    }//end main
 
    //Constructor
@@ -65,7 +71,7 @@ public class GameClient extends JFrame
 
       myFighter = new Wizard("TESTONLY");
 
-      System.out.println(myFighter.getCurrentHealth());
+      //System.out.println(myFighter.getCurrentHealth());
 
       setTitle("RPG Client");
       setResizable(false);
@@ -206,12 +212,20 @@ public class GameClient extends JFrame
    {
       try
       {
+
          client = new Socket(IP_ADDR, PORT);
 
          oos = new ObjectOutputStream(new DataOutputStream(client.getOutputStream()));
          ois = new ObjectInputStream(new DataInputStream(client.getInputStream()));
+
+
       }
       catch(IOException ioe) { ioe.printStackTrace(); }
+   }
+
+   private int getClientTurn(){
+       return clientTurnNumber;
+
    }
 
    public class SendButtonListener implements ActionListener
@@ -247,9 +261,12 @@ public class GameClient extends JFrame
          }
          else if(abilityChoice.equals("Ability 3"))
          {
-            try
-            {
-               oos.writeObject(clientList);
+            jtaMessages.append(myFighter.getName() + "knows that he is turn number" + getClientTurn());
+            try {
+
+               oos.writeObject(clientTurnNumber);
+               oos.flush();
+
             }
             catch(IOException ioe){ ioe.printStackTrace(); }
          }
@@ -277,6 +294,12 @@ public class GameClient extends JFrame
                   System.out.println("got a vector back");
                   System.out.println(clientList.get(0).getCurrentHealth());
                }
+               if(obj instanceof Integer)
+               {
+                  System.out.println(myFighter.getName()+ "'s turn has just ended");
+                  clientTurnNumber++;
+               }
+
             }
          }
          catch(IOException ioe) { ioe.printStackTrace(); }
