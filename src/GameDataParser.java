@@ -81,7 +81,7 @@ public class GameDataParser implements Serializable
    {
       try
       {
-         return Integer.parseInt(path.evaluate(classPath + "/abilities/ability["+num+"]/damagevalue",doc));
+         return Integer.parseInt(path.evaluate(classPath + "/abilities/ability["+num+"]/value",doc));
       }
       catch(XPathExpressionException xpe){ xpe.printStackTrace(); }
 
@@ -92,7 +92,7 @@ public class GameDataParser implements Serializable
    {
       try
       {
-         return path.evaluate(classPath + "/abilities/ability["+num+"]/description",doc);
+         return path.evaluate(classPath + "/abilities/ability["+num+"]/abilitydescription",doc);
       }
       catch(XPathExpressionException xpe){ xpe.printStackTrace(); }
 

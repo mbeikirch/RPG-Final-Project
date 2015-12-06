@@ -3,9 +3,9 @@ public class Fighter
     protected int baseHealth, currentHealth;
     protected String name;
 
-    public Fighter(String _name)
+    public Fighter()
     {
-        name = _name;
+
     }
 
     //changes fighter's base health

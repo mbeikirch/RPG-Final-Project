@@ -189,7 +189,7 @@ public class SelectionScreen implements ActionListener
 
       else if (choice == "Create!")
       {
-         new MainMenu(classList.get(listPosition));
+         new MainMenu();
          // TODO: 11/21/2015 set the class name to whatever the user entered, and write out(object output stream) the appropriate player
       }
    }

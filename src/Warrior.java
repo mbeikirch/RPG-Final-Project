@@ -32,10 +32,7 @@ public class Warrior extends Fighter implements Serializable
       return name;
    }
 
-   protected int ability1()
-   {
-      return (myParser.getAbilityDamage(1));
-   }
+   protected int ability1() { return (myParser.getAbilityDamage(1)); }
    protected int ability2()
    {
       return (myParser.getAbilityDamage(2));
