@@ -14,6 +14,7 @@ public class GameClient extends JFrame
    private String ipAddr = "localhost";
    private int port = 4444;
    private Fighter myFighter;
+   Integer clientTurnNumber = new Integer(1);
    private Socket client;
 
    private Vector<Fighter> clientList = new Vector<Fighter>();
@@ -183,6 +184,12 @@ public class GameClient extends JFrame
       catch(IOException ioe) { ioe.printStackTrace(); }
    }
 
+   private int getClientTurn(){
+      return clientTurnNumber;
+
+   }
+
+
    public class SendButtonListener implements ActionListener
    {
       public void actionPerformed(ActionEvent ae)
@@ -216,9 +223,12 @@ public class GameClient extends JFrame
          }
          else if(abilityChoice.equals("Ability 3"))
          {
-            try
-            {
-               oos.writeObject(clientList);
+            jtaMessages.append(myFighter.getName() + "knows that he is turn number" + getClientTurn());
+            try {
+
+               oos.writeObject(clientTurnNumber);
+               oos.flush();
+
             }
             catch(IOException ioe){ ioe.printStackTrace(); }
          }
@@ -246,6 +256,12 @@ public class GameClient extends JFrame
                   System.out.println("got a vector back");
                   System.out.println(clientList.get(0).getCurrentHealth());
                }
+               if(obj instanceof Integer)
+               {
+                  System.out.println(myFighter.getName()+ "'s turn has just ended");
+                  clientTurnNumber++;
+               }
+
             }
          }
          catch(IOException ioe) { ioe.printStackTrace(); }
