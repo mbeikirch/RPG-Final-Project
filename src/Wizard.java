@@ -19,7 +19,7 @@ public class Wizard extends Fighter implements Serializable
 
       System.out.println("Health: " + getBaseHealth() +
               "   Ability 1 Damage: " + ability1() +
-              "   Ability 1 Description:" + ability1Description());
+              "   Ability 1 Description:" + getAbilityDescription(1));
 
    }
 
@@ -32,10 +32,6 @@ public class Wizard extends Fighter implements Serializable
    {
       return (myParser.getAbilityDamage(1));
    }
-   protected String ability1Description()
-   {
-      return (myParser.getAbilityDescription(1));
-   }
    protected int ability2()
    {
       return (myParser.getAbilityDamage(2));
@@ -47,5 +43,14 @@ public class Wizard extends Fighter implements Serializable
    protected int ability4()
    {
       return (myParser.getAbilityDamage(4));
+   }
+
+   protected String getAbilityDescription(int num)
+   {
+      return (myParser.getAbilityDescription(num));
+   }
+   protected String getAbilityName(int num)
+   {
+      return (myParser.getAbilityName(num));
    }
 }
