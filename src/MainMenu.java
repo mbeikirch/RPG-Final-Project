@@ -19,51 +19,45 @@ public class MainMenu extends JFrame implements ActionListener{
    //Controls panel
    public JPanel jpButtons;
    public JButton jbJoin;
-   public JButton jbLoad;
-   public JButton jbNew;
+   public JButton jbChooseCharacter;
    public JButton jbExit;
 
    private Fighter myFighter;
 
+   private SelectionScreen mySelectionScreen;
+
    public static void main (String[]args)
    {
-      new MainMenu(new Warrior("Default"));
+      new MainMenu();
    }//end main
 
    //Constructor
    public MainMenu() { drawMenu(); }
-
-   public MainMenu(Fighter _myFighter)
-   {
-      myFighter = _myFighter;
-      System.out.println(myFighter.getName());
-      drawMenu();
-   }
 
    private void drawMenu()
    {
       //Panel 1
       jpServerInfo = new JPanel(new FlowLayout());
       jpServerInfo.add(jlServerIP = new JLabel("Server IP: "));
-      jpServerInfo.add(jtfServerIP = new JTextField(5));
+      jpServerInfo.add(jtfServerIP = new JTextField(8));
       jpServerInfo.add(jlPort = new JLabel("Port: "));
-      jpServerInfo.add(jtfPort = new JTextField(5));
+      jpServerInfo.add(jtfPort = new JTextField(4));
       //Insertion of panel 1
       add(jpServerInfo, BorderLayout.NORTH);
 
       //Panel 2
       jpButtons = new JPanel(new BorderLayout());
       jpButtons.add(jbJoin = new JButton("Join!"), BorderLayout.NORTH);
-      jpButtons.add(jbLoad = new JButton("Load"), BorderLayout.WEST);
-      jpButtons.add(jbNew = new JButton("New"), BorderLayout.EAST);
+      jpButtons.add(jbChooseCharacter = new JButton("Choose Character"), BorderLayout.CENTER);
       jpButtons.add(jbExit = new JButton("Exit"), BorderLayout.SOUTH);
       //Insertion of panel 2
       add(jpButtons, BorderLayout.SOUTH);
 
+      // TODO: 12/6/2015 Add in an indicator of the currently selected fighter. To switch your class, hit the choose class button
+
       //Adding action listeners
       jbJoin.addActionListener(this);
-      jbLoad.addActionListener(this);
-      jbNew.addActionListener(this);
+      jbChooseCharacter.addActionListener(this);
       jbExit.addActionListener(this);
 
       //General stuff for frames
@@ -94,22 +88,17 @@ public class MainMenu extends JFrame implements ActionListener{
             {
                Socket s = new Socket(ipAddr, Integer.parseInt(port));
                s.close();
-
-               new GameClient(ipAddr, Integer.parseInt(port), myFighter);
+               new GameClient(ipAddr, Integer.parseInt(port), mySelectionScreen.myFighter);
+               mySelectionScreen.dispose();
                dispose();
             }
          }
          catch(NullPointerException npe){ JOptionPane.showMessageDialog(jbJoin, "You must select a character."); }
          catch(IOException ioe){ JOptionPane.showMessageDialog(jbJoin, "Couldn't connect to server."); }
-
       }
-      else if(choice == jbLoad)
+      else if(choice == jbChooseCharacter)
       {
-         System.exit(0);
-      }
-      else if(choice == jbNew)
-      {
-         new SelectionScreen();
+         mySelectionScreen = new SelectionScreen();
       }
       else if(choice == jbExit)
       {

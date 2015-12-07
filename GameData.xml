@@ -3,49 +3,110 @@
   <players>
     <player class = 'Wizard'>
       <health>7</health>
-      <icon>../images/classes/wizard.png</icon>
+      <icon>wizard.png</icon>
       <abilities>
         <ability caston="enemy">
           <abilityname>Wizardly Strike</abilityname>
-          <abilitydescription> Being a master in all areas of wizardry, the Wizardly Strike is a wizard's go to ability. The wizard strikes their opponent with force that can only be describes as magical.</abilitydescription>
+          <abilitydescription>
+            The wizard strikes their opponent with such<br/> force that can only be described as magical.
+          </abilitydescription>
           <value>16</value>
         </ability>
         <ability caston="friendly">
           <abilityname>Healing Surge</abilityname>
-          <abilitydescription>This ability allows the Wizard to heal one of their teammates by a decent amount of health.</abilitydescription>
+          <abilitydescription>
+            This ability allows the Wizard to heal one of their teammates by a decent amount of health.
+          </abilitydescription>
+          <value>25</value>
+        </ability>
+        <ability caston="enemy">
+          <abilityname>Wizardly Strike</abilityname>
+          <abilitydescription>
+            The wizard strikes their opponent with such force that can only be described as magical.
+          </abilitydescription>
+          <value>16</value>
+        </ability>
+        <ability caston="friendly">
+          <abilityname>Healing Surge</abilityname>
+          <abilitydescription>
+            This ability allows the Wizard to heal one of their teammates by a decent amount of health.
+          </abilitydescription>
           <value>25</value>
         </ability>
       </abilities>
     </player>
     <player class = 'Warrior'>
       <health>10</health>
-      <icon>../images/classes/warrior.png</icon>
+      <icon>warrior.png</icon>
       <abilities>
         <ability caston="enemy">
           <abilityname>Super Dragon Fist!</abilityname>
-          <abilitydescription>A deadly attack that only a warrior of the Saiyan race can use. The force they attack their opponent with is similar to that of a Dragon's.</abilitydescription>
+          <abilitydescription>
+            A deadly attack that only a warrior of the Saiyan race can use. The force they attack their opponent
+            with is similar to that of a Dragon's.
+          </abilitydescription>
           <value>16</value>
         </ability>
         <ability caston="enemy">
           <abilityname>Kaio-ken!</abilityname>
-          <abilitydescription>Only available to those who have studied under King Kai, Kaio-ken raises the user's damage by 2 for 1 turn but also hurts the user slightly.</abilitydescription>
-          <value>-1</value>
+          <abilitydescription>
+            Only available to those who have studied under King Kai, Kaio-ken raises the user's damage by 2 for 1 turn
+            but also hurts the user slightly.
+          </abilitydescription>
+          <value>10</value>
+        </ability>
+        <ability caston="enemy">
+          <abilityname>Super Dragon Fist!</abilityname>
+          <abilitydescription>
+            A deadly attack that only a warrior of the Saiyan race can use. The force they attack their opponent
+            with is similar to that of a Dragon's.
+          </abilitydescription>
+          <value>16</value>
+        </ability>
+        <ability caston="enemy">
+          <abilityname>Kaio-ken!</abilityname>
+          <abilitydescription>
+            Only available to those who have studied under King Kai, Kaio-ken raises the user's damage by 2 for 1 turn
+            but also hurts the user slightly.
+          </abilitydescription>
+          <value>10</value>
         </ability>
       </abilities>
     </player>
     <player class = 'Rogue'>
       <health>5</health>
-      <icon>../images/classes/Rogue.png</icon>
+      <icon>rogue.png</icon>
       <abilities>
         <ability caston="enemy">
           <abilityname>Seele Schneider</abilityname>
-          <abilitydescription>A very strong attack from the Quicy clan, It attacks a single enemy causing massive damage.</abilitydescription>
+          <abilitydescription>
+            A very strong attack from the Quicy clan, it attacks a single enemy causing massive damage.
+          </abilitydescription>
           <value>60</value>
           <healingvalue>0</healingvalue>
         </ability>
         <ability caston="friendly">
           <abilityname>Rasenshuriken</abilityname>
-          <abilitydescription>A high level technique used by those who can channel their chakra into one single poiint and release that chakra on their opponent.</abilitydescription>
+          <abilitydescription>
+            A high level technique used by those who can channel their chakra into one single point and release that
+            chakra on their opponent.
+          </abilitydescription>
+          <value>20</value>
+        </ability>
+        <ability caston="enemy">
+          <abilityname>Seele Schneider</abilityname>
+          <abilitydescription>
+            A very strong attack from the Quicy clan, it attacks a single enemy causing massive damage.
+          </abilitydescription>
+          <value>60</value>
+          <healingvalue>0</healingvalue>
+        </ability>
+        <ability caston="friendly">
+          <abilityname>Rasenshuriken</abilityname>
+          <abilitydescription>
+            A high level technique used by those who can channel their chakra into one single point and release that
+            chakra on their opponent.
+          </abilitydescription>
           <value>20</value>
         </ability>
       </abilities>

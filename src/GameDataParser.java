@@ -1,4 +1,7 @@
+import java.awt.*;
 import java.io.*;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import javax.xml.parsers.*;
 import javax.xml.xpath.*;
 import org.w3c.dom.*;
@@ -119,5 +122,18 @@ public class GameDataParser implements Serializable
       catch(XPathExpressionException xpe){ xpe.printStackTrace(); }
 
       return -1;
+   }
+
+   public ImageIcon getIcon()
+   {
+      try
+      {
+         Image icon = ImageIO.read(getClass().getResource(path.evaluate(classPath + "/icon", doc)));
+         return (new ImageIcon(icon));
+      }
+      catch(IOException ioe){ ioe.printStackTrace(); }
+      catch(XPathExpressionException xpe){ xpe.printStackTrace(); }
+
+      return null;
    }
 }

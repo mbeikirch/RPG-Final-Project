@@ -23,19 +23,21 @@ public class GameClient extends JFrame
    ObjectInputStream ois;
 
    private Icon boss = new ImageIcon(".\\media\\boss1.png");
-   private Icon warrior = new ImageIcon(".\\media\\warrior.png");
    private Icon wizard = new ImageIcon(".\\media\\wizard.png");
    private Icon rogue = new ImageIcon(".\\media\\rogue.png");
+
+   private JButton jbAbility1;
+   private JButton jbAbility2;
+   private JButton jbAbility3;
+   private JButton jbAbility4;
 
    //Constructor
    public GameClient(String _ipAddr, int _port, Fighter _myFighter)
    {
-
       myFighter = _myFighter;
+
       ipAddr = _ipAddr;
       port = _port;
-
-      System.out.println(myFighter.getCurrentHealth());
 
       setTitle("RPG Client");
       setResizable(false);
@@ -43,7 +45,9 @@ public class GameClient extends JFrame
       //holds the player list
       JPanel jpPlayerList = new JPanel(new GridLayout(0,1));
 
-      JLabel name1 = new JLabel("Matt");
+      JLabel name1 = new JLabel();
+      name1.setText("<html>" + myFighter.getName()+ "<br> Class:" + myFighter.getClassName() + "</html>");
+      name1.setHorizontalAlignment(SwingConstants.CENTER);
       JLabel name2 = new JLabel("Zihao");
       JLabel name3 = new JLabel("Nicholas Lightburn");
       JLabel name4 = new JLabel("Josh");
@@ -66,10 +70,13 @@ public class GameClient extends JFrame
          jpFightArea.add(jpBossArea);
 
          JPanel jpFighterArea = new JPanel(new GridLayout(3,2,0,5));
+
             JLabel jlPlayer1 = new JLabel();
-            jlPlayer1.setIcon(warrior);
+               jlPlayer1.setIcon(myFighter.getIcon());
+
             JLabel jlPlayer1Health = new JLabel();
-            jlPlayer1Health.setText("Health: 10/10");
+               jlPlayer1Health.setText("Health: " + myFighter.getCurrentHealth() + "/" + myFighter.getBaseHealth());
+
             jpFighterArea.add(jlPlayer1Health);
             jpFighterArea.add(jlPlayer1);
 
@@ -102,25 +109,25 @@ public class GameClient extends JFrame
       JPanel jpBottomRight = new JPanel(new GridLayout(2,0));
 
          //holds the ability buttons
-         JPanel jpAbilities = new JPanel(new GridLayout());
+         JPanel jpAbilities = new JPanel(new FlowLayout());
 
          //making the action listener for the abilities to use
          AbilityListener abilityCaster = new AbilityListener();
 
-         JButton jbAbility1 = new JButton("Ability 1");
-         jbAbility1.setToolTipText("Ability 1 info");
+         jbAbility1 = new JButton(myFighter.getAbilityName(1));
+         jbAbility1.setToolTipText(myFighter.getAbilityDescription(1));
          jbAbility1.addActionListener(abilityCaster);
 
-         JButton jbAbility2 = new JButton("Ability 2");
-         jbAbility2.setToolTipText("Ability 2 info");
+         jbAbility2 = new JButton(myFighter.getAbilityName(2));
+         jbAbility2.setToolTipText(myFighter.getAbilityDescription(2));
          jbAbility2.addActionListener(abilityCaster);
 
-         JButton jbAbility3 = new JButton("Ability 3");
-         jbAbility3.setToolTipText("Ability 3 info");
+         jbAbility3 = new JButton(myFighter.getAbilityName(3));
+         jbAbility3.setToolTipText(myFighter.getAbilityDescription(3));
          jbAbility3.addActionListener(abilityCaster);
 
-         JButton jbAbility4 = new JButton("Ability 4");
-         jbAbility4.setToolTipText("Ability 4 info");
+         jbAbility4 = new JButton(myFighter.getAbilityName(4));
+         jbAbility4.setToolTipText(myFighter.getAbilityDescription(4));
          jbAbility4.addActionListener(abilityCaster);
 
          jpAbilities.add(jbAbility1);
@@ -211,17 +218,17 @@ public class GameClient extends JFrame
    {
       public void actionPerformed(ActionEvent ae)
       {
-         String abilityChoice = ae.getActionCommand();
+         Object choice = ae.getSource();
 
-         if(abilityChoice.equals("Ability 1"))
+         if(choice == jbAbility1)
          {
             jtaMessages.append(myFighter.getName() + " attacked for " + myFighter.ability1() + " damage!\n");
          }
-         else if(abilityChoice.equals("Ability 2"))
+         else if(choice == jbAbility2)
          {
             jtaMessages.append(myFighter.getName() + " healed for " + myFighter.ability2() + " hp!\n");
          }
-         else if(abilityChoice.equals("Ability 3"))
+         else if(choice == jbAbility3)
          {
             jtaMessages.append(myFighter.getName() + "knows that he is turn number" + getClientTurn());
             try {
@@ -231,6 +238,10 @@ public class GameClient extends JFrame
 
             }
             catch(IOException ioe){ ioe.printStackTrace(); }
+         }
+         else if(choice == jbAbility4)
+         {
+
          }
       }
    }//end inner class 2 (action listeners)

@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 public class Fighter
 {
    protected int baseHealth, currentHealth;
@@ -33,9 +35,10 @@ public class Fighter
    protected int ability4() { return -1; }
 
    protected String getAbilityName(int num){ return ""; }
-
    protected String getAbilityDescription(int num){ return ""; }
+   protected ImageIcon getIcon(){ return null; }
 
+   protected String getClassName() { return "";  }
    protected void setName(String _name){ }
    protected String getName(){ return ""; }
 }

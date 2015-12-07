@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.Serializable;
 
 public class Rogue extends Fighter implements Serializable
@@ -18,6 +19,7 @@ public class Rogue extends Fighter implements Serializable
       System.out.println("Rogue named " + getName() + " created!");
    }
 
+   protected String getClassName() { return "Rogue"; }
    protected String getName()
    {
       return name;
@@ -49,4 +51,5 @@ public class Rogue extends Fighter implements Serializable
    {
       return (myParser.getAbilityName(num));
    }
+   protected ImageIcon getIcon(){ return myParser.getIcon(); }
 }

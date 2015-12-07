@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.Serializable;
 
 public class Wizard extends Fighter implements Serializable
@@ -18,6 +19,7 @@ public class Wizard extends Fighter implements Serializable
       System.out.println("Wizard named " + getName() + " created!");
    }
 
+   protected String getClassName() { return "Wizard"; }
    protected String getName()
    {
       return name;
@@ -46,4 +48,5 @@ public class Wizard extends Fighter implements Serializable
    {
       return (myParser.getAbilityName(num));
    }
+   protected ImageIcon getIcon(){ return myParser.getIcon(); }
 }
