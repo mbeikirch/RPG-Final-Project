@@ -132,6 +132,7 @@ public class SelectionScreen extends JFrame implements ActionListener
       setSize(800,500);
       setLocationRelativeTo(null);
       setVisible(true);
+      requestFocus();
    }
 
    //updates the text to reflect the proper class stats/abilities
@@ -202,7 +203,7 @@ public class SelectionScreen extends JFrame implements ActionListener
          {
             myFighter = getCurrentFighter();
             myFighter.setName(charName);
-            setVisible(false);
+            dispose();
          }
       }
    }

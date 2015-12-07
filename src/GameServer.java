@@ -35,6 +35,7 @@ public class GameServer
          System.out.println("Server started on IP: " + InetAddress.getLocalHost());
          server = new ServerSocket(PORT);
       }
+      catch(BindException be){ System.out.println("Server already running on this port..."); }
       catch(UnknownHostException uhe){ uhe.printStackTrace(); } 
       catch(IOException ioe){ ioe.printStackTrace(); }
       

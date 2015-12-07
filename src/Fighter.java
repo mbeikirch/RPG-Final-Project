@@ -5,7 +5,7 @@ public class Fighter
    protected int baseHealth, currentHealth;
    protected String name;
 
-   public Fighter() {}
+   public Fighter() { }
 
    //changes fighter's base health
    protected void setBaseHealth(int amount)
