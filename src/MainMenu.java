@@ -78,7 +78,7 @@ public class MainMenu extends JFrame implements ActionListener{
       setLocationRelativeTo(null);
       setDefaultCloseOperation(EXIT_ON_CLOSE);
       setVisible(true);
-      setTitle("Insert Title Here");
+      setTitle("RPG GAME LOG IN...");
       setSize(350,175);
    }
    
