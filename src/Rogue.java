@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.Serializable;
 
 public class Rogue extends Fighter implements Serializable
@@ -16,16 +17,14 @@ public class Rogue extends Fighter implements Serializable
       setBaseHealth(myParser.getBaseHealth());
 
       System.out.println("Rogue named " + getName() + " created!");
-
-      System.out.println("Health: " + getBaseHealth() +
-              "   Ability 1 Damage: " + ability1() +
-              "   Ability 1 Description:" + getAbilityDescription(1));
    }
 
+   protected String getClassName() { return "Rogue"; }
    protected String getName()
    {
       return name;
    }
+   protected void setName(String _name) { name = _name; }
 
    protected int ability1()
    {
@@ -52,4 +51,5 @@ public class Rogue extends Fighter implements Serializable
    {
       return (myParser.getAbilityName(num));
    }
+   protected ImageIcon getIcon(){ return myParser.getIcon(); }
 }

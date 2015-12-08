@@ -1,66 +1,86 @@
 import java.io.*;
 import java.awt.*;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.*;
 import javax.swing.*;
 import java.awt.event.*;
 
 
 public class MainMenu extends JFrame implements ActionListener{
-   
-   //Attributes
-   
+
    //Server Info panel
-   public JPanel jpServerInfo;
-   public JLabel jlServerIP;
-   public JLabel jlPort;
-   public JTextField jtfServerIP;
-   public JTextField jtfPort;
+   private JPanel jpServerInfo;
+   private JLabel jlServerIP;
+   private JLabel jlPort;
+   private JLabel jlCharacterName;
+   private JTextField jtfServerIP;
+   private JTextField jtfPort;
    //Controls panel
-   public JPanel jpButtons;
-   public JButton jbJoin;
-   public JButton jbLoad;
-   public JButton jbNew;
-   public JButton jbExit;
-   
-   
-   //Constructor
-   public MainMenu()
-   {
-      //Panel 1
-      jpServerInfo = new JPanel(new FlowLayout());
-      jpServerInfo.add(jlServerIP = new JLabel("Server IP: "));
-      jpServerInfo.add(jtfServerIP = new JTextField(5));
-      jpServerInfo.add(jlPort = new JLabel("Port: "));
-      jpServerInfo.add(jtfPort = new JTextField(5));
-      //Insertion of panel 1
-      add(jpServerInfo, BorderLayout.NORTH);
-      
-      //Panel 2
-      jpButtons = new JPanel(new BorderLayout());
-      jpButtons.add(jbJoin = new JButton("Join!"), BorderLayout.NORTH);
-      jpButtons.add(jbLoad = new JButton("Load"), BorderLayout.WEST);
-      jpButtons.add(jbNew = new JButton("New"), BorderLayout.EAST);
-      jpButtons.add(jbExit = new JButton("Exit"), BorderLayout.SOUTH);
-      //Insertion of panel 2
-      add(jpButtons, BorderLayout.SOUTH);
-      
-      //Adding action listeners
-      jbJoin.addActionListener(this);
-      jbLoad.addActionListener(this);
-      jbNew.addActionListener(this);
-      jbExit.addActionListener(this);
-      
-      //General stuff for frames
-      setLocationRelativeTo(null);
-      setDefaultCloseOperation(EXIT_ON_CLOSE);
-      setVisible(true);
-      pack();
-   }
-   
+   private JPanel jpButtons;
+   private JPanel jpButtonsNorth;
+   private JPanel jpButtonsSouth;
+   private JButton jbJoin;
+   private JButton jbChooseCharacter;
+   private JButton jbExit;
+
+   private Fighter myFighter = new Warrior("Default");
+
+   private SelectionScreen mySelectionScreen;
+
    public static void main (String[]args)
    {
       new MainMenu();
    }//end main
+
+   //Constructor
+   public MainMenu() { drawMenu(); }
+
+   private void drawMenu()
+   {
+      //Server info panel(ip address/port number)
+      jpServerInfo = new JPanel(new FlowLayout());
+      jpServerInfo.add(jlServerIP = new JLabel("Server IP: "));
+      jpServerInfo.add(jtfServerIP = new JTextField(8));
+      jpServerInfo.add(jlPort = new JLabel("Port: "));
+      jpServerInfo.add(jtfPort = new JTextField(4));
+      //Insertion of panel
+      add(jpServerInfo, BorderLayout.NORTH);
+
+      jpButtons = new JPanel(new GridLayout(0,1));
+         JPanel jpChooseFighter = new JPanel(new FlowLayout());
+         jpChooseFighter.add(jbChooseCharacter = new JButton("Choose Fighter"));
+
+         JPanel jpCharName = new JPanel(new FlowLayout());
+         jlCharacterName = new JLabel("Current Fighter: " + myFighter.getName() + " - " + myFighter.getClassName());
+         jlCharacterName.setVerticalAlignment(SwingConstants.CENTER);
+         jpCharName.add(jlCharacterName);
+
+         JPanel jpJoinQuit = new JPanel(new FlowLayout());
+         jpJoinQuit.add(jbJoin = new JButton("Join!"));
+         jpJoinQuit.add(jbExit = new JButton("Quit"));
+
+      jpButtons.add(jpJoinQuit);
+      jpButtons.add(jpCharName);
+      jpButtons.add(jpChooseFighter);
+      //Insertion of panel 2
+      add(jpButtons, BorderLayout.CENTER);
+
+      // TODO: 12/6/2015 Add in an indicator of the currently selected fighter. To switch your class, hit the choose class button
+
+      //Adding action listeners
+      jbJoin.addActionListener(this);
+      jbChooseCharacter.addActionListener(this);
+      jbExit.addActionListener(this);
+
+      //General stuff for frames
+      setLocationRelativeTo(null);
+      setDefaultCloseOperation(EXIT_ON_CLOSE);
+      setVisible(true);
+      setTitle("Insert Title Here");
+      setSize(350,175);
+   }
    
    //Methods
    public void actionPerformed(ActionEvent ae)
@@ -70,15 +90,31 @@ public class MainMenu extends JFrame implements ActionListener{
       
       if(choice == jbJoin)
       {
-         System.exit(0);
+         String ipAddr = jtfServerIP.getText();
+         String port = jtfPort.getText();
+
+         try
+         {
+            if(ipAddr.equals("") || port.equals(""))
+            {
+               JOptionPane.showMessageDialog(jbJoin, "You must enter a valid IP address and port number.");
+            }
+            else
+            {
+               Socket s = new Socket(ipAddr, Integer.parseInt(port));
+               s.close();
+               new GameClient(ipAddr, Integer.parseInt(port), myFighter);
+               dispose();
+            }
+         }
+         catch(NullPointerException npe){ JOptionPane.showMessageDialog(jbJoin, "You must select a character."); }
+         catch(IOException ioe){ JOptionPane.showMessageDialog(jbJoin, "Couldn't connect to server."); }
       }
-      else if(choice == jbLoad)
+      else if(choice == jbChooseCharacter)
       {
-         System.exit(0);
-      }
-      else if(choice == jbNew)
-      {
-         new SelectionScreen();
+         mySelectionScreen = new SelectionScreen();
+         FighterWaiter myWaiter = new FighterWaiter(); //starts a thread that waits for the user to select a character
+         myWaiter.start();
       }
       else if(choice == jbExit)
       {
@@ -86,5 +122,22 @@ public class MainMenu extends JFrame implements ActionListener{
       }
       
    }// end action performed
-   
+
+   //Once started, it checks every 100 ms to see if the selection screen has been closed. If it has been closed, it pulls
+   //the fighter and updates the MainMenu's jlCharacterName label to the proper name as input by the user in the SelectionScreen
+   class FighterWaiter extends Thread
+   {
+      public FighterWaiter(){}
+
+      public void run()
+      {
+         while(mySelectionScreen.isVisible())
+         {
+            try{ Thread.sleep(100); }
+            catch(InterruptedException ie){ ie.printStackTrace(); }
+         }
+         myFighter = mySelectionScreen.myFighter;
+         jlCharacterName.setText("Current Fighter: " + myFighter.getName() + " - " + myFighter.getClassName());
+      }
+   }
 }//end class

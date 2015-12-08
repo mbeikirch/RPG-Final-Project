@@ -13,12 +13,10 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class SelectionScreen implements ActionListener
+public class SelectionScreen extends JFrame implements ActionListener
 {
    private final int ABILITIES_ROWS = 5;
    private final int ABILITES_COLUMNS = 2;
-   private final int TABLE_PADDING = 7; //x & y padding
-
    private int listPosition;
 
    private ArrayList<Fighter> classList;
@@ -27,21 +25,20 @@ public class SelectionScreen implements ActionListener
    private JLabel[][] jlAbilities = new JLabel[ABILITIES_ROWS][ABILITES_COLUMNS];
    private JLabel className;
    private JLabel baseHealth;
+   private JLabel classIcon;
    private JTextField jtfName;
 
-   // TODO: 11/20/2015 takeout when finished testing
-   public static void main(String[] args)
-   {
-      new SelectionScreen();
-   }
+   private JButton jbCreate;
+
+   protected Fighter myFighter;
 
    public SelectionScreen()
    {
-      JFrame clsFrame = new JFrame("Choose your class");
-      clsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+      setTitle("Choose Your Class!");
+      setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
       Font titleFont = new Font("Book Antiqua", Font.BOLD, 20);
-      Font headerFont = new Font("Arial", Font.PLAIN, 17);
+      Font headerFont = new Font("Arial", Font.BOLD, 17);
       Font statsFont = new Font("Verdana", Font.PLAIN, 14);
 
       //making an arraylist to hold copies of each class in order to pull info from them(stats, abilities, etc.)
@@ -50,8 +47,7 @@ public class SelectionScreen implements ActionListener
       classList.add(new Wizard("Wizard"));
       classList.add(new Rogue("Rogue"));
 
-      listPosition = classList.size() - 1;
-      JTextField jtfName;
+      listPosition = 0;
 
       //making a label for the class name
       className = new JLabel();
@@ -62,8 +58,11 @@ public class SelectionScreen implements ActionListener
       baseHealth.setFont(headerFont);
       baseHealth.setHorizontalAlignment(SwingConstants.CENTER);
 
+      classIcon = new JLabel();
+      classIcon.setHorizontalAlignment(SwingConstants.CENTER);
+
       //holds the class name, base health, and a divider
-      JPanel classNamePanel = new JPanel(new GridLayout(0,1,TABLE_PADDING, TABLE_PADDING));
+      JPanel classNamePanel = new JPanel(new GridLayout(0,1));
          classNamePanel.add(className);
          classNamePanel.add(baseHealth);
          classNamePanel.add(new JSeparator(SwingConstants.HORIZONTAL));
@@ -91,10 +90,9 @@ public class SelectionScreen implements ActionListener
       jlAbilities[0][1].setFont(headerFont);
 
       //will hold the selection panel and the name panel
-      JPanel bottomPanel = new JPanel(new GridLayout(2,0));
+      JPanel bottomPanel = new JPanel(new FlowLayout());
 
          JPanel namePanel = new JPanel(new FlowLayout());
-            //textfield to hold the player name
             jtfName = new JTextField("Fighter Name",15);
 
             //clears the textfield when the user clicks in the name text field
@@ -104,11 +102,10 @@ public class SelectionScreen implements ActionListener
 
                public void focusLost(FocusEvent e) {}
             });
-
             namePanel.add(jtfName);
 
             //button to create the character that you selected
-            JButton jbCreate = new JButton("Create!");
+            jbCreate = new JButton("Create!");
             jbCreate.addActionListener(this);
             namePanel.add(jbCreate);
 
@@ -121,39 +118,47 @@ public class SelectionScreen implements ActionListener
             jbNext.addActionListener(this);
             selectionPanel.add(jbNext);
 
-         bottomPanel.add(selectionPanel);
+         bottomPanel.add(classIcon);
          bottomPanel.add(namePanel);
+         bottomPanel.add(selectionPanel);
 
-      //adding all of the panels to the jframe
-      clsFrame.add(classNamePanel, BorderLayout.NORTH);
-      clsFrame.add(abilityPanel, BorderLayout.CENTER);
-      clsFrame.add(bottomPanel, BorderLayout.SOUTH);
+      //adding all of the panels
+      add(classNamePanel, BorderLayout.NORTH);
+      add(abilityPanel, BorderLayout.CENTER);
+      add(bottomPanel, BorderLayout.SOUTH);
 
       updateText();
 
-      clsFrame.setResizable(false);
-      clsFrame.pack();
-      clsFrame.setLocationRelativeTo(null);
-      clsFrame.setVisible(true);
+      setSize(800,500);
+      setLocationRelativeTo(null);
+      setVisible(true);
+      requestFocus();
    }
 
    //updates the text to reflect the proper class stats/abilities
    private void updateText()
    {
-      className.setText(classList.get(listPosition).getName());
-      baseHealth.setText("Health: " + classList.get(listPosition).getBaseHealth());
+      className.setText(getCurrentFighter().getClassName());
+      baseHealth.setText("Health: " + getCurrentFighter().getBaseHealth());
+      classIcon.setIcon(getCurrentFighter().getIcon());
 
-      jlAbilities[1][0].setText(classList.get(listPosition).getAbilityName(1));
-      jlAbilities[1][1].setText(classList.get(listPosition).getAbilityDescription(1));
+      jlAbilities[1][0].setText(getCurrentFighter().getAbilityName(1));
+      jlAbilities[1][1].setText("<html>" + getCurrentFighter().getAbilityDescription(1) + "</html>");
 
-      jlAbilities[2][0].setText(classList.get(listPosition).getAbilityName(2));
-      jlAbilities[2][1].setText(classList.get(listPosition).getAbilityDescription(2));
+      jlAbilities[2][0].setText(getCurrentFighter().getAbilityName(2));
+      jlAbilities[2][1].setText("<html>" + getCurrentFighter().getAbilityDescription(2) + "</html>");
 
-      jlAbilities[3][0].setText(classList.get(listPosition).getAbilityName(3));
-      jlAbilities[3][1].setText(classList.get(listPosition).getAbilityDescription(3));
+      jlAbilities[3][0].setText(getCurrentFighter().getAbilityName(3));
+      jlAbilities[3][1].setText("<html>" + getCurrentFighter().getAbilityDescription(3) + "</html>");
 
-      jlAbilities[4][0].setText(classList.get(listPosition).getAbilityName(4));
-      jlAbilities[4][1].setText(classList.get(listPosition).getAbilityDescription(4));
+      jlAbilities[4][0].setText(getCurrentFighter().getAbilityName(4));
+      jlAbilities[4][1].setText("<html>" + getCurrentFighter().getAbilityDescription(4) + "</html>");
+   }
+
+   //returns the current fighter on screen
+   protected Fighter getCurrentFighter()
+   {
+      return classList.get(listPosition);
    }
 
    public void actionPerformed(ActionEvent ae)
@@ -189,8 +194,17 @@ public class SelectionScreen implements ActionListener
 
       else if (choice == "Create!")
       {
-         new MainMenu();
-         // TODO: 11/21/2015 set the class name to whatever the user entered, and write out(object output stream) the appropriate player
+         String charName = jtfName.getText();
+         if(charName.equals("") || charName.equals("Fighter Name"))
+         {
+            JOptionPane.showMessageDialog(jbCreate, "Please enter a fighter name.");
+         }
+         else
+         {
+            myFighter = getCurrentFighter();
+            myFighter.setName(charName);
+            dispose();
+         }
       }
    }
 }
