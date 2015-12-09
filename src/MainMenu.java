@@ -19,8 +19,6 @@ public class MainMenu extends JFrame implements ActionListener{
    private JTextField jtfPort;
    //Controls panel
    private JPanel jpButtons;
-   private JPanel jpButtonsNorth;
-   private JPanel jpButtonsSouth;
    private JButton jbJoin;
    private JButton jbChooseCharacter;
    private JButton jbExit;

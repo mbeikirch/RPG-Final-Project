@@ -16,7 +16,6 @@ public class GameServer
    //holds all of the fighter objects(boss/4 players)
    private Vector<Fighter> clientList = new Vector<>();
 
-
    protected Fighter bossMan = new Diablo();
 
    public static void main(String[] args)
@@ -50,7 +49,6 @@ public class GameServer
          }
          catch(IOException ioe){ ioe.printStackTrace(); }
       }
-
    }
    
    class ClientHandler extends Thread

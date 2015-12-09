@@ -2,7 +2,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
-import javax.imageio.*;
 import java.net.*;
 import java.util.*;
 
@@ -17,84 +16,68 @@ public class GameClient extends JFrame
    Integer clientTurnNumber = new Integer(1);
    private Socket client;
 
+   //arrays to hold JLabels for all of the class info(health/names/pictures)
+                                       //boss              //first      //second      //third
+   private JLabel[] fighterHealths  = {new JLabel(""), new JLabel(""), new JLabel(""), new JLabel("")};
+   private JLabel[] fighterPictures = {new JLabel(""), new JLabel(""), new JLabel(""), new JLabel("")};
+   private JLabel[] playerNames     = {new JLabel(" Connected Players: "), new JLabel(""), new JLabel(""), new JLabel("")};
+
+   private JButton jbAbility1 = new JButton();
+   private JButton jbAbility2 = new JButton();
+   private JButton jbAbility3 = new JButton();
+   private JButton jbAbility4 = new JButton();
+
+   private JButton[] abilities = {jbAbility1, jbAbility2, jbAbility3, jbAbility4};
+
    private Vector<Fighter> clientList = new Vector<Fighter>();
 
    ObjectOutputStream oos;
    ObjectInputStream ois;
 
-   private Icon boss = new ImageIcon(".\\media\\boss1.png");
-   private Icon wizard = new ImageIcon(".\\media\\wizard.png");
-   private Icon rogue = new ImageIcon(".\\media\\rogue.png");
-
-   private JButton jbAbility1;
-   private JButton jbAbility2;
-   private JButton jbAbility3;
-   private JButton jbAbility4;
-
+   public static void main(String[] args)
+   {
+      new GameClient("localhost", 4444, new Warrior("TESTING"));
+   }
    //Constructor
    public GameClient(String _ipAddr, int _port, Fighter _myFighter)
    {
       myFighter = _myFighter;
-
       ipAddr = _ipAddr;
       port = _port;
+
+      clientList.add(new Diablo());
+      clientList.add(new Warrior("SDKFJ"));
+      clientList.add(new Wizard("ASD"));
+      clientList.add(new Rogue("BLA"));
 
       setTitle("RPG Client");
       setResizable(false);
 
       //holds the player list
       JPanel jpPlayerList = new JPanel(new GridLayout(0,1));
-
-      JLabel name1 = new JLabel();
-      name1.setText("<html>" + myFighter.getName()+ "<br> Class:" + myFighter.getClassName() + "</html>");
-      name1.setHorizontalAlignment(SwingConstants.CENTER);
-      JLabel name2 = new JLabel("Zihao");
-      JLabel name3 = new JLabel("Nicholas Lightburn");
-      JLabel name4 = new JLabel("Josh");
-
-      jpPlayerList.add(name1);
-      jpPlayerList.add(name2);
-      jpPlayerList.add(name3);
-      jpPlayerList.add(name4);
+      for(JLabel a : playerNames) { jpPlayerList.add(a); }
 
       //holds the fight area. For now just placeholder images for each player and the boss
       JPanel jpFightArea = new JPanel(new FlowLayout());
-      jpFightArea.setBorder(BorderFactory.createLineBorder(Color.black,5, true));  //color, thickness of border, rounded edges
+      jpFightArea.setBorder(BorderFactory.createLineBorder(Color.black,5, false));  //color, thickness of border, rounded edges
 
          //panel to hold the boss
-         JPanel jpBossArea = new JPanel(new GridLayout(1,0,100,0));
-            JLabel jlBossImage = new JLabel();
-            jlBossImage.setIcon(boss);
-            jpBossArea.add(jlBossImage);
-            jpBossArea.add(new JLabel()); //this label is just a filler to properly space out the fighters/boss
+         JPanel jpBossArea = new JPanel(new GridLayout(2,2,50,30));
+            jpBossArea.add(fighterHealths[0]);
+            fighterHealths[0].setVerticalAlignment(SwingConstants.BOTTOM);
+            jpBossArea.add(new JLabel());
+            jpBossArea.add(fighterPictures[0]);
+            jpBossArea.add(new JLabel());
          jpFightArea.add(jpBossArea);
 
+         //panel for the players, and adding the jlabels for all their info
          JPanel jpFighterArea = new JPanel(new GridLayout(3,2,0,5));
-
-            JLabel jlPlayer1 = new JLabel();
-               jlPlayer1.setIcon(myFighter.getIcon());
-
-            JLabel jlPlayer1Health = new JLabel();
-               jlPlayer1Health.setText("Health: " + myFighter.getCurrentHealth() + "/" + myFighter.getBaseHealth());
-
-            jpFighterArea.add(jlPlayer1Health);
-            jpFighterArea.add(jlPlayer1);
-
-            JLabel jlPlayer2 = new JLabel();
-            jlPlayer2.setIcon(wizard);
-         JLabel jlPlayer2Health = new JLabel();
-         jlPlayer2Health.setText("Health: 10/10");
-         jpFighterArea.add(jlPlayer2Health);
-            jpFighterArea.add(jlPlayer2);
-
-            JLabel jlPlayer3 = new JLabel();
-            jlPlayer3.setIcon(rogue);
-         JLabel jlPlayer3Health = new JLabel();
-         jlPlayer3Health.setText("Health: 10/10");
-         jpFighterArea.add(jlPlayer3Health);
-            jpFighterArea.add(jlPlayer3);
-
-      jpFightArea.add(jpFighterArea);
+         for(int i=1; i < fighterHealths.length; i++)
+         {
+            jpFighterArea.add(fighterPictures[i]);
+            jpFighterArea.add(fighterHealths[i]);
+         }
+         jpFightArea.add(jpFighterArea);
 
       //holds the sending info panel, abilities panel, and text box
       JPanel jpBottom = new JPanel(new GridLayout(0,2));
@@ -114,26 +97,14 @@ public class GameClient extends JFrame
          //making the action listener for the abilities to use
          AbilityListener abilityCaster = new AbilityListener();
 
-         jbAbility1 = new JButton(myFighter.getAbilityName(1));
-         jbAbility1.setToolTipText(myFighter.getAbilityDescription(1));
-         jbAbility1.addActionListener(abilityCaster);
+         for(int i=0; i < abilities.length; i++)
+         {
+            abilities[i].setText(myFighter.getAbilityName(i+1));
+            abilities[i].setToolTipText("<html>" + myFighter.getAbilityDescription(i+1) + "</html>");
+            abilities[i].addActionListener(abilityCaster);
 
-         jbAbility2 = new JButton(myFighter.getAbilityName(2));
-         jbAbility2.setToolTipText(myFighter.getAbilityDescription(2));
-         jbAbility2.addActionListener(abilityCaster);
-
-         jbAbility3 = new JButton(myFighter.getAbilityName(3));
-         jbAbility3.setToolTipText(myFighter.getAbilityDescription(3));
-         jbAbility3.addActionListener(abilityCaster);
-
-         jbAbility4 = new JButton(myFighter.getAbilityName(4));
-         jbAbility4.setToolTipText(myFighter.getAbilityDescription(4));
-         jbAbility4.addActionListener(abilityCaster);
-
-         jpAbilities.add(jbAbility1);
-         jpAbilities.add(jbAbility2);
-         jpAbilities.add(jbAbility3);
-         jpAbilities.add(jbAbility4);
+            jpAbilities.add(abilities[i]);
+         }
          jpBottomRight.add(jpAbilities);
 
       //holds the user text field/send button
@@ -146,10 +117,6 @@ public class GameClient extends JFrame
          jpBottomRight.add(jpSendingInfo);
 
       jpBottom.add(jpBottomRight);
-
-      //this is where I try and set the background image, the testComponent class is below
-      //testComponent bla = new testComponent();
-      //bla.add(jpFightArea);
 
       add(jpFightArea, BorderLayout.CENTER);
       add(jpPlayerList, BorderLayout.EAST);
@@ -174,7 +141,8 @@ public class GameClient extends JFrame
       Thread inputThread = new Thread(new ReceiveObjects());
       inputThread.start();
 
-      pack();
+      updateGUI();
+      setButtonsEnabled(false);
    }//end constructor
 
    //Methods
@@ -191,9 +159,32 @@ public class GameClient extends JFrame
       catch(IOException ioe) { ioe.printStackTrace(); }
    }
 
-   private int getClientTurn(){
-      return clientTurnNumber;
+   private void updateGUI()
+   {
+      for(int i=1; i < clientList.size(); i++)
+      {
+         playerNames[i].setHorizontalAlignment(SwingConstants.CENTER);
+         playerNames[i].setText("<html>" + clientList.get(i).getName() + "<br> Class - " + clientList.get(i).getClassName() + "</html>");
+      }
+      for(int i=0; i < clientList.size(); i++)
+      {
+         fighterHealths[i].setText("Health: " + clientList.get(i).getCurrentHealth() + "/" + clientList.get(i).getBaseHealth());
+         fighterPictures[i].setIcon(clientList.get(i).getIcon());
+      }
+      pack();
+   }
 
+   private void setButtonsEnabled(boolean b)
+   {
+      for(JButton myButton: abilities)
+      {
+         myButton.setEnabled(b);
+      }
+   }
+
+   private int getClientTurn()
+   {
+      return clientTurnNumber;
    }
 
 
@@ -206,6 +197,7 @@ public class GameClient extends JFrame
             String message = myFighter.getName() + ": " + jtfSendMessage.getText();
             oos.writeObject(message);
             oos.flush();
+            setButtonsEnabled(true);
          }
          catch(IOException ioe){ ioe.printStackTrace(); }
 
@@ -279,29 +271,4 @@ public class GameClient extends JFrame
          catch(ClassNotFoundException cnfe){ cnfe.printStackTrace(); }
       }
    }//end inner class 3 (threadz)
-
-   /*
-   Was messing around with trying to get a background image, sort of got it to work but it wasn't working properly.
-   Ignoring for now, may try and use again later
-
-   public class testComponent extends JPanel
-   {
-      private Image background;
-
-      public testComponent()
-      {
-         try
-         {
-            background = ImageIO.read(getClass().getResource("fightArea.png"));
-         }
-         catch (IOException e) { e.printStackTrace(); }
-      }
-
-      public void paintComponent(Graphics g)
-      {
-         g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
-      }
-   }
-   */
-
 }//end class

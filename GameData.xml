@@ -113,13 +113,12 @@
     </player>
   </players>  
   <bosses>
-    <boss>
-      <bossid>0</bossid>
+    <boss id = '0'>
       <name>Tank</name>
       <power>40</power>
       <health>150</health>
       <Defence>10</Defence>
-      <icon>../images/bosses/Tank.png</icon>
+      <icon>boss1.png</icon>
       <abilities>
         <ability caston="defence">
           <abilitynumber>0</abilitynumber>
