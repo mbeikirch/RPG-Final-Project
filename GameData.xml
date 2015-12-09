@@ -8,7 +8,7 @@
         <ability caston="enemy">
           <abilityname>Wizardly Strike</abilityname>
           <abilitydescription>
-            The wizard strikes their opponent with such<br/> force that can only be described as magical.
+            The wizard strikes their opponent with such force that can only be described as magical.
           </abilitydescription>
           <value>16</value>
         </ability>
@@ -131,7 +131,7 @@
         <ability caston="healing">
           <abilitynumber>1</abilitynumber>
           <abilityname>Gigantic Meteor</abilityname>
-          <abilitydescription>This ability shoots a giant energy blast the size of a meteor!But not everything is as it looks.</abilitydescription>
+          <abilitydescription>This ability shoots a giant energy blast the size of a meteor! But not everything is as it looks.</abilitydescription>
           <value>24</value>
           <Defence>0</Defence>
         </ability>        

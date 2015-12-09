@@ -283,7 +283,7 @@ public class GameClient extends JFrame
    /*
    Was messing around with trying to get a background image, sort of got it to work but it wasn't working properly.
    Ignoring for now, may try and use again later
-   */
+
    public class testComponent extends JPanel
    {
       private Image background;
@@ -302,5 +302,6 @@ public class GameClient extends JFrame
          g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
       }
    }
+   */
 
 }//end class
