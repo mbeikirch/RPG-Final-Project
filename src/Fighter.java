@@ -1,9 +1,11 @@
 import javax.swing.*;
+import java.io.Serializable;
 
-public class Fighter
+public class Fighter implements Serializable
 {
    protected int baseHealth, currentHealth;
    protected String name;
+   private static final long serialVersionUID = 1L;
 
    public Fighter() { }
 
