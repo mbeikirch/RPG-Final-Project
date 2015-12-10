@@ -13,7 +13,7 @@ public class GameClient extends JFrame
    private String ipAddr = "localhost";
    private int port = 4444;
    private Fighter myFighter;
-   Integer clientTurnNumber = new Integer(1);
+   Integer myTurnNumber = new Integer(1);
    private Socket client;
 
    //arrays to hold JLabels for all of the class info(health/names/pictures)
@@ -210,11 +210,11 @@ public class GameClient extends JFrame
 
          if(choice == jbAbility1)
          {
-            jtaMessages.append(myFighter.getName() + " attacked for " + myFighter.ability1() + " damage!\n");
+            jtaMessages.append(myFighter.getName() + " performed  " + myFighter.getAbilityName(1) + " and dealt " +  myFighter.ability1() + " damage!");
          }
          else if(choice == jbAbility2)
          {
-            jtaMessages.append(myFighter.getName() + " healed for " + myFighter.ability2() + " hp!\n");
+            jtaMessages.append(myFighter.getName() + " performed " + myFighter.getAbilityName(2) + " and healed for " + myFighter.ability2() + " hp!\n");
          }
          else if(choice == jbAbility3)
          {
