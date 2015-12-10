@@ -10,14 +10,10 @@ public class GameClient extends JFrame
    //Attributes
    private JTextArea jtaMessages;
    private JTextField jtfSendMessage;
-
    private String ipAddr = "localhost";
-
    private int port = 4444;
    private Fighter myFighter;
-
-   Integer myTurnNumber;
-
+   Integer clientTurnNumber = new Integer(1);
    private Socket client;
 
    //arrays to hold JLabels for all of the class info(health/names/pictures)
@@ -38,6 +34,10 @@ public class GameClient extends JFrame
    ObjectOutputStream oos;
    ObjectInputStream ois;
 
+   public static void main(String[] args)
+   {
+      new GameClient("localhost", 4444, new Warrior("TESTING"));
+   }
    //Constructor
    public GameClient(String _ipAddr, int _port, Fighter _myFighter)
    {
@@ -255,6 +255,7 @@ public class GameClient extends JFrame
                      System.out.println("my turn now bitches");
                   }
                }
+
             }
          }
          catch(IOException ioe) { ioe.printStackTrace(); }

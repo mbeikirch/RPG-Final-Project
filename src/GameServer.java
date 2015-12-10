@@ -58,7 +58,7 @@ public class GameServer
       Socket cs;
       ObjectInputStream clientBuffer;
       ObjectOutputStream clientWriter;
-      
+
       public ClientHandler(Socket _cs)
       {
          cs = _cs;
