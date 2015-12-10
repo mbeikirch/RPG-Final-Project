@@ -17,7 +17,7 @@ public class DemonKing extends Fighter
         ability3 = myParser.getAbilityDamage(3);
     }
 
-    public String getName() { return "DimKing"; }
+    public String getName() { return "DemonKing"; }
     protected ImageIcon getIcon() { return (myParser.getIcon()); }
 
     protected int ability1() { return ability1; }
