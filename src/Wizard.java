@@ -7,7 +7,7 @@ public class Wizard extends Fighter implements Serializable
    private final String CLASS_PATH = "/gamedata/players/player[@class='Wizard']";
    private GameDataParser myParser;
    private ImageIcon myIcon;
-   private int ability1, ability2, ability3, ability4;
+   private int ability1, ability2;
 
    //making a new Wizard, only parameter that's needed is name
    protected Wizard(String _name)
@@ -21,8 +21,6 @@ public class Wizard extends Fighter implements Serializable
 
       ability1 = myParser.getAbilityDamage(1);
       ability2 = myParser.getAbilityDamage(2);
-      ability3 = myParser.getAbilityDamage(3);
-      ability4 = myParser.getAbilityDamage(4);
    }
 
    protected String getClassName() { return "Wizard"; }
@@ -38,14 +36,6 @@ public class Wizard extends Fighter implements Serializable
 
    protected int ability2() {
       return ability2;
-   }
-
-   protected int ability3() {
-      return ability3;
-   }
-
-   protected int ability4() {
-      return ability4;
    }
 
    protected ImageIcon getIcon() { return myIcon; }

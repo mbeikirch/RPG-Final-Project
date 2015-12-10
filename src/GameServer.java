@@ -2,23 +2,21 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class GameServer
+public class GameServer implements Serializable
 {
    final int PORT = 4444;
    Integer myTurnNumber = 0;
    Integer clientTurnNumber = 1;
    int numPlayers;
-   Random rngAbility = new Random();
+   Random rng = new Random();
 
-   public Fighter[] bossList = {new Diablo(), new DemonKing(), new Saitama()};
    //holds all of the object writers to be used
    private Vector<ObjectOutputStream> clientWriteList = new Vector<>();
 
    //holds all of the fighter objects(boss/4 players)
    private Vector<Fighter> clientList = new Vector<Fighter>();
 
-   protected Fighter bossMan = new Fighter();
-
+   protected Fighter bossMan;
 
    public static void main(String[] args)
    {
@@ -29,9 +27,12 @@ public class GameServer
    {
       ServerSocket server = null;
 
-      int bossNum = rngAbility.nextInt(2);
-      clientList.add(bossList[bossNum]);
+      Fighter[] bossList = {new Diablo(), new DemonKing(), new Saitama()};
 
+      bossMan = bossList[rng.nextInt(3)];
+      clientList.add(bossMan);
+
+      System.out.println(bossMan.getName());
 
       try
       {
@@ -152,17 +153,16 @@ public class GameServer
       private void doBossStuff()
       {
          //boss AI goes here
-         int abilityNum = rngAbility.nextInt(2);
-         if(abilityNum == 0){
-
-            int clientNum = rngAbility.nextInt(2)+1;
+         int abilityNum = rng.nextInt(3);
+         if(abilityNum == 0)
+         {
+            int clientNum = rng.nextInt(2)+1;
             clientList.get(clientNum).changeCurrentHealth(-bossMan.ability1());
-
          }
          if(abilityNum == 1){
 
             bossMan.ability2();
-            int clientNum = rngAbility.nextInt(2)+1;
+            int clientNum = rng.nextInt(2)+1;
             clientList.get(clientNum).changeCurrentHealth(+bossMan.ability2());
 
          }
@@ -172,7 +172,6 @@ public class GameServer
             clientList.get(1).changeCurrentHealth(-bossMan.ability3());
             clientList.get(2).changeCurrentHealth(-bossMan.ability3());
             clientList.get(3).changeCurrentHealth(-bossMan.ability3());
-
          }
 
          //once the boss is done, then broadcast

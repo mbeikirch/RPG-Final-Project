@@ -1,6 +1,7 @@
 import javax.swing.*;
+import java.io.Serializable;
 
-public class DemonKing extends Fighter
+public class DemonKing extends Fighter implements Serializable
 
 {
     private final String CLASS_PATH = "/gamedata/bosses/boss[@id = '1']";

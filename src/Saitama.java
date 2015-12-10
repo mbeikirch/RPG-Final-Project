@@ -1,5 +1,8 @@
 import javax.swing.*;
-public class Saitama extends Fighter{
+import java.io.Serializable;
+
+public class Saitama extends Fighter implements Serializable
+{
 
     private final String CLASS_PATH = "/gamedata/bosses/boss[@id = '2']";
     private GameDataParser myParser;
