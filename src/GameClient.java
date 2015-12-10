@@ -5,7 +5,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class GameClient extends JFrame
+public class GameClient
 {
    //Attributes
    private JTextArea jtaMessages;
@@ -13,14 +13,14 @@ public class GameClient extends JFrame
    private String ipAddr = "localhost";
    private int port = 4444;
    private Fighter myFighter;
-   Integer myTurnNumber = new Integer(1);
+   Integer myTurnNumber = 1;
    private Socket client;
 
    //arrays to hold JLabels for all of the class info(health/names/pictures)
                                        //boss              //first      //second      //third
-   private JLabel[] fighterHealths  = {new JLabel(""), new JLabel(""), new JLabel(""), new JLabel("")};
-   private JLabel[] fighterPictures = {new JLabel(""), new JLabel(""), new JLabel(""), new JLabel("")};
-   private JLabel[] playerNames     = {new JLabel(" Connected Players: "), new JLabel(""), new JLabel(""), new JLabel("")};
+   private JLabel[] fighterHealths  = {new JLabel(" "), new JLabel(" "), new JLabel(" "), new JLabel(" ")};
+   private JLabel[] fighterPictures = {new JLabel(" "), new JLabel(" "), new JLabel(" "), new JLabel(" ")};
+   private JLabel[] playerNames     = {new JLabel(" Connected Players: "), new JLabel(""), new JLabel(" "), new JLabel(" ")};
 
    private JButton jbAbility1 = new JButton();
    private JButton jbAbility2 = new JButton();
@@ -29,9 +29,7 @@ public class GameClient extends JFrame
 
    private JButton[] abilities = {jbAbility1, jbAbility2, jbAbility3, jbAbility4};
 
-   private JPanel jpFightArea;
-
-   private Vector<Fighter> clientList = new Vector<Fighter>();
+   public JFrame myFrame;
 
    ObjectOutputStream oos;
    ObjectInputStream ois;
@@ -47,8 +45,7 @@ public class GameClient extends JFrame
       ipAddr = _ipAddr;
       port = _port;
 
-      setTitle("RPG Client");
-      setResizable(false);
+      myFrame = new JFrame("RPG Client");
 
       //holds the player list
       JPanel jpPlayerList = new JPanel(new GridLayout(0,1));
@@ -57,7 +54,7 @@ public class GameClient extends JFrame
       for(JLabel a : playerNames) { jpPlayerList.add(a); }
 
       //holds the fight area
-      jpFightArea = new JPanel(new FlowLayout());
+      JPanel jpFightArea = new JPanel(new FlowLayout());
       jpFightArea.setBorder(BorderFactory.createLineBorder(Color.black,5, false));  //color, thickness of border, rounded edges
 
          //panel to hold the boss
@@ -118,13 +115,14 @@ public class GameClient extends JFrame
 
       jpBottom.add(jpBottomRight);
 
-      add(jpFightArea, BorderLayout.CENTER);
-      add(jpPlayerList, BorderLayout.EAST);
-      add(jpBottom, BorderLayout.SOUTH);
+      myFrame.add(jpFightArea, BorderLayout.CENTER);
+      myFrame.add(jpPlayerList, BorderLayout.EAST);
+      myFrame.add(jpBottom, BorderLayout.SOUTH);
 
-      setDefaultCloseOperation(EXIT_ON_CLOSE);
-      setLocationRelativeTo(null);
-      setVisible(true);
+      myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+      myFrame.setLocationRelativeTo(null);
+      myFrame.pack();
+      myFrame.setVisible(true);
       jtfSendMessage.requestFocus();
 
       connectToServer();
@@ -132,7 +130,6 @@ public class GameClient extends JFrame
       Thread inputThread = new Thread(new ReceiveObjects());
       inputThread.start();
 
-      updateGUI();
       setButtonsEnabled(false);
    }//end constructor
 
@@ -149,30 +146,13 @@ public class GameClient extends JFrame
 
          oos.writeObject(myFighter);
          oos.flush();
+         System.out.println("wrote out myFighter");
 
          myTurnNumber = ois.readInt();
          System.out.println("Turn Number: " + myTurnNumber);
-
-         clientList = (Vector<Fighter>)ois.readObject();
       }
       catch(IOException ioe) { ioe.printStackTrace(); }
-      catch(ClassNotFoundException cnfe){ cnfe.printStackTrace(); }
-   }
-
-   private void updateGUI()
-   {
-      for(int i=1; i < clientList.size(); i++)
-      {
-         playerNames[i].setHorizontalAlignment(SwingConstants.CENTER);
-         playerNames[i].setText("<html>" + clientList.get(i).getName() + "<br> Class - " + clientList.get(i).getClassName() + "</html>");
-      }
-      for(int i=0; i < clientList.size(); i++)
-      {
-         fighterHealths[i].setText("Health: " + clientList.get(i).getCurrentHealth() + "/" + clientList.get(i).getBaseHealth());
-         fighterPictures[i].setIcon(clientList.get(i).getIcon());
-      }
-      repaint();
-      pack();
+      //catch(ClassNotFoundException cnfe){ cnfe.printStackTrace(); }
    }
 
    private void setButtonsEnabled(boolean b)
@@ -183,7 +163,7 @@ public class GameClient extends JFrame
       }
    }
 
-   public class SendButtonListener implements ActionListener
+   class SendButtonListener implements ActionListener
    {
       public void actionPerformed(ActionEvent ae)
       {
@@ -200,7 +180,7 @@ public class GameClient extends JFrame
       }
    }//end inner class 1 (action listeners)
 
-   public class AbilityListener implements ActionListener
+   class AbilityListener implements ActionListener
    {
       public void actionPerformed(ActionEvent ae)
       {
@@ -227,11 +207,12 @@ public class GameClient extends JFrame
 
    //tweaked this so we can use one stream for everything and just check which type of data came in I know we previously
    //were planning to use multiple streams but I was running into issues with creating more than one I/O stream per socket
-   public class ReceiveObjects implements Runnable
+   class ReceiveObjects implements Runnable
    {
       public void run()
       {
          Object obj;
+         Vector<Fighter> clientList = new Vector<Fighter>(4);
          try
          {
             while(((obj = ois.readObject()) != null))
@@ -240,13 +221,13 @@ public class GameClient extends JFrame
                {
                   jtaMessages.append(obj +"\n");
                }
-               if(obj instanceof Vector)
+               else if(obj instanceof Vector)
                {
-                  clientList = (Vector)obj;
+                  clientList = (Vector<Fighter>)obj;
                   System.out.println("ClientList: " + clientList.size());
-                  updateGUI();
+                  updateGUI(clientList);
                }
-               if(obj instanceof Integer)
+               else if(obj instanceof Integer)
                {
                   System.out.println("got the turn");
                   if( obj == myTurnNumber )
@@ -255,11 +236,27 @@ public class GameClient extends JFrame
                      setButtonsEnabled(true);
                   }
                }
-
             }
          }
          catch(IOException ioe) { ioe.printStackTrace(); }
          catch(ClassNotFoundException cnfe){ cnfe.printStackTrace(); }
+      }
+
+      private void updateGUI(Vector<Fighter> clientList)
+      {
+         System.out.println("list size:"+clientList.size());
+         for(int i=1; i < clientList.size(); i++)
+         {
+            playerNames[i].setHorizontalAlignment(SwingConstants.CENTER);
+            playerNames[i].setText("<html>" + clientList.get(i).getName() + "<br> Class - " + clientList.get(i).getClassName() + "</html>");
+         }
+         for(int i=0; i < clientList.size(); i++)
+         {
+            fighterHealths[i].setText("Health: " + clientList.get(i).getCurrentHealth() + "/" + clientList.get(i).getBaseHealth());
+            fighterPictures[i].setIcon(clientList.get(i).getIcon());
+         }
+         myFrame.revalidate();
+         myFrame.pack();
       }
    }//end inner class 3 (threadz)
 }//end class
