@@ -8,14 +8,17 @@ public class GameServer
    Integer myTurnNumber = 0;
    Integer clientTurnNumber = 1;
    int numPlayers;
+   Random rngAbility = new Random();
 
+   public Fighter[] bossList = {new Diablo(), new DemonKing(), new Saitama()};
    //holds all of the object writers to be used
    private Vector<ObjectOutputStream> clientWriteList = new Vector<>();
 
    //holds all of the fighter objects(boss/4 players)
    private Vector<Fighter> clientList = new Vector<Fighter>();
 
-   protected Fighter bossMan = new Diablo();
+   protected Fighter bossMan = new Fighter();
+
 
    public static void main(String[] args)
    {
@@ -26,7 +29,9 @@ public class GameServer
    {
       ServerSocket server = null;
 
-      clientList.add(bossMan);
+      int bossNum = rngAbility.nextInt(2);
+      clientList.add(bossList[bossNum]);
+
 
       try
       {
@@ -147,9 +152,33 @@ public class GameServer
       private void doBossStuff()
       {
          //boss AI goes here
+         int abilityNum = rngAbility.nextInt(2);
+         if(abilityNum == 0){
+
+            int clientNum = rngAbility.nextInt(2)+1;
+            clientList.get(clientNum).changeCurrentHealth(-bossMan.ability1());
+
+         }
+         if(abilityNum == 1){
+
+            bossMan.ability2();
+            int clientNum = rngAbility.nextInt(2)+1;
+            clientList.get(clientNum).changeCurrentHealth(+bossMan.ability2());
+
+         }
+         if(abilityNum == 2){
+
+            //int clientNum = rngAbility.nextInt(2)+1;
+            clientList.get(1).changeCurrentHealth(-bossMan.ability3());
+            clientList.get(2).changeCurrentHealth(-bossMan.ability3());
+            clientList.get(3).changeCurrentHealth(-bossMan.ability3());
+
+         }
+
          //once the boss is done, then broadcast
          //broadcastFighterListToClients();
          //broadcastTurnNumberToClients();
+
       }
 
       public void broadcastChatToClients(String message)
