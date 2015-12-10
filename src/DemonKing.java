@@ -5,13 +5,28 @@ public class DemonKing extends Fighter
 {
     private final String CLASS_PATH = "/gamedata/bosses/boss[@id = '1']";
     private GameDataParser myParser;
+    private int ability1, ability2, ability3;
 
     public DemonKing()
     {
         myParser = new GameDataParser(CLASS_PATH);
         setBaseHealth(myParser.getBaseHealth());
+
+        ability1 = myParser.getAbilityDamage(1);
+        ability2 = myParser.getAbilityDamage(2);
+        ability3 = myParser.getAbilityDamage(3);
     }
 
     public String getName() { return "DimKing"; }
     protected ImageIcon getIcon() { return (myParser.getIcon()); }
+
+    protected int ability1() { return ability1; }
+
+    protected int ability2() {
+        return ability2;
+    }
+
+    protected int ability3() {
+        return ability3;
+    }
 }
