@@ -120,15 +120,22 @@
       <Defence>10</Defence>
       <icon>boss1.png</icon>
       <abilities>
-        <ability caston="defence">
+        <ability caston="attack">
           <abilitynumber>0</abilitynumber>
+          <abilityname>Shooting</abilityname>
+          <abilitydescription>...</abilitydescription>
+          <value>40</value>
+          <Defence>0</Defence>
+        </ability>
+        <ability caston="defence">
+          <abilitynumber>1</abilitynumber>
           <abilityname>Super Berzerker Dash</abilityname>
           <abilitydescription>A strong dashing technique in which the boss knocks over anyone in his way with their brute force.</abilitydescription>
           <value>40</value>
           <Defence>30</Defence>
         </ability>
         <ability caston="healing">
-          <abilitynumber>1</abilitynumber>
+          <abilitynumber>2</abilitynumber>
           <abilityname>Gigantic Meteor</abilityname>
           <abilitydescription>This ability shoots a giant energy blast the size of a meteor! But not everything is as it looks.</abilitydescription>
           <value>24</value>
@@ -138,7 +145,7 @@
     </boss>
     <boss>
       <bossid>1</bossid>
-      <name>Saitama the Destroyer</name>
+      <name>Demon King Piccolo</name>
       <power>100</power>
       <health>70</health>
       <Defence>0</Defence>
@@ -157,12 +164,19 @@
           <abilitydescription>A singular shot with the power to cripple enemies in just one shot.</abilitydescription>
           <damagevalue>25</damagevalue>
           <Defence>0</Defence>
-        </ability>        
+        </ability>
+        <ability caston="healing">
+          <abilitynumber>2</abilitynumber>
+          <abilityname>Gigantic Meteor</abilityname>
+          <abilitydescription>...</abilitydescription>
+          <value>24</value>
+          <Defence>0</Defence>
+        </ability>
       </abilities>
     </boss>
         <boss>
       <bossid>2</bossid>
-      <name>Demon King Piccolo</name>
+      <name>Saitama the Destroyer</name>
       <power>70</power>
       <health>90</health>
       <Defence>5</Defence>
@@ -175,8 +189,15 @@
           <damagevalue>30</damagevalue>
           <Defence>-10</Defence>
         </ability>
-        <ability caston="healing">
+        <ability caston="attack">
           <abilitynumber>1</abilitynumber>
+          <abilityname>Death Beam</abilityname>
+          <abilitydescription>A singular shot with the power to cripple enemies in just one shot.</abilitydescription>
+          <damagevalue>25</damagevalue>
+          <Defence>0</Defence>
+        </ability>
+        <ability caston="healing">
+          <abilitynumber>2</abilitynumber>
           <abilityname>Wolf Fang Fist</abilityname>
           <abilitydescription>A fast flurry of palms strikes and punches is delivered easily scaring weaker opponents off.</abilitydescription>
           <value>25</value>
