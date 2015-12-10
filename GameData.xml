@@ -19,42 +19,12 @@
           </abilitydescription>
           <value>25</value>
         </ability>
-        <ability caston="enemy">
-          <abilityname>Wizardly Strike</abilityname>
-          <abilitydescription>
-            The wizard strikes their opponent with such force that can only be described as magical.
-          </abilitydescription>
-          <value>16</value>
-        </ability>
-        <ability caston="friendly">
-          <abilityname>Healing Surge</abilityname>
-          <abilitydescription>
-            This ability allows the Wizard to heal one of their teammates by a decent amount of health.
-          </abilitydescription>
-          <value>25</value>
-        </ability>
       </abilities>
     </player>
     <player class = 'Warrior'>
       <health>10</health>
       <icon>warrior.png</icon>
       <abilities>
-        <ability caston="enemy">
-          <abilityname>Super Dragon Fist!</abilityname>
-          <abilitydescription>
-            A deadly attack that only a warrior of the Saiyan race can use. The force they attack their opponent
-            with is similar to that of a Dragon's.
-          </abilitydescription>
-          <value>16</value>
-        </ability>
-        <ability caston="enemy">
-          <abilityname>Kaio-ken!</abilityname>
-          <abilitydescription>
-            Only available to those who have studied under King Kai, Kaio-ken raises the user's damage by 2 for 1 turn
-            but also hurts the user slightly.
-          </abilitydescription>
-          <value>10</value>
-        </ability>
         <ability caston="enemy">
           <abilityname>Super Dragon Fist!</abilityname>
           <abilitydescription>
@@ -93,22 +63,6 @@
           </abilitydescription>
           <value>20</value>
         </ability>
-        <ability caston="enemy">
-          <abilityname>Seele Schneider</abilityname>
-          <abilitydescription>
-            A very strong attack from the Quicy clan, it attacks a single enemy causing massive damage.
-          </abilitydescription>
-          <value>60</value>
-          <healingvalue>0</healingvalue>
-        </ability>
-        <ability caston="friendly">
-          <abilityname>Rasenshuriken</abilityname>
-          <abilitydescription>
-            A high level technique used by those who can channel their chakra into one single point and release that
-            chakra on their opponent.
-          </abilitydescription>
-          <value>20</value>
-        </ability>
       </abilities>
     </player>
   </players>  
@@ -127,14 +81,14 @@
           <value>40</value>
           <Defence>0</Defence>
         </ability>
-        <ability caston="defence">
+        <ability caston="healing">
           <abilitynumber>1</abilitynumber>
           <abilityname>Super Berzerker Dash</abilityname>
           <abilitydescription>A strong dashing technique in which the boss knocks over anyone in his way with their brute force.</abilitydescription>
-          <value>40</value>
+          <value></value>
           <Defence>30</Defence>
         </ability>
-        <ability caston="healing">
+        <ability caston="attack">
           <abilitynumber>2</abilitynumber>
           <abilityname>Gigantic Meteor</abilityname>
           <abilitydescription>This ability shoots a giant energy blast the size of a meteor! But not everything is as it looks.</abilitydescription>
@@ -151,25 +105,25 @@
       <Defence>0</Defence>
       <icon>../images/bosses/Class Cannon.png</icon>
       <abilities>
-        <ability caston="power">
+        <ability caston="attack">
           <abilitynumber>0</abilitynumber>
           <abilityname>Sphere of Destruction</abilityname>
           <abilitydescription>A giant sphere of energy is launched at the players having and AOE effect and extreme damage.</abilitydescription>
-          <damagevalue>60</damagevalue>
+          <damagevalue>90</damagevalue>
           <Defence>-20</Defence>
         </ability>
-        <ability caston="attack">
+        <ability caston="healing">
           <abilitynumber>1</abilitynumber>
           <abilityname>Death Beam</abilityname>
           <abilitydescription>A singular shot with the power to cripple enemies in just one shot.</abilitydescription>
-          <damagevalue>25</damagevalue>
-          <Defence>0</Defence>
+          <value></value>
+          <Defence>18</Defence>
         </ability>
-        <ability caston="healing">
+        <ability caston="attack">
           <abilitynumber>2</abilitynumber>
           <abilityname>Gigantic Meteor</abilityname>
           <abilitydescription>...</abilitydescription>
-          <value>24</value>
+          <value>40</value>
           <Defence>0</Defence>
         </ability>
       </abilities>
@@ -189,14 +143,14 @@
           <damagevalue>30</damagevalue>
           <Defence>-10</Defence>
         </ability>
-        <ability caston="attack">
+        <ability caston="healing">
           <abilitynumber>1</abilitynumber>
           <abilityname>Death Beam</abilityname>
           <abilitydescription>A singular shot with the power to cripple enemies in just one shot.</abilitydescription>
-          <damagevalue>25</damagevalue>
-          <Defence>0</Defence>
+          <value></value>
+          <Defence>30</Defence>
         </ability>
-        <ability caston="healing">
+        <ability caston="attack">
           <abilitynumber>2</abilitynumber>
           <abilityname>Wolf Fang Fist</abilityname>
           <abilitydescription>A fast flurry of palms strikes and punches is delivered easily scaring weaker opponents off.</abilitydescription>
