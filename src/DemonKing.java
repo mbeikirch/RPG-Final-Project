@@ -1,12 +1,12 @@
 import javax.swing.*;
 
-public class DimKing extends Fighter
+public class DemonKing extends Fighter
 
 {
     private final String CLASS_PATH = "/gamedata/bosses/boss[@id = '1']";
     private GameDataParser myParser;
 
-    public DimKing()
+    public DemonKing()
     {
         myParser = new GameDataParser(CLASS_PATH);
         setBaseHealth(myParser.getBaseHealth());
