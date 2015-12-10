@@ -1,9 +1,6 @@
 import java.io.*;
 import java.awt.*;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketTimeoutException;
+import java.net.*;
 import java.util.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -100,10 +97,17 @@ public class MainMenu extends JFrame implements ActionListener{
             }
             else
             {
+               Socket s = new Socket();
+               s.connect(new InetSocketAddress(ipAddr, Integer.parseInt(port)),2000);
+               s.close();
+
+               this.dispose();
                new GameClient(ipAddr, Integer.parseInt(port), myFighter);
             }
          }
-         catch(NullPointerException npe){ JOptionPane.showMessageDialog(jbJoin, "You must select a character."); }
+         catch(ConnectException ce){ JOptionPane.showMessageDialog(jbJoin, "Server doesn't appear to be running."); }
+         catch(IOException ioe){ ioe.printStackTrace(); }
+         catch(Exception e){ }
       }
       else if(choice == jbChooseCharacter)
       {

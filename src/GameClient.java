@@ -29,6 +29,8 @@ public class GameClient extends JFrame
 
    private JButton[] abilities = {jbAbility1, jbAbility2, jbAbility3, jbAbility4};
 
+   private JPanel jpFightArea;
+
    private Vector<Fighter> clientList = new Vector<Fighter>();
 
    ObjectOutputStream oos;
@@ -45,12 +47,6 @@ public class GameClient extends JFrame
       ipAddr = _ipAddr;
       port = _port;
 
-      //test list of players just for testing
-      //clientList.add(new Diablo());
-      //clientList.add(new Warrior("SDKFJ"));
-      //lientList.add(new Wizard("ASD"));
-      //clientList.add(new Rogue("BLA"));
-
       setTitle("RPG Client");
       setResizable(false);
 
@@ -60,8 +56,8 @@ public class GameClient extends JFrame
       //add all of the jlabels to the connected players list
       for(JLabel a : playerNames) { jpPlayerList.add(a); }
 
-      //holds the fight area. For now just placeholder images for each player and the boss
-      JPanel jpFightArea = new JPanel(new FlowLayout());
+      //holds the fight area
+      jpFightArea = new JPanel(new FlowLayout());
       jpFightArea.setBorder(BorderFactory.createLineBorder(Color.black,5, false));  //color, thickness of border, rounded edges
 
          //panel to hold the boss
@@ -154,8 +150,10 @@ public class GameClient extends JFrame
          oos.writeObject(myFighter);
          oos.flush();
 
-         clientList = (Vector)ois.readObject();
-         //System.out.println(clientList.get(1).getClassName());
+         myTurnNumber = ois.readInt();
+         System.out.println("Turn Number: " + myTurnNumber);
+
+         clientList = (Vector<Fighter>)ois.readObject();
       }
       catch(IOException ioe) { ioe.printStackTrace(); }
       catch(ClassNotFoundException cnfe){ cnfe.printStackTrace(); }
@@ -173,6 +171,7 @@ public class GameClient extends JFrame
          fighterHealths[i].setText("Health: " + clientList.get(i).getCurrentHealth() + "/" + clientList.get(i).getBaseHealth());
          fighterPictures[i].setIcon(clientList.get(i).getIcon());
       }
+      repaint();
       pack();
    }
 
@@ -193,7 +192,6 @@ public class GameClient extends JFrame
             String message = myFighter.getName() + ": " + jtfSendMessage.getText();
             oos.writeObject(message);
             oos.flush();
-            setButtonsEnabled(true);
          }
          catch(IOException ioe){ ioe.printStackTrace(); }
 
@@ -240,19 +238,21 @@ public class GameClient extends JFrame
             {
                if(obj instanceof String)
                {
-                  jtaMessages.append((String)obj +"\n");
+                  jtaMessages.append(obj +"\n");
                }
                if(obj instanceof Vector)
                {
                   clientList = (Vector)obj;
-                  System.out.println("got a vector back");
-                  System.out.println(clientList.get(0).getCurrentHealth());
+                  System.out.println("ClientList: " + clientList.size());
+                  updateGUI();
                }
                if(obj instanceof Integer)
                {
-                  if( (Integer)obj == myTurnNumber )
+                  System.out.println("got the turn");
+                  if( obj == myTurnNumber )
                   {
-                     System.out.println("my turn now bitches");
+                     System.out.println("my turn");
+                     setButtonsEnabled(true);
                   }
                }
 

@@ -13,7 +13,7 @@ public class GameServer
    private Vector<ObjectOutputStream> clientWriteList = new Vector<>();
 
    //holds all of the fighter objects(boss/4 players)
-   private Vector<Fighter> clientList = new Vector<>();
+   private Vector<Fighter> clientList = new Vector<Fighter>();
 
    protected Fighter bossMan = new Diablo();
 
@@ -38,7 +38,7 @@ public class GameServer
       catch(IOException ioe){ ioe.printStackTrace(); }
 
       //allows up to three players to connect
-      while(numPlayers <= 3)
+      while(numPlayers < 3)
       {
          try
          {
@@ -46,11 +46,17 @@ public class GameServer
             
             Thread ch = new ClientHandler(client);
             ch.start();
+            numPlayers++;
+            System.out.println("Players: " + numPlayers);
          }
          catch(IOException ioe){ ioe.printStackTrace(); }
-
-         numPlayers++;
       }
+      //close off server once three people have connected
+      try
+      {
+         server.close();
+      }
+      catch(IOException ioe){ }
    }
    
    class ClientHandler extends Thread
@@ -65,16 +71,31 @@ public class GameServer
 
          try
          {
+            //add client to the object writer vector
+            clientWriter = new ObjectOutputStream(new DataOutputStream(cs.getOutputStream()));
+            clientWriteList.add(clientWriter);
+
             //add an object reader for each client as they connect
             clientBuffer = new ObjectInputStream(new DataInputStream(cs.getInputStream()));
-            clientWriter = new ObjectOutputStream(new DataOutputStream(cs.getOutputStream()));
-
-            //add client to the object writer vector
-            clientWriteList.add(clientWriter);
 
             //add the entire fighter object to the clientList vector
             clientList.add((Fighter)clientBuffer.readObject());
-            broadcastFighterListToClients();
+            System.out.println("Vector Size: " + clientList.size());
+            clientWriter.writeInt(clientTurnNumber++);
+
+            broadcastClientListToClients();
+
+            if(numPlayers == 3)
+            {
+               broadcastClientListToClients();
+               broadcastTurnNumberToClients();
+            }
+         }
+         catch(EOFException | SocketException e)
+         {
+            System.out.println("got a tester");
+            numPlayers--;
+            return;
          }
          catch(IOException ioe){ ioe.printStackTrace(); }
          catch(ClassNotFoundException cnfe){ cnfe.printStackTrace(); }
@@ -84,7 +105,7 @@ public class GameServer
       public void run()
       {
          Object obj;
-         
+
          try
          {
             while((obj = clientBuffer.readObject()) != null)
@@ -100,8 +121,8 @@ public class GameServer
                {
                   System.out.println("got a vector");
 
-                  clientList = (Vector)obj;
-                  broadcastFighterListToClients();
+                  clientList = (Vector<Fighter>)obj;
+                  broadcastClientListToClients();
 
                   //if all the players have taken their turn(player 3 = turn 3) reset the turn counter to 0 and let the boss do stuff
                   if(clientTurnNumber == 3)
@@ -117,8 +138,10 @@ public class GameServer
                }
             }
          }
+         catch(SocketException se){ System.out.println("Client Disconnected"); }
          catch(IOException ioe) { ioe.printStackTrace(); }
          catch(ClassNotFoundException cnfe){ cnfe.printStackTrace(); }
+         catch(NullPointerException npe){ }
       }
 
       private void doBossStuff()
@@ -143,7 +166,7 @@ public class GameServer
          }
       }
 
-      public void broadcastFighterListToClients()
+      public void broadcastClientListToClients()
       {
          //print out the updated client list to each client
          for(ObjectOutputStream oos : clientWriteList)
@@ -153,7 +176,7 @@ public class GameServer
                oos.writeObject(clientList);
                oos.flush();
             }
-            catch(IOException ioe){ ioe.printStackTrace(); }
+            catch(IOException ioe){ }
          }
       }
 
