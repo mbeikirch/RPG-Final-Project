@@ -85,7 +85,7 @@
           <abilitynumber>1</abilitynumber>
           <abilityname>Super Berzerker Dash</abilityname>
           <abilitydescription>A strong dashing technique in which the boss knocks over anyone in his way with their brute force.</abilitydescription>
-          <value></value>
+          <value>10</value>
           <Defence>30</Defence>
         </ability>
         <ability caston="attack">
@@ -97,8 +97,7 @@
         </ability>        
       </abilities>
     </boss>
-    <boss>
-      <bossid>1</bossid>
+    <boss id = '1'>
       <name>Demon King Piccolo</name>
       <power>100</power>
       <health>70</health>
@@ -109,14 +108,14 @@
           <abilitynumber>0</abilitynumber>
           <abilityname>Sphere of Destruction</abilityname>
           <abilitydescription>A giant sphere of energy is launched at the players having and AOE effect and extreme damage.</abilitydescription>
-          <damagevalue>90</damagevalue>
+          <value>90</value>
           <Defence>-20</Defence>
         </ability>
         <ability caston="healing">
           <abilitynumber>1</abilitynumber>
           <abilityname>Death Beam</abilityname>
           <abilitydescription>A singular shot with the power to cripple enemies in just one shot.</abilitydescription>
-          <value></value>
+          <value>10</value>
           <Defence>18</Defence>
         </ability>
         <ability caston="attack">
@@ -128,8 +127,7 @@
         </ability>
       </abilities>
     </boss>
-        <boss>
-      <bossid>2</bossid>
+    <boss id = '2'>
       <name>Saitama the Destroyer</name>
       <power>70</power>
       <health>90</health>
@@ -140,14 +138,14 @@
           <abilitynumber>0</abilitynumber>
           <abilityname>Galick Gun</abilityname>
           <abilitydescription>This singular energy beam has the right balance of speed and power and can be used a multitude of time.</abilitydescription>
-          <damagevalue>30</damagevalue>
+          <value>30</value>
           <Defence>-10</Defence>
         </ability>
         <ability caston="healing">
           <abilitynumber>1</abilitynumber>
           <abilityname>Death Beam</abilityname>
           <abilitydescription>A singular shot with the power to cripple enemies in just one shot.</abilitydescription>
-          <value></value>
+          <value>10</value>
           <Defence>30</Defence>
         </ability>
         <ability caston="attack">
