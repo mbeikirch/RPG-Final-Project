@@ -79,7 +79,6 @@ public class GameDataParser implements Serializable
       catch(Exception ex){ ex.printStackTrace(); }
    }
 
-   //TODO: 12/4/2015 getBaseHealth(); getAbility(); getAbilityDescription();
    public int getAbilityDamage(int num)
    {
       try

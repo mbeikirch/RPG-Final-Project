@@ -10,10 +10,14 @@ public class GameClient extends JFrame
    //Attributes
    private JTextArea jtaMessages;
    private JTextField jtfSendMessage;
+
    private String ipAddr = "localhost";
+
    private int port = 4444;
    private Fighter myFighter;
-   Integer clientTurnNumber = new Integer(1);
+
+   Integer myTurnNumber;
+
    private Socket client;
 
    //arrays to hold JLabels for all of the class info(health/names/pictures)
@@ -34,10 +38,6 @@ public class GameClient extends JFrame
    ObjectOutputStream oos;
    ObjectInputStream ois;
 
-   public static void main(String[] args)
-   {
-      new GameClient("localhost", 4444, new Warrior("TESTING"));
-   }
    //Constructor
    public GameClient(String _ipAddr, int _port, Fighter _myFighter)
    {
@@ -45,16 +45,19 @@ public class GameClient extends JFrame
       ipAddr = _ipAddr;
       port = _port;
 
-      clientList.add(new Diablo());
-      clientList.add(new Warrior("SDKFJ"));
-      clientList.add(new Wizard("ASD"));
-      clientList.add(new Rogue("BLA"));
+      //test list of players just for testing
+      //clientList.add(new Diablo());
+      //clientList.add(new Warrior("SDKFJ"));
+      //lientList.add(new Wizard("ASD"));
+      //clientList.add(new Rogue("BLA"));
 
       setTitle("RPG Client");
       setResizable(false);
 
       //holds the player list
       JPanel jpPlayerList = new JPanel(new GridLayout(0,1));
+
+      //add all of the jlabels to the connected players list
       for(JLabel a : playerNames) { jpPlayerList.add(a); }
 
       //holds the fight area. For now just placeholder images for each player and the boss
@@ -97,6 +100,7 @@ public class GameClient extends JFrame
          //making the action listener for the abilities to use
          AbilityListener abilityCaster = new AbilityListener();
 
+         //loop to set all of the button names/tooltips/add an action listener to them
          for(int i=0; i < abilities.length; i++)
          {
             abilities[i].setText(myFighter.getAbilityName(i+1));
@@ -129,15 +133,6 @@ public class GameClient extends JFrame
 
       connectToServer();
 
-      try
-      {
-         oos.writeObject(myFighter);
-         oos.flush();
-
-         // TODO: 12/3/2015 Receive back the vector with yourself added 
-      }
-      catch(IOException ioe){ ioe.printStackTrace(); }
-
       Thread inputThread = new Thread(new ReceiveObjects());
       inputThread.start();
 
@@ -155,8 +150,15 @@ public class GameClient extends JFrame
 
          oos = new ObjectOutputStream(new DataOutputStream(client.getOutputStream()));
          ois = new ObjectInputStream(new DataInputStream(client.getInputStream()));
+
+         oos.writeObject(myFighter);
+         oos.flush();
+
+         clientList = (Vector)ois.readObject();
+         //System.out.println(clientList.get(1).getClassName());
       }
       catch(IOException ioe) { ioe.printStackTrace(); }
+      catch(ClassNotFoundException cnfe){ cnfe.printStackTrace(); }
    }
 
    private void updateGUI()
@@ -181,12 +183,6 @@ public class GameClient extends JFrame
          myButton.setEnabled(b);
       }
    }
-
-   private int getClientTurn()
-   {
-      return clientTurnNumber;
-   }
-
 
    public class SendButtonListener implements ActionListener
    {
@@ -222,14 +218,7 @@ public class GameClient extends JFrame
          }
          else if(choice == jbAbility3)
          {
-            jtaMessages.append(myFighter.getName() + "knows that he is turn number" + getClientTurn());
-            try {
-
-               oos.writeObject(clientTurnNumber);
-               oos.flush();
-
-            }
-            catch(IOException ioe){ ioe.printStackTrace(); }
+            System.out.println(myTurnNumber);
          }
          else if(choice == jbAbility4)
          {
@@ -261,10 +250,11 @@ public class GameClient extends JFrame
                }
                if(obj instanceof Integer)
                {
-                  System.out.println(myFighter.getName()+ "'s turn has just ended");
-                  clientTurnNumber++;
+                  if( (Integer)obj == myTurnNumber )
+                  {
+                     System.out.println("my turn now bitches");
+                  }
                }
-
             }
          }
          catch(IOException ioe) { ioe.printStackTrace(); }

@@ -18,6 +18,7 @@ public class Warrior extends Fighter implements Serializable {
    }
 
    protected String getClassName() { return "Warrior"; }
+
    protected String getName() {
       return name;
    }

@@ -5,10 +5,9 @@ import java.util.*;
 public class GameServer
 {
    final int PORT = 4444;
-   final int serverTurnNumber = 0;
-   int turn = 1;
-   Integer clientTurnNumber = new Integer(1);
-   static boolean emptyGame = true;
+   Integer myTurnNumber = 0;
+   Integer clientTurnNumber = 1;
+   int numPlayers;
 
    //holds all of the object writers to be used
    private Vector<ObjectOutputStream> clientWriteList = new Vector<>();
@@ -37,8 +36,9 @@ public class GameServer
       catch(BindException be){ System.out.println("Server already running on this port..."); }
       catch(UnknownHostException uhe){ uhe.printStackTrace(); } 
       catch(IOException ioe){ ioe.printStackTrace(); }
-      
-      while(true)
+
+      //allows up to three players to connect
+      while(numPlayers <= 3)
       {
          try
          {
@@ -48,6 +48,8 @@ public class GameServer
             ch.start();
          }
          catch(IOException ioe){ ioe.printStackTrace(); }
+
+         numPlayers++;
       }
    }
    
@@ -55,35 +57,24 @@ public class GameServer
    {
       Socket cs;
       ObjectInputStream clientBuffer;
+      ObjectOutputStream clientWriter;
       
       public ClientHandler(Socket _cs)
       {
          cs = _cs;
-         
-         try {
-            if(emptyGame == false){
-               System.out.println("Game is full can not accept anymore connections!!");
-            }
-            else if (emptyGame) {
-               //add an object reader for each client as they connect
-               clientBuffer = new ObjectInputStream(new DataInputStream(cs.getInputStream()));
 
-               //add client to the object writer vector
-               clientWriteList.add(new ObjectOutputStream(new DataOutputStream(cs.getOutputStream())));
+         try
+         {
+            //add an object reader for each client as they connect
+            clientBuffer = new ObjectInputStream(new DataInputStream(cs.getInputStream()));
+            clientWriter = new ObjectOutputStream(new DataOutputStream(cs.getOutputStream()));
 
-               //add the entire fighter object to the clientList vector
-               clientList.add((Fighter) clientBuffer.readObject());
+            //add client to the object writer vector
+            clientWriteList.add(clientWriter);
 
-               System.out.println(clientList.get(1).getClass());
-               System.out.println(clientList.get(1).getName());
-               System.out.println(clientList.get(0).getClass());
-               System.out.println(clientList.get(0).getCurrentHealth());
-
-               if(turn == 3){
-                  emptyGame = false;
-               }
-            }
-
+            //add the entire fighter object to the clientList vector
+            clientList.add((Fighter)clientBuffer.readObject());
+            broadcastFighterListToClients();
          }
          catch(IOException ioe){ ioe.printStackTrace(); }
          catch(ClassNotFoundException cnfe){ cnfe.printStackTrace(); }
@@ -100,11 +91,11 @@ public class GameServer
             {
                if(obj instanceof String)
                {
-                  broadcastChatToClients((String)obj);
-
                   System.out.println("got a string");
+                  broadcastChatToClients((String)obj);
                }
-
+               //when a vector is received, update the server's copy of the vector and broadcast it out
+               //then, increment the turn number and broadcast that out
                if(obj instanceof Vector)
                {
                   System.out.println("got a vector");
@@ -112,12 +103,17 @@ public class GameServer
                   clientList = (Vector)obj;
                   broadcastFighterListToClients();
 
-                  System.out.println(clientList.get(0).getCurrentHealth());
-               }
-               if(obj instanceof Integer) {
-                     System.out.println("turn number increased");
-                     broadcastTurnNumberToClients((Integer) clientTurnNumber);
-
+                  //if all the players have taken their turn(player 3 = turn 3) reset the turn counter to 0 and let the boss do stuff
+                  if(clientTurnNumber == 3)
+                  {
+                     clientTurnNumber = 0;
+                     doBossStuff();
+                  }
+                  else
+                  {
+                     clientTurnNumber++;
+                     broadcastTurnNumberToClients();
+                  }
                }
             }
          }
@@ -125,6 +121,13 @@ public class GameServer
          catch(ClassNotFoundException cnfe){ cnfe.printStackTrace(); }
       }
 
+      private void doBossStuff()
+      {
+         //boss AI goes here
+         //once the boss is done, then broadcast
+         //broadcastFighterListToClients();
+         //broadcastTurnNumberToClients();
+      }
 
       public void broadcastChatToClients(String message)
       {
@@ -152,19 +155,19 @@ public class GameServer
             }
             catch(IOException ioe){ ioe.printStackTrace(); }
          }
-      }//End broadcastFighter to client method
+      }
 
-      public void broadcastTurnNumberToClients(Integer turnNum)
+      public void broadcastTurnNumberToClients()
       {
          for(ObjectOutputStream oos : clientWriteList)
-         try
          {
+            try
             {
-               oos.writeObject(turnNum);
+               oos.writeObject(clientTurnNumber);
                oos.flush();
             }
+            catch(IOException ioe){ ioe.printStackTrace(); }
          }
-         catch(IOException ioe){ ioe.printStackTrace(); }
-         }
+      }
    }//End class Client Handler
 }//End class file (GameServer)
