@@ -7,16 +7,16 @@ public class GameServer implements Serializable
    final int PORT = 4444;
    Integer myTurnNumber = 0;
    Integer clientTurnNumber = 1;
-   int numPlayers;
+   int numPlayers = 1;
    Random rng = new Random();
 
    //holds all of the object writers to be used
    private Vector<ObjectOutputStream> clientWriteList = new Vector<>();
 
    //holds all of the fighter objects(boss/4 players)
-   private Vector<Fighter> clientList = new Vector<Fighter>();
+   public Vector<Fighter> clientList = new Vector<Fighter>();
 
-   protected Fighter bossMan;
+   protected Fighter bossMan = new Diablo();
 
    public static void main(String[] args)
    {
@@ -29,7 +29,7 @@ public class GameServer implements Serializable
 
       Fighter[] bossList = {new Diablo(), new DemonKing(), new Saitama()};
 
-      bossMan = bossList[rng.nextInt(3)];
+      //bossMan = bossList[rng.nextInt(3)];
       clientList.add(bossMan);
 
       System.out.println(bossMan.getName());
@@ -87,11 +87,10 @@ public class GameServer implements Serializable
             //add the entire fighter object to the clientList vector
             clientList.add((Fighter)clientBuffer.readObject());
             System.out.println("Vector Size: " + clientList.size());
-            clientWriter.writeInt(clientTurnNumber++);
-
+            clientWriter.writeInt(clientTurnNumber);
             broadcastClientListToClients();
 
-            if(numPlayers == 3)
+            if(numPlayers == 1)
             {
                broadcastClientListToClients();
                broadcastTurnNumberToClients();
@@ -101,6 +100,7 @@ public class GameServer implements Serializable
          {
             System.out.println("got a tester");
             numPlayers--;
+            clientWriteList.remove(clientWriteList.size()-1);
             return;
          }
          catch(IOException ioe){ ioe.printStackTrace(); }
@@ -131,7 +131,7 @@ public class GameServer implements Serializable
                   broadcastClientListToClients();
 
                   //if all the players have taken their turn(player 3 = turn 3) reset the turn counter to 0 and let the boss do stuff
-                  if(clientTurnNumber == 3)
+                  if(clientTurnNumber == 1)
                   {
                      clientTurnNumber = 0;
                      doBossStuff();
@@ -153,31 +153,21 @@ public class GameServer implements Serializable
       private void doBossStuff()
       {
          //boss AI goes here
-         int abilityNum = rng.nextInt(3);
+         int abilityNum = rng.nextInt(2);
+
          if(abilityNum == 0)
          {
-            int clientNum = rng.nextInt(2)+1;
-            clientList.get(clientNum).changeCurrentHealth(-bossMan.ability1());
+            clientList.get(1).changeCurrentHealth( - bossMan.ability1());
          }
-         if(abilityNum == 1){
-
-            bossMan.ability2();
-            int clientNum = rng.nextInt(2)+1;
-            clientList.get(clientNum).changeCurrentHealth(+bossMan.ability2());
-
-         }
-         if(abilityNum == 2){
-
-            //int clientNum = rngAbility.nextInt(2)+1;
-            clientList.get(1).changeCurrentHealth(-bossMan.ability3());
-            clientList.get(2).changeCurrentHealth(-bossMan.ability3());
-            clientList.get(3).changeCurrentHealth(-bossMan.ability3());
+         if(abilityNum == 1)
+         {
+            clientList.get(0).changeCurrentHealth(bossMan.ability2());
          }
 
          //once the boss is done, then broadcast
-         //broadcastFighterListToClients();
-         //broadcastTurnNumberToClients();
-
+         broadcastClientListToClients();
+         clientTurnNumber ++;
+         broadcastTurnNumberToClients();
       }
 
       public void broadcastChatToClients(String message)
@@ -204,7 +194,7 @@ public class GameServer implements Serializable
                oos.writeObject(clientList);
                oos.flush();
             }
-            catch(IOException ioe){ }
+            catch(IOException ioe){ ioe.printStackTrace(); }
          }
       }
 

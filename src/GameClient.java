@@ -13,8 +13,9 @@ public class GameClient
    private String ipAddr = "localhost";
    private int port = 4444;
    private Fighter myFighter;
-   Integer myTurnNumber = 1;
+   Integer myTurnNumber;
    private Socket client;
+   Vector<Fighter> clientList;
 
    //arrays to hold JLabels for all of the class info(health/names/pictures)
                                        //boss              //first      //second      //third
@@ -24,10 +25,8 @@ public class GameClient
 
    private JButton jbAbility1 = new JButton();
    private JButton jbAbility2 = new JButton();
-   private JButton jbAbility3 = new JButton();
-   private JButton jbAbility4 = new JButton();
 
-   private JButton[] abilities = {jbAbility1, jbAbility2, jbAbility3, jbAbility4};
+   private JButton[] abilities = {jbAbility1, jbAbility2};
 
    public JFrame myFrame;
 
@@ -184,24 +183,26 @@ public class GameClient
    {
       public void actionPerformed(ActionEvent ae)
       {
-         Object choice = ae.getSource();
+         try
+         {
+            Object choice = ae.getSource();
 
-         if(choice == jbAbility1)
-         {
-            jtaMessages.append(myFighter.getName() + " performed  " + myFighter.getAbilityName(1) + " and dealt " +  myFighter.ability1() + " damage!");
-         }
-         else if(choice == jbAbility2)
-         {
-            jtaMessages.append(myFighter.getName() + " performed " + myFighter.getAbilityName(2) + " and healed for " + myFighter.ability2() + " hp!\n");
-         }
-         else if(choice == jbAbility3)
-         {
-            System.out.println(myTurnNumber);
-         }
-         else if(choice == jbAbility4)
-         {
+            if (choice == jbAbility1)
+            {
+               jtaMessages.append(clientList.get(1).getName() + " attacked " + clientList.get(0).getName() + " for " + myFighter.ability1() + " damage!\n");
+               clientList.get(0).changeCurrentHealth(-myFighter.ability1());
+            }
+            else if (choice == jbAbility2)
+            {
+               jtaMessages.append(myFighter.getName() + " performed " + myFighter.getAbilityName(2) + " and healed for " + myFighter.ability2() + " hp!\n");
+               clientList.get(1).changeCurrentHealth(myFighter.ability1());
+            }
 
+            oos.writeObject(clientList);
+            oos.flush();
+            setButtonsEnabled(false);
          }
+         catch(IOException ioe){ ioe.printStackTrace(); }
       }
    }//end inner class 2 (action listeners)
 
@@ -212,7 +213,6 @@ public class GameClient
       public void run()
       {
          Object obj;
-         Vector<Fighter> clientList = new Vector<Fighter>(4);
          try
          {
             while(((obj = ois.readObject()) != null))
@@ -224,13 +224,12 @@ public class GameClient
                else if(obj instanceof Vector)
                {
                   clientList = (Vector<Fighter>)obj;
-                  System.out.println("ClientList: " + clientList.size());
                   updateGUI(clientList);
                }
                else if(obj instanceof Integer)
                {
                   System.out.println("got the turn");
-                  if( obj == myTurnNumber )
+                  if( ((Integer) obj).intValue() == (myTurnNumber.intValue()) )
                   {
                      System.out.println("my turn");
                      setButtonsEnabled(true);
@@ -244,7 +243,6 @@ public class GameClient
 
       private void updateGUI(Vector<Fighter> clientList)
       {
-         System.out.println("list size:"+clientList.size());
          for(int i=1; i < clientList.size(); i++)
          {
             playerNames[i].setHorizontalAlignment(SwingConstants.CENTER);
