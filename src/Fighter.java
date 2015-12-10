@@ -21,7 +21,7 @@ public class Fighter
    //changes fighter's current health, i.e. from damage, heals, etc.
    protected void changeCurrentHealth(int amount)
    {
-      currentHealth += amount;
+      currentHealth -= amount;
    }
 
    protected int getCurrentHealth()

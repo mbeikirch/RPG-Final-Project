@@ -8,7 +8,6 @@ public class GameServer
    final int serverTurnNumber = 0;
    int turn = 1;
    Integer clientTurnNumber = new Integer(1);
-   static boolean emptyGame = true;
 
    //holds all of the object writers to be used
    private Vector<ObjectOutputStream> clientWriteList = new Vector<>();
@@ -61,10 +60,6 @@ public class GameServer
          cs = _cs;
          
          try {
-            if(emptyGame == false){
-               System.out.println("Game is full can not accept anymore connections!!");
-            }
-            else if (emptyGame) {
                //add an object reader for each client as they connect
                clientBuffer = new ObjectInputStream(new DataInputStream(cs.getInputStream()));
 
@@ -78,11 +73,6 @@ public class GameServer
                System.out.println(clientList.get(1).getName());
                System.out.println(clientList.get(0).getClass());
                System.out.println(clientList.get(0).getCurrentHealth());
-
-               if(turn == 3){
-                  emptyGame = false;
-               }
-            }
 
          }
          catch(IOException ioe){ ioe.printStackTrace(); }
@@ -114,7 +104,7 @@ public class GameServer
 
                   System.out.println(clientList.get(0).getCurrentHealth());
                }
-               if(obj instanceof Integer) {
+               if(obj instanceof Integer ) {
                      System.out.println("turn number increased");
                      broadcastTurnNumberToClients((Integer) clientTurnNumber);
 

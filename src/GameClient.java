@@ -13,6 +13,7 @@ public class GameClient extends JFrame
    private String ipAddr = "localhost";
    private int port = 4444;
    private Fighter myFighter;
+   private int turn = 0;
    Integer clientTurnNumber = new Integer(1);
    private Socket client;
 
@@ -30,6 +31,7 @@ public class GameClient extends JFrame
    private JButton[] abilities = {jbAbility1, jbAbility2, jbAbility3, jbAbility4};
 
    private Vector<Fighter> clientList = new Vector<Fighter>();
+   private Vector<Integer> playerList = new Vector<Integer>();
 
    ObjectOutputStream oos;
    ObjectInputStream ois;
@@ -37,6 +39,7 @@ public class GameClient extends JFrame
    public static void main(String[] args)
    {
       new GameClient("localhost", 4444, new Warrior("TESTING"));
+
    }
    //Constructor
    public GameClient(String _ipAddr, int _port, Fighter _myFighter)
@@ -187,6 +190,10 @@ public class GameClient extends JFrame
       return clientTurnNumber;
    }
 
+   private void playerAttack(int value){
+       myFighter.changeCurrentHealth(value);
+   }
+
 
    public class SendButtonListener implements ActionListener
    {
@@ -214,7 +221,9 @@ public class GameClient extends JFrame
 
          if(choice == jbAbility1)
          {
-            jtaMessages.append(myFighter.getName() + " attacked for " + myFighter.ability1() + " damage!\n");
+            jtaMessages.append(myFighter.getName() + " performed " + myFighter.getAbilityName(1) +  " and dealt " + myFighter.ability1() + " damage!\n");
+            playerAttack(myFighter.ability1());
+
          }
          else if(choice == jbAbility2)
          {
@@ -233,7 +242,6 @@ public class GameClient extends JFrame
          }
          else if(choice == jbAbility4)
          {
-
          }
       }
    }//end inner class 2 (action listeners)
@@ -261,8 +269,8 @@ public class GameClient extends JFrame
                }
                if(obj instanceof Integer)
                {
-                  System.out.println(myFighter.getName()+ "'s turn has just ended");
-                  clientTurnNumber++;
+                  System.out.println(myFighter.getName()+ " 's turn has just ended");
+                  turn++;
                }
 
             }
