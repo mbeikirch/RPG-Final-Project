@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.io.Serializable;
 
-public class Rogue extends Fighter implements Serializable
+public class Rogue extends Fighter
 {
    protected String name;
    private final String CLASS_PATH = "/gamedata/players/player[@class='Rogue']";

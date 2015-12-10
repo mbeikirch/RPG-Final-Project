@@ -11,9 +11,9 @@ import org.w3c.dom.*;
  */
 public class GameDataParser implements Serializable
 {
-   private DocumentBuilder builder;
-   private XPath path;
-   private Document doc;
+   private transient DocumentBuilder builder;
+   private transient XPath path;
+   private transient Document doc;
    private String classPath;
    private String FILE = "GameData.xml";
 
