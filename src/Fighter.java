@@ -33,8 +33,6 @@ public class Fighter implements Serializable
 
    protected int ability1() { return -1; }
    protected int ability2() { return -1; }
-   protected int ability3() { return -1; }
-   protected int ability4() { return -1; }
 
    protected String getAbilityName(int num){ return ""; }
    protected String getAbilityDescription(int num){ return ""; }
