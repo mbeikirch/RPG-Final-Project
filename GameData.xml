@@ -129,7 +129,7 @@
       <name>Saitama the Destroyer</name>
       <power>70</power>
       <health>2000</health>
-      <Defence>5</Defence>
+      <Defence>8</Defence>
       <icon>boss2.png</icon>
       <abilities>
         <ability caston="attack">
