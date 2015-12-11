@@ -102,7 +102,7 @@
       <power>100</power>
       <health>70</health>
       <Defence>0</Defence>
-      <icon>../images/bosses/Class Cannon.png</icon>
+      <icon>../images/bosses/boss3.png</icon>
       <abilities>
         <ability caston="attack">
           <abilitynumber>0</abilitynumber>
@@ -132,7 +132,7 @@
       <power>70</power>
       <health>90</health>
       <Defence>5</Defence>
-      <icon>../images/bosses/Balanced.png</icon>
+      <icon>../images/bosses/boss2.png</icon>
       <abilities>
         <ability caston="attack">
           <abilitynumber>0</abilitynumber>
