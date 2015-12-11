@@ -7,7 +7,7 @@ public class GameServer implements Serializable
    final int PORT = 4444;
    Integer myTurnNumber = 0;
    Integer clientTurnNumber = 1;
-   int numPlayers = 1;
+   int numPlayers = 0;
    Random rng = new Random();
 
    //holds all of the object writers to be used
@@ -29,10 +29,10 @@ public class GameServer implements Serializable
 
       Fighter[] bossList = {new Diablo(), new DemonKing(), new Saitama()};
 
-      //bossMan = bossList[rng.nextInt(3)];
+      bossMan = bossList[rng.nextInt(3)];
       clientList.add(bossMan);
 
-      System.out.println(bossMan.getName());
+      System.out.println(bossMan.getName() + " is the boss");
 
       try
       {
@@ -44,7 +44,7 @@ public class GameServer implements Serializable
       catch(IOException ioe){ ioe.printStackTrace(); }
 
       //allows up to three players to connect
-      while(numPlayers < 3)
+      while(clientTurnNumber != 3)
       {
          try
          {
@@ -87,11 +87,16 @@ public class GameServer implements Serializable
             //add the entire fighter object to the clientList vector
             clientList.add((Fighter)clientBuffer.readObject());
             System.out.println("Vector Size: " + clientList.size());
+
+            clientTurnNumber++;
             clientWriter.writeInt(clientTurnNumber);
+
             broadcastClientListToClients();
 
-            if(numPlayers == 1)
+            if(clientTurnNumber == 3)
             {
+               clientTurnNumber = 0;
+               doBossStuff();
                broadcastClientListToClients();
                broadcastTurnNumberToClients();
             }
@@ -100,6 +105,7 @@ public class GameServer implements Serializable
          {
             System.out.println("got a tester");
             numPlayers--;
+            clientTurnNumber--;
             clientWriteList.remove(clientWriteList.size()-1);
             return;
          }
@@ -128,17 +134,19 @@ public class GameServer implements Serializable
                   System.out.println("got a vector");
 
                   clientList = (Vector<Fighter>)obj;
-                  broadcastClientListToClients();
 
-                  //if all the players have taken their turn(player 3 = turn 3) reset the turn counter to 0 and let the boss do stuff
-                  if(clientTurnNumber == 1)
+                  if(clientTurnNumber == 3)
                   {
                      clientTurnNumber = 0;
                      doBossStuff();
+                     broadcastClientListToClients();
+                     broadcastTurnNumberToClients();
                   }
                   else
                   {
                      clientTurnNumber++;
+
+                     broadcastClientListToClients();
                      broadcastTurnNumberToClients();
                   }
                }
@@ -154,19 +162,25 @@ public class GameServer implements Serializable
       {
          //boss AI goes here
          int abilityNum = rng.nextInt(2);
+         clientTurnNumber++;
 
          if(abilityNum == 0)
          {
-            clientList.get(1).changeCurrentHealth( - bossMan.ability1());
+            int target = rng.nextInt(3) + 1;
+            clientList.get(target).changeCurrentHealth( - bossMan.ability1());
+            broadcastChatToClients(bossMan.getName() + " attacked " + clientList.get(target).getName() + " for " + bossMan.ability1() + " damage!");
          }
          if(abilityNum == 1)
          {
             clientList.get(0).changeCurrentHealth(bossMan.ability2());
+            broadcastChatToClients(bossMan.getName() + " healed for " + bossMan.ability2());
+         }
+         if(clientList.get(1).getCurrentHealth() <= 0)
+         {
+            broadcastChatToClients("Boss Wins");
          }
 
-         //once the boss is done, then broadcast
          broadcastClientListToClients();
-         clientTurnNumber ++;
          broadcastTurnNumberToClients();
       }
 
@@ -179,6 +193,7 @@ public class GameServer implements Serializable
             {
                oos.writeObject(message);
                oos.flush();
+               oos.reset();
             }
             catch(IOException ioe){ ioe.printStackTrace(); }
          }
@@ -193,6 +208,7 @@ public class GameServer implements Serializable
             {
                oos.writeObject(clientList);
                oos.flush();
+               oos.reset();
             }
             catch(IOException ioe){ ioe.printStackTrace(); }
          }
@@ -206,6 +222,8 @@ public class GameServer implements Serializable
             {
                oos.writeObject(clientTurnNumber);
                oos.flush();
+               oos.reset();
+               System.out.println("turn number: " + clientTurnNumber);
             }
             catch(IOException ioe){ ioe.printStackTrace(); }
          }

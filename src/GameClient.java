@@ -15,6 +15,7 @@ public class GameClient
    private Fighter myFighter;
    Integer myTurnNumber;
    private Socket client;
+   private boolean amIDead = false;
    Vector<Fighter> clientList;
 
    //arrays to hold JLabels for all of the class info(health/names/pictures)
@@ -41,6 +42,7 @@ public class GameClient
    public GameClient(String _ipAddr, int _port, Fighter _myFighter)
    {
       myFighter = _myFighter;
+      myFighter.setBaseHealth(50);
       ipAddr = _ipAddr;
       port = _port;
 
@@ -185,22 +187,34 @@ public class GameClient
       {
          try
          {
-            Object choice = ae.getSource();
-
-            if (choice == jbAbility1)
+            if(!amIDead)
             {
-               jtaMessages.append(clientList.get(1).getName() + " attacked " + clientList.get(0).getName() + " for " + myFighter.ability1() + " damage!\n");
-               clientList.get(0).changeCurrentHealth(-myFighter.ability1());
-            }
-            else if (choice == jbAbility2)
-            {
-               jtaMessages.append(myFighter.getName() + " performed " + myFighter.getAbilityName(2) + " and healed for " + myFighter.ability2() + " hp!\n");
-               clientList.get(1).changeCurrentHealth(myFighter.ability1());
-            }
+               Object choice = ae.getSource();
 
+               if (choice == jbAbility1)
+               {
+                  jtaMessages.append(clientList.get(1).getName() + " attacked " + clientList.get(0).getName() + " for " + myFighter.ability1() + " damage!\n");
+                  clientList.get(0).changeCurrentHealth(-myFighter.ability1());
+
+                  if(clientList.get(myTurnNumber.intValue()).getCurrentHealth() <= 0)
+                  {
+                     JOptionPane.showMessageDialog(jbAbility1, "u ded");
+                     amIDead = true;
+                  }
+               }
+               else if (choice == jbAbility2)
+               {
+                  jtaMessages.append(myFighter.getName() + " performed " + myFighter.getAbilityName(2) + " and healed for " + myFighter.ability2() + " hp!\n");
+                  clientList.get(1).changeCurrentHealth(myFighter.ability1());
+               }
+            }
+            else
+            {
+
+            }
+            setButtonsEnabled(false);
             oos.writeObject(clientList);
             oos.flush();
-            setButtonsEnabled(false);
          }
          catch(IOException ioe){ ioe.printStackTrace(); }
       }
@@ -219,7 +233,15 @@ public class GameClient
             {
                if(obj instanceof String)
                {
-                  jtaMessages.append(obj +"\n");
+                  if(obj.equals("Boss wins"))
+                  {
+                     JOptionPane.showMessageDialog(jbAbility1, clientList.get(0).getName() + " has defeated you!");
+                     System.exit(0);
+                  }
+                  else
+                  {
+                     jtaMessages.append(obj + "\n");
+                  }
                }
                else if(obj instanceof Vector)
                {
