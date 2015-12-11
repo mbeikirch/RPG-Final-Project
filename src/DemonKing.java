@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.io.Serializable;
 
 public class DemonKing extends Fighter implements Serializable
-
 {
     private final String CLASS_PATH = "/gamedata/bosses/boss[@id = '1']";
     private GameDataParser myParser;
@@ -22,7 +21,7 @@ public class DemonKing extends Fighter implements Serializable
     }
 
     public String getName() { return "DemonKing"; }
-    protected ImageIcon getIcon() { return (myParser.getIcon()); }
+    protected ImageIcon getIcon() { return myIcon; }
 
     protected int ability1() { return ability1; }
 

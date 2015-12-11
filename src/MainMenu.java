@@ -89,25 +89,20 @@ public class MainMenu extends JFrame implements ActionListener{
          String ipAddr = jtfServerIP.getText();
          String port = jtfPort.getText();
 
-         try
-         {
+
             if(ipAddr.equals("") || port.equals(""))
             {
                JOptionPane.showMessageDialog(jbJoin, "You must enter a valid IP address and port number.");
             }
             else
             {
-               Socket s = new Socket();
-               s.connect(new InetSocketAddress(ipAddr, Integer.parseInt(port)),2000);
-               s.close();
-
                this.dispose();
                new GameClient(ipAddr, Integer.parseInt(port), myFighter);
             }
-         }
-         catch(ConnectException ce){ JOptionPane.showMessageDialog(jbJoin, "Server doesn't appear to be running."); }
-         catch(IOException ioe){ ioe.printStackTrace(); }
-         catch(Exception e){ }
+
+         //catch(ConnectException ce){ JOptionPane.showMessageDialog(jbJoin, "Server doesn't appear to be running."); }
+         //catch(IOException ioe){ ioe.printStackTrace(); }
+         //catch(Exception e){ }
       }
       else if(choice == jbChooseCharacter)
       {

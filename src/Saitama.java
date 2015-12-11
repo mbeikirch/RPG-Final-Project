@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 public class Saitama extends Fighter implements Serializable
 {
-
     private final String CLASS_PATH = "/gamedata/bosses/boss[@id = '2']";
     private GameDataParser myParser;
     private int ability1, ability2, ability3;
@@ -23,7 +22,7 @@ public class Saitama extends Fighter implements Serializable
     }
 
     public String getName() { return "Saitama"; }
-    protected ImageIcon getIcon() { return (myParser.getIcon()); }
+    protected ImageIcon getIcon() { return myIcon; }
 
     protected int ability1() { return ability1; }
 

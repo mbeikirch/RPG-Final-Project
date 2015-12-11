@@ -42,7 +42,6 @@ public class GameClient
    public GameClient(String _ipAddr, int _port, Fighter _myFighter)
    {
       myFighter = _myFighter;
-      myFighter.setBaseHealth(50);
       ipAddr = _ipAddr;
       port = _port;
 
@@ -196,6 +195,11 @@ public class GameClient
                   jtaMessages.append(clientList.get(1).getName() + " attacked " + clientList.get(0).getName() + " for " + myFighter.ability1() + " damage!\n");
                   clientList.get(0).changeCurrentHealth(-myFighter.ability1());
 
+                  if(clientList.get(0).getCurrentHealth() <= 0)
+                  {
+                     JOptionPane.showMessageDialog(jbAbility1, "You win!");
+                     System.exit(0);
+                  }
                   if(clientList.get(myTurnNumber.intValue()).getCurrentHealth() <= 0)
                   {
                      JOptionPane.showMessageDialog(jbAbility1, "u ded");

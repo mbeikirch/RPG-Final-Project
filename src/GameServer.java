@@ -6,7 +6,7 @@ public class GameServer implements Serializable
 {
    final int PORT = 4444;
    Integer myTurnNumber = 0;
-   Integer clientTurnNumber = 1;
+   Integer clientTurnNumber = 0;
    int numPlayers = 0;
    Random rng = new Random();
 
