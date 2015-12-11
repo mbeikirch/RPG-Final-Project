@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<gamedata>
+  <players>
+    <player class = 'Wizard'>
+      <health>540</health>
+      <icon>wizard.png</icon>
+      <abilities>
+        <ability caston="enemy">
+          <abilityname>Wizardly Strike</abilityname>
+          <abilitydescription>
+            The wizard strikes their opponent with such force that can only be described as magical.
+          </abilitydescription>
+          <value>200</value>
+        </ability>
+        <ability caston="friendly">
+          <abilityname>Healing Surge</abilityname>
+          <abilitydescription>
+            This ability allows the Wizard to heal one of their teammates by a decent amount of health.
+          </abilitydescription>
+          <value>200</value>
+        </ability>
+      </abilities>
+    </player>
+    <player class = 'Warrior'>
+      <health>850</health>
+      <icon>warrior.png</icon>
+      <abilities>
+        <ability caston="enemy">
+          <abilityname>Slash</abilityname>
+          <abilitydescription>
+            With the swing of a sword...
+          </abilitydescription>
+          <value>120</value>
+        </ability>
+        <ability caston="enemy">
+          <abilityname>Drink Potion</abilityname>
+          <abilitydescription>
+            Warrior drinks a random potion from who knows where.
+          </abilitydescription>
+          <value>100</value>
+        </ability>
+      </abilities>
+    </player>
+    <player class = 'Rogue'>
+      <health>550</health>
+      <icon>rogue.png</icon>
+      <abilities>
+        <ability caston="enemy">
+          <abilityname>Seele Schneider</abilityname>
+          <abilitydescription>
+            A very strong attack from the Quicy clan, it attacks a single enemy causing massive damage.
+          </abilitydescription>
+          <value>60</value>
+          <healingvalue>0</healingvalue>
+        </ability>
+        <ability caston="friendly">
+          <abilityname>Rasenshuriken</abilityname>
+          <abilitydescription>
+            A high level technique used by those who can channel their chakra into one single point and release that
+            chakra on their opponent.
+          </abilitydescription>
+          <value>20</value>
+        </ability>
+      </abilities>
+    </player>
+  </players>  
+  <bosses>
+    <boss id = '0'>
+      <name>Diablo</name>
+      <power>40</power>
+      <health>2600</health>
+      <Defence>10</Defence>
+      <icon>boss1.png</icon>
+      <abilities>
+        <ability caston="attack">
+          <abilitynumber>0</abilitynumber>
+          <abilityname>Shooting</abilityname>
+          <abilitydescription>...</abilitydescription>
+          <value>40</value>
+          <Defence>0</Defence>
+        </ability>
+        <ability caston="healing">
+          <abilitynumber>1</abilitynumber>
+          <abilityname>Super Berzerker Dash</abilityname>
+          <abilitydescription>A strong dashing technique in which the boss knocks over anyone in his way with their brute force.</abilitydescription>
+          <value>10</value>
+          <Defence>30</Defence>
+        </ability>
+        <ability caston="attack">
+          <abilitynumber>2</abilitynumber>
+          <abilityname>Gigantic Meteor</abilityname>
+          <abilitydescription>This ability shoots a giant energy blast the size of a meteor! But not everything is as it looks.</abilitydescription>
+          <value>24</value>
+          <Defence>0</Defence>
+        </ability>        
+      </abilities>
+    </boss>
+    <boss id = '1'>
+      <name>Demon King Piccolo</name>
+      <power>100</power>
+      <health>1800</health>
+      <Defence>0</Defence>
+      <icon>../images/bosses/boss3.png</icon>
+      <abilities>
+        <ability caston="attack">
+          <abilitynumber>0</abilitynumber>
+          <abilityname>Sphere of Destruction</abilityname>
+          <abilitydescription>A giant sphere of energy is launched at the players having and AOE effect and extreme damage.</abilitydescription>
+          <value>90</value>
+          <Defence>-20</Defence>
+        </ability>
+        <ability caston="healing">
+          <abilitynumber>1</abilitynumber>
+          <abilityname>Death Beam</abilityname>
+          <abilitydescription>A singular shot with the power to cripple enemies in just one shot.</abilitydescription>
+          <value>10</value>
+          <Defence>18</Defence>
+        </ability>
+        <ability caston="attack">
+          <abilitynumber>2</abilitynumber>
+          <abilityname>Gigantic Meteor</abilityname>
+          <abilitydescription>...</abilitydescription>
+          <value>40</value>
+          <Defence>0</Defence>
+        </ability>
+      </abilities>
+    </boss>
+    <boss id = '2'>
+      <name>Saitama the Destroyer</name>
+      <power>70</power>
+      <health>2000</health>
+      <Defence>5</Defence>
+      <icon>../images/bosses/boss2.png</icon>
+      <abilities>
+        <ability caston="attack">
+          <abilitynumber>0</abilitynumber>
+          <abilityname>Normal Punch</abilityname>
+          <abilitydescription>This singular energy beam has the right balance of speed and power and can be used a multitude of time.</abilitydescription>
+          <value>350</value>
+          <Defence>-10</Defence>
+        </ability>
+        <ability caston="healing">
+          <abilitynumber>1</abilitynumber>
+          <abilityname>Flex Muscle</abilityname>
+          <abilitydescription>A singular shot with the power to cripple enemies in just one shot.</abilitydescription>
+          <value>400</value>
+          <Defence>30</Defence>
+        </ability>
+        <ability caston="attack">
+          <abilitynumber>2</abilitynumber>
+          <abilityname>Fist of the North Star</abilityname>
+          <abilitydescription>This isn't exactly one of his moves</abilitydescription>
+          <value>25</value>
+          <Defence>0</Defence>
+        </ability>        
+      </abilities>
+    </boss>
+  </bosses>
+</gamedata>
