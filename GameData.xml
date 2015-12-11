@@ -2,7 +2,7 @@
 <gamedata>
   <players>
     <player class = 'Wizard'>
-      <health>7</health>
+      <health>540</health>
       <icon>wizard.png</icon>
       <abilities>
         <ability caston="enemy">
@@ -10,41 +10,39 @@
           <abilitydescription>
             The wizard strikes their opponent with such force that can only be described as magical.
           </abilitydescription>
-          <value>16</value>
+          <value>200</value>
         </ability>
         <ability caston="friendly">
           <abilityname>Healing Surge</abilityname>
           <abilitydescription>
             This ability allows the Wizard to heal one of their teammates by a decent amount of health.
           </abilitydescription>
-          <value>25</value>
+          <value>200</value>
         </ability>
       </abilities>
     </player>
     <player class = 'Warrior'>
-      <health>10</health>
+      <health>850</health>
       <icon>warrior.png</icon>
       <abilities>
         <ability caston="enemy">
-          <abilityname>Super Dragon Fist!</abilityname>
+          <abilityname>Slash</abilityname>
           <abilitydescription>
-            A deadly attack that only a warrior of the Saiyan race can use. The force they attack their opponent
-            with is similar to that of a Dragon's.
+            With the swing of a sword...
           </abilitydescription>
-          <value>16</value>
+          <value>120</value>
         </ability>
         <ability caston="enemy">
-          <abilityname>Kaio-ken!</abilityname>
+          <abilityname>Drink Potion</abilityname>
           <abilitydescription>
-            Only available to those who have studied under King Kai, Kaio-ken raises the user's damage by 2 for 1 turn
-            but also hurts the user slightly.
+            Warrior drinks a random potion from who knows where.
           </abilitydescription>
-          <value>10</value>
+          <value>100</value>
         </ability>
       </abilities>
     </player>
     <player class = 'Rogue'>
-      <health>5</health>
+      <health>550</health>
       <icon>rogue.png</icon>
       <abilities>
         <ability caston="enemy">
@@ -70,7 +68,7 @@
     <boss id = '0'>
       <name>Diablo</name>
       <power>40</power>
-      <health>150</health>
+      <health>2600</health>
       <Defence>10</Defence>
       <icon>boss1.png</icon>
       <abilities>
@@ -100,7 +98,7 @@
     <boss id = '1'>
       <name>Demon King Piccolo</name>
       <power>100</power>
-      <health>70</health>
+      <health>1800</health>
       <Defence>0</Defence>
       <icon>../images/bosses/boss3.png</icon>
       <abilities>
@@ -130,28 +128,28 @@
     <boss id = '2'>
       <name>Saitama the Destroyer</name>
       <power>70</power>
-      <health>90</health>
+      <health>2000</health>
       <Defence>5</Defence>
       <icon>../images/bosses/boss2.png</icon>
       <abilities>
         <ability caston="attack">
           <abilitynumber>0</abilitynumber>
-          <abilityname>Galick Gun</abilityname>
+          <abilityname>Normal Punch</abilityname>
           <abilitydescription>This singular energy beam has the right balance of speed and power and can be used a multitude of time.</abilitydescription>
-          <value>30</value>
+          <value>350</value>
           <Defence>-10</Defence>
         </ability>
         <ability caston="healing">
           <abilitynumber>1</abilitynumber>
-          <abilityname>Death Beam</abilityname>
+          <abilityname>Flex Muscle</abilityname>
           <abilitydescription>A singular shot with the power to cripple enemies in just one shot.</abilitydescription>
-          <value>10</value>
+          <value>400</value>
           <Defence>30</Defence>
         </ability>
         <ability caston="attack">
           <abilitynumber>2</abilitynumber>
-          <abilityname>Wolf Fang Fist</abilityname>
-          <abilitydescription>A fast flurry of palms strikes and punches is delivered easily scaring weaker opponents off.</abilitydescription>
+          <abilityname>Fist of the North Star</abilityname>
+          <abilitydescription>This isn't exactly one of his moves</abilitydescription>
           <value>25</value>
           <Defence>0</Defence>
         </ability>        
