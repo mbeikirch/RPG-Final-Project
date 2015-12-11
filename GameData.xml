@@ -100,7 +100,7 @@
       <power>100</power>
       <health>1800</health>
       <Defence>0</Defence>
-      <icon>../images/bosses/boss3.png</icon>
+      <icon>boss3.gif</icon>
       <abilities>
         <ability caston="attack">
           <abilitynumber>0</abilitynumber>
@@ -130,7 +130,7 @@
       <power>70</power>
       <health>2000</health>
       <Defence>5</Defence>
-      <icon>../images/bosses/boss2.png</icon>
+      <icon>boss2.png</icon>
       <abilities>
         <ability caston="attack">
           <abilitynumber>0</abilitynumber>
