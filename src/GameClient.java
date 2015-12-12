@@ -14,25 +14,24 @@ public class GameClient
    private int port = 4444;
    private Fighter myFighter;
    Integer myTurnNumber;
-   private Socket client;
-   private boolean amIDead = false;
    Vector<Fighter> clientList;
 
    //arrays to hold JLabels for all of the class info(health/names/pictures)
-                                       //boss              //first      //second      //third
-   private JLabel[] fighterHealths  = {new JLabel(" "), new JLabel(" "), new JLabel(" "), new JLabel(" ")};
+                                               //boss              //first          //second             //third
+   private JProgressBar[] fighterHealths = {new JProgressBar(), new JProgressBar(), new JProgressBar(), new JProgressBar()};
    private JLabel[] fighterPictures = {new JLabel(" "), new JLabel(" "), new JLabel(" "), new JLabel(" ")};
    private JLabel[] playerNames     = {new JLabel(" Connected Players: "), new JLabel(""), new JLabel(" "), new JLabel(" ")};
 
    private JButton jbAbility1 = new JButton();
    private JButton jbAbility2 = new JButton();
+   private JButton jbAbility3 = new JButton();
 
    private JButton[] abilities = {jbAbility1, jbAbility2};
 
    public JFrame myFrame;
 
-   ObjectOutputStream oos;
-   ObjectInputStream ois;
+   private ObjectOutputStream oos;
+   private ObjectInputStream ois;
 
    public static void main(String[] args)
    {
@@ -45,6 +44,20 @@ public class GameClient
       ipAddr = _ipAddr;
       port = _port;
 
+      //if this fails, a message will pop up and the game will close
+      connectToServer();
+
+      //actually draws the game screen
+      drawGame();
+
+      Thread inputThread = new Thread(new ReceiveObjects());
+      inputThread.start();
+
+      setButtonsEnabled(false);
+   }
+
+   private void drawGame()
+   {
       myFrame = new JFrame("RPG Client");
 
       //holds the player list
@@ -54,26 +67,35 @@ public class GameClient
       for(JLabel a : playerNames) { jpPlayerList.add(a); }
 
       //holds the fight area
-      JPanel jpFightArea = new JPanel(new FlowLayout());
+      JPanel jpFightArea = new JPanel(new BorderLayout());
       jpFightArea.setBorder(BorderFactory.createLineBorder(Color.black,5, false));  //color, thickness of border, rounded edges
 
-         //panel to hold the boss
-         JPanel jpBossArea = new JPanel(new GridLayout(2,2,50,30));
-            jpBossArea.add(fighterHealths[0]);
-            fighterHealths[0].setVerticalAlignment(SwingConstants.BOTTOM);
-            jpBossArea.add(new JLabel());
-            jpBossArea.add(fighterPictures[0]);
-            jpBossArea.add(new JLabel());
-         jpFightArea.add(jpBossArea);
+      //panel to hold the boss
+      JPanel jpBossArea = new JPanel(new GridLayout(2,2,0,0));
+      JPanel bossHealth = new JPanel(new FlowLayout());
+      bossHealth.add(fighterHealths[0]);
+      jpBossArea.add(bossHealth);
 
-         //panel for the players, and adding the jlabels for all their info
-         JPanel jpFighterArea = new JPanel(new GridLayout(3,2,0,5));
-         for(int i=1; i < fighterHealths.length; i++)
-         {
-            jpFighterArea.add(fighterPictures[i]);
-            jpFighterArea.add(fighterHealths[i]);
-         }
-         jpFightArea.add(jpFighterArea);
+      jpBossArea.add(new JLabel()); //filler
+
+      fighterPictures[0].setHorizontalAlignment(SwingConstants.CENTER);
+      jpBossArea.add(fighterPictures[0]);
+
+      jpBossArea.add(new JLabel()); //filler
+      jpFightArea.add(jpBossArea, BorderLayout.WEST);
+
+      //panel for the players, and adding the jlabels for all their info
+      JPanel jpFighterArea = new JPanel(new GridLayout(0,1));
+
+      for(int i=1; i < fighterHealths.length; i++)
+      {
+         fighterHealths[i].setVisible(false);
+         JPanel bla = new JPanel(new FlowLayout());
+         bla.add(fighterPictures[i]);
+         bla.add(fighterHealths[i]);
+         jpFighterArea.add(bla);
+      }
+      jpFightArea.add(jpFighterArea, BorderLayout.EAST);
 
       //holds the sending info panel, abilities panel, and text box
       JPanel jpBottom = new JPanel(new GridLayout(0,2));
@@ -120,26 +142,27 @@ public class GameClient
       myFrame.add(jpBottom, BorderLayout.SOUTH);
 
       myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-      myFrame.setLocationRelativeTo(null);
-      myFrame.pack();
+
+      //size of the game window is hard coded
+      myFrame.setSize(700,400);
+
+      //this gets the default resolution of your main monitor(multi monitor friendly)
+      GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+      int width = gd.getDisplayMode().getWidth();
+      int height = gd.getDisplayMode().getHeight();
+
+      //sets the frame to always be in the middle of your default screen, regardless of resolution
+      myFrame.setLocation((width / 2) - (myFrame.getWidth() / 2), (height / 2) - (myFrame.getHeight() / 2));
       myFrame.setVisible(true);
       jtfSendMessage.requestFocus();
-
-      connectToServer();
-
-      Thread inputThread = new Thread(new ReceiveObjects());
-      inputThread.start();
-
-      setButtonsEnabled(false);
-   }//end constructor
-
-   //Methods
+   }//end drawGame()
 
    private void connectToServer()
    {
       try
       {
-         client = new Socket(ipAddr, port);
+         Socket client = new Socket();
+         client.connect(new InetSocketAddress(ipAddr, port), 2000);
 
          oos = new ObjectOutputStream(new DataOutputStream(client.getOutputStream()));
          ois = new ObjectInputStream(new DataInputStream(client.getInputStream()));
@@ -151,8 +174,12 @@ public class GameClient
          myTurnNumber = ois.readInt();
          System.out.println("Turn Number: " + myTurnNumber);
       }
+      catch(SocketException se)
+      {
+         JOptionPane.showMessageDialog(null, "Couldn't connect to server!");
+         System.exit(0);
+      }
       catch(IOException ioe) { ioe.printStackTrace(); }
-      //catch(ClassNotFoundException cnfe){ cnfe.printStackTrace(); }
    }
 
    private void setButtonsEnabled(boolean b)
@@ -186,36 +213,20 @@ public class GameClient
       {
          try
          {
-            if(!amIDead)
+            Object choice = ae.getSource();
+
+            if (choice == jbAbility1)
             {
-               Object choice = ae.getSource();
-
-               if (choice == jbAbility1)
-               {
-                  jtaMessages.append(clientList.get(1).getName() + " attacked " + clientList.get(0).getName() + " for " + myFighter.ability1() + " damage!\n");
-                  clientList.get(0).changeCurrentHealth(-myFighter.ability1());
-
-                  if(clientList.get(0).getCurrentHealth() <= 0)
-                  {
-                     JOptionPane.showMessageDialog(jbAbility1, "You win!");
-                     System.exit(0);
-                  }
-                  if(clientList.get(myTurnNumber.intValue()).getCurrentHealth() <= 0)
-                  {
-                     JOptionPane.showMessageDialog(jbAbility1, "u ded");
-                     amIDead = true;
-                  }
-               }
-               else if (choice == jbAbility2)
-               {
-                  jtaMessages.append(myFighter.getName() + " performed " + myFighter.getAbilityName(2) + " and healed for " + myFighter.ability2() + " hp!\n");
-                  clientList.get(1).changeCurrentHealth(myFighter.ability1());
-               }
+               oos.writeObject(myFighter.getName() + " attacked " + clientList.get(0).getName() + " for " + myFighter.ability1() + " damage!");
+               clientList.get(0).changeCurrentHealth(-myFighter.ability1());
             }
-            else
+            else if (choice == jbAbility2)
             {
-
+               oos.writeObject(myFighter.getName() + " performed " + myFighter.getAbilityName(2) + " and healed for " + myFighter.ability2() + " hp!");
+               clientList.get(myTurnNumber).changeCurrentHealth(myFighter.ability1());
             }
+
+            fighterHealths[myTurnNumber].setIndeterminate(false);
             setButtonsEnabled(false);
             oos.writeObject(clientList);
             oos.flush();
@@ -242,6 +253,11 @@ public class GameClient
                      JOptionPane.showMessageDialog(jbAbility1, clientList.get(0).getName() + " has defeated you!");
                      System.exit(0);
                   }
+                  if(obj.equals("You win!"))
+                  {
+                     JOptionPane.showMessageDialog(jbAbility1, "Victory!");
+                     System.exit(0);
+                  }
                   else
                   {
                      jtaMessages.append(obj + "\n");
@@ -249,16 +265,24 @@ public class GameClient
                }
                else if(obj instanceof Vector)
                {
-                  clientList = (Vector<Fighter>)obj;
+                  clientList = (Vector)obj;
                   updateGUI(clientList);
                }
                else if(obj instanceof Integer)
                {
-                  System.out.println("got the turn");
                   if( ((Integer) obj).intValue() == (myTurnNumber.intValue()) )
                   {
-                     System.out.println("my turn");
-                     setButtonsEnabled(true);
+                     if(clientList.get(myTurnNumber.intValue()).isFighterAlive())
+                     {
+                        setButtonsEnabled(true);
+                        fighterHealths[myTurnNumber].setIndeterminate(true);
+                     }
+                     else
+                     {
+                        JOptionPane.showMessageDialog(jbAbility1,"u ded");
+                        oos.writeObject(clientList);
+                        oos.flush();
+                     }
                   }
                }
             }
@@ -276,11 +300,17 @@ public class GameClient
          }
          for(int i=0; i < clientList.size(); i++)
          {
-            fighterHealths[i].setText("Health: " + clientList.get(i).getCurrentHealth() + "/" + clientList.get(i).getBaseHealth());
+            //progress bars to show the player's health
+            fighterHealths[i].setOrientation(JProgressBar.HORIZONTAL);
+            fighterHealths[i].setMinimum(0);
+            fighterHealths[i].setMaximum(clientList.get(i).getBaseHealth());
+            fighterHealths[i].setValue(clientList.get(i).getCurrentHealth());
+            fighterHealths[i].setString(clientList.get(i).getName() + Integer.toString(clientList.get(i).getCurrentHealth()) + "/" + Integer.toString(clientList.get(i).getBaseHealth()));
+            fighterHealths[i].setVisible(true);
+            fighterHealths[i].setStringPainted(true);
             fighterPictures[i].setIcon(clientList.get(i).getIcon());
          }
          myFrame.revalidate();
-         myFrame.pack();
       }
    }//end inner class 3 (threadz)
 }//end class

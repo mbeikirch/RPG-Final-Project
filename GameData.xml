@@ -1,6 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <gamedata>
   <players>
+    <player class = 'Scott'>
+      <health>5000</health>
+      <icon>Scott.png</icon>
+      <abilities>
+        <ability>
+          <abilityname>Homework</abilityname>
+          <abilitydescription>
+            Serious consequences.
+          </abilitydescription>
+          <value>2599</value>
+        </ability>
+        <ability caston="friendly">
+          <abilityname>Bonus Points</abilityname>
+          <abilitydescription>
+            Impress me.
+          </abilitydescription>
+          <value>4999</value>
+        </ability>
+      </abilities>
+    </player>
     <player class = 'Wizard'>
       <health>540</health>
       <icon>wizard.png</icon>
@@ -66,7 +86,7 @@
   </players>  
   <bosses>
     <boss id = '0'>
-      <name>Diablo</name>
+      <name>BlueMan</name>
       <power>40</power>
       <health>2600</health>
       <Defence>10</Defence>
@@ -83,7 +103,7 @@
           <abilitynumber>1</abilitynumber>
           <abilityname>Super Berzerker Dash</abilityname>
           <abilitydescription>A strong dashing technique in which the boss knocks over anyone in his way with their brute force.</abilitydescription>
-          <value>10</value>
+          <value>200</value>
           <Defence>30</Defence>
         </ability>
         <ability caston="attack">
@@ -106,14 +126,14 @@
           <abilitynumber>0</abilitynumber>
           <abilityname>Sphere of Destruction</abilityname>
           <abilitydescription>A giant sphere of energy is launched at the players having and AOE effect and extreme damage.</abilitydescription>
-          <value>90</value>
+          <value></value>
           <Defence>-20</Defence>
         </ability>
         <ability caston="healing">
           <abilitynumber>1</abilitynumber>
           <abilityname>Death Beam</abilityname>
           <abilitydescription>A singular shot with the power to cripple enemies in just one shot.</abilitydescription>
-          <value>10</value>
+          <value></value>
           <Defence>18</Defence>
         </ability>
         <ability caston="attack">

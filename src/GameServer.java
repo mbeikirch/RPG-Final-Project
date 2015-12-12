@@ -5,10 +5,10 @@ import java.util.*;
 public class GameServer implements Serializable
 {
    final int PORT = 4444;
-   Integer myTurnNumber = 0;
    Integer clientTurnNumber = 0;
    int numPlayers = 0;
    Random rng = new Random();
+   private final boolean DEAD = false;
 
    //holds all of the object writers to be used
    private Vector<ObjectOutputStream> clientWriteList = new Vector<>();
@@ -16,7 +16,7 @@ public class GameServer implements Serializable
    //holds all of the fighter objects(boss/4 players)
    public Vector<Fighter> clientList = new Vector<Fighter>();
 
-   protected Fighter bossMan = new Diablo();
+   protected Fighter bossMan;
 
    public static void main(String[] args)
    {
@@ -95,8 +95,7 @@ public class GameServer implements Serializable
 
             if(clientTurnNumber == 3)
             {
-               clientTurnNumber = 0;
-               doBossStuff();
+               clientTurnNumber = 1;
                broadcastClientListToClients();
                broadcastTurnNumberToClients();
             }
@@ -145,7 +144,6 @@ public class GameServer implements Serializable
                   else
                   {
                      clientTurnNumber++;
-
                      broadcastClientListToClients();
                      broadcastTurnNumberToClients();
                   }
@@ -155,14 +153,12 @@ public class GameServer implements Serializable
          catch(SocketException se){ System.out.println("Client Disconnected"); }
          catch(IOException ioe) { ioe.printStackTrace(); }
          catch(ClassNotFoundException cnfe){ cnfe.printStackTrace(); }
-         catch(NullPointerException npe){ }
+         catch(NullPointerException npe){ npe.printStackTrace(); }
       }
 
       private void doBossStuff()
       {
-         //boss AI goes here
-         int abilityNum = rng.nextInt(2);
-         clientTurnNumber++;
+         int abilityNum = rng.nextInt(3);
 
          if(abilityNum == 0)
          {
@@ -175,11 +171,18 @@ public class GameServer implements Serializable
             clientList.get(0).changeCurrentHealth(bossMan.ability2());
             broadcastChatToClients(bossMan.getName() + " healed for " + bossMan.ability2());
          }
-         if(clientList.get(1).getCurrentHealth() <= 0)
+         if(abilityNum == 2)
          {
-            broadcastChatToClients("Boss Wins");
+            int damage = bossMan.ability3();
+
+            for(int i=1; i < clientList.size(); i++)
+            {
+               clientList.get(i).changeCurrentHealth( - damage);
+            }
+            broadcastChatToClients(bossMan.getName() + " attacked everyone for " + damage + " damage!");
          }
 
+         clientTurnNumber++;
          broadcastClientListToClients();
          broadcastTurnNumberToClients();
       }
@@ -216,6 +219,8 @@ public class GameServer implements Serializable
 
       public void broadcastTurnNumberToClients()
       {
+         checkHealths();
+
          for(ObjectOutputStream oos : clientWriteList)
          {
             try
@@ -223,10 +228,21 @@ public class GameServer implements Serializable
                oos.writeObject(clientTurnNumber);
                oos.flush();
                oos.reset();
-               System.out.println("turn number: " + clientTurnNumber);
             }
             catch(IOException ioe){ ioe.printStackTrace(); }
          }
       }
    }//End class Client Handler
+
+   private void checkHealths()
+   {
+      for(Fighter a : clientList)
+      {
+         if(a.getCurrentHealth() <= 0)
+         {
+            a.setCurrentHealth(0);
+            a.setFighterAlive(DEAD);
+         }
+      }
+   }
 }//End class file (GameServer)
