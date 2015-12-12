@@ -129,7 +129,7 @@ public class SelectionScreen extends JFrame implements ActionListener
 
       updateText();
 
-      setSize(800,500);
+      setSize(800,400);
       setLocationRelativeTo(null);
       setVisible(true);
       requestFocus();
@@ -198,6 +198,11 @@ public class SelectionScreen extends JFrame implements ActionListener
          if(charName.equals("") || charName.equals("Fighter Name"))
          {
             JOptionPane.showMessageDialog(jbCreate, "Please enter a fighter name.");
+         }
+         if(charName.equals("Scott"))
+         {
+            myFighter = new Scott(jtfName.getText());
+            dispose();
          }
          else
          {

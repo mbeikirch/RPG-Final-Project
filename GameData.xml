@@ -96,7 +96,7 @@
           <abilitynumber>0</abilitynumber>
           <abilityname>Shooting</abilityname>
           <abilitydescription>...</abilitydescription>
-          <value>40</value>
+          <value>50</value>
           <Defence>0</Defence>
         </ability>
         <ability caston="healing">
@@ -110,7 +110,7 @@
           <abilitynumber>2</abilitynumber>
           <abilityname>Gigantic Meteor</abilityname>
           <abilitydescription>This ability shoots a giant energy blast the size of a meteor! But not everything is as it looks.</abilitydescription>
-          <value>24</value>
+          <value>25</value>
           <Defence>0</Defence>
         </ability>        
       </abilities>
@@ -126,14 +126,14 @@
           <abilitynumber>0</abilitynumber>
           <abilityname>Sphere of Destruction</abilityname>
           <abilitydescription>A giant sphere of energy is launched at the players having and AOE effect and extreme damage.</abilitydescription>
-          <value></value>
+          <value>100</value>
           <Defence>-20</Defence>
         </ability>
         <ability caston="healing">
           <abilitynumber>1</abilitynumber>
           <abilityname>Death Beam</abilityname>
           <abilitydescription>A singular shot with the power to cripple enemies in just one shot.</abilitydescription>
-          <value></value>
+          <value>50</value>
           <Defence>18</Defence>
         </ability>
         <ability caston="attack">

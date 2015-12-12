@@ -20,7 +20,7 @@ public class Diablo extends Fighter implements Serializable
       ability3 = myParser.getAbilityDamage(3);
    }
 
-   public String getName() { return "Diablo"; }
+   public String getName() { return "BlueMan"; }
 
    protected ImageIcon getIcon() { return myIcon; }
 

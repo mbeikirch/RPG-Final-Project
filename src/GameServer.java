@@ -232,17 +232,29 @@ public class GameServer implements Serializable
             catch(IOException ioe){ ioe.printStackTrace(); }
          }
       }
-   }//End class Client Handler
 
-   private void checkHealths()
-   {
-      for(Fighter a : clientList)
+      private void checkHealths()
       {
-         if(a.getCurrentHealth() <= 0)
+         if(clientList.get(0).getCurrentHealth() <= 0)
          {
-            a.setCurrentHealth(0);
-            a.setFighterAlive(DEAD);
+            clientList.get(0).setCurrentHealth(0);
+            broadcastChatToClients("You win!");
+         }
+
+         for(int i=1; i < clientList.size(); i++)
+         {
+            if(clientList.get(i).getCurrentHealth() <= 0)
+            {
+               clientList.get(i).setCurrentHealth(0);
+               clientList.get(i).setFighterAlive(DEAD);
+            }
+         }
+
+         if(clientList.get(1).getCurrentHealth() == 0 && clientList.get(2).getCurrentHealth() == 0 && clientList.get(3).getCurrentHealth() == 0)
+         {
+            broadcastChatToClients("You lose!");
          }
       }
-   }
+   }//End class Client Handler
+
 }//End class file (GameServer)

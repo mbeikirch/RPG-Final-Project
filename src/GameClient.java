@@ -144,7 +144,7 @@ public class GameClient
       myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
       //size of the game window is hard coded
-      myFrame.setSize(700,400);
+      myFrame.setSize(750,400);
 
       //this gets the default resolution of your main monitor(multi monitor friendly)
       GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -248,7 +248,7 @@ public class GameClient
             {
                if(obj instanceof String)
                {
-                  if(obj.equals("Boss wins"))
+                  if(obj.equals("You lose!"))
                   {
                      JOptionPane.showMessageDialog(jbAbility1, clientList.get(0).getName() + " has defeated you!");
                      System.exit(0);
@@ -279,7 +279,6 @@ public class GameClient
                      }
                      else
                      {
-                        JOptionPane.showMessageDialog(jbAbility1,"u ded");
                         oos.writeObject(clientList);
                         oos.flush();
                      }
@@ -291,6 +290,17 @@ public class GameClient
          catch(ClassNotFoundException cnfe){ cnfe.printStackTrace(); }
       }
 
+      private void updateProgressBars(int i)
+      {
+         fighterHealths[i].setOrientation(JProgressBar.HORIZONTAL);
+         fighterHealths[i].setMinimum(0);
+         fighterHealths[i].setMaximum(clientList.get(i).getBaseHealth());
+         fighterHealths[i].setValue(clientList.get(i).getCurrentHealth());
+         fighterHealths[i].setString(clientList.get(i).getName() +": "+ Integer.toString(clientList.get(i).getCurrentHealth()) + "/" + Integer.toString(clientList.get(i).getBaseHealth()));
+         fighterHealths[i].setVisible(true);
+         fighterHealths[i].setStringPainted(true);
+      }
+
       private void updateGUI(Vector<Fighter> clientList)
       {
          for(int i=1; i < clientList.size(); i++)
@@ -300,14 +310,7 @@ public class GameClient
          }
          for(int i=0; i < clientList.size(); i++)
          {
-            //progress bars to show the player's health
-            fighterHealths[i].setOrientation(JProgressBar.HORIZONTAL);
-            fighterHealths[i].setMinimum(0);
-            fighterHealths[i].setMaximum(clientList.get(i).getBaseHealth());
-            fighterHealths[i].setValue(clientList.get(i).getCurrentHealth());
-            fighterHealths[i].setString(clientList.get(i).getName() + Integer.toString(clientList.get(i).getCurrentHealth()) + "/" + Integer.toString(clientList.get(i).getBaseHealth()));
-            fighterHealths[i].setVisible(true);
-            fighterHealths[i].setStringPainted(true);
+            updateProgressBars(i);
             fighterPictures[i].setIcon(clientList.get(i).getIcon());
          }
          myFrame.revalidate();
