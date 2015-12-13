@@ -306,6 +306,8 @@ public class GameClient
          fighterHealths[i].setString(clientList.get(i).getName() +": "+ Integer.toString(clientList.get(i).getCurrentHealth()) + "/" + Integer.toString(clientList.get(i).getBaseHealth()));
          fighterHealths[i].setVisible(true);
          fighterHealths[i].setStringPainted(true);
+         fighterHealths[i].setOpaque(false);
+         fighterHealths[i].setForeground(Color.GREEN);
       }
 
       private void updateGUI(Vector<Fighter> clientList)
