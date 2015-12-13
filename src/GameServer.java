@@ -204,6 +204,7 @@ public class GameServer implements Serializable
 
       public void broadcastClientListToClients()
       {
+         checkHealths();
          //print out the updated client list to each client
          for(ObjectOutputStream oos : clientWriteList)
          {
@@ -219,8 +220,6 @@ public class GameServer implements Serializable
 
       public void broadcastTurnNumberToClients()
       {
-         checkHealths();
-
          for(ObjectOutputStream oos : clientWriteList)
          {
             try
@@ -235,12 +234,23 @@ public class GameServer implements Serializable
 
       private void checkHealths()
       {
+         //check if boss is dead
          if(clientList.get(0).getCurrentHealth() <= 0)
          {
             clientList.get(0).setCurrentHealth(0);
             broadcastChatToClients("You win!");
          }
 
+         //doesn't allow players to heal past their base health
+         for(Fighter a : clientList)
+         {
+            if(a.getCurrentHealth() > a.getBaseHealth())
+            {
+               a.setCurrentHealth(a.getBaseHealth());
+            }
+         }
+
+         //if a player is dead, set their icon and status to dead
          for(int i=1; i < clientList.size(); i++)
          {
             if(clientList.get(i).getCurrentHealth() <= 0)
