@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class SelectionScreen extends JFrame implements ActionListener
 {
-   private final int ABILITIES_ROWS = 5;
+   private final int ABILITIES_ROWS = 3;
    private final int ABILITES_COLUMNS = 2;
    private int listPosition;
 
@@ -129,7 +129,7 @@ public class SelectionScreen extends JFrame implements ActionListener
 
       updateText();
 
-      setSize(800,400);
+      setSize(800,375);
       setLocationRelativeTo(null);
       setVisible(true);
       requestFocus();
@@ -147,12 +147,6 @@ public class SelectionScreen extends JFrame implements ActionListener
 
       jlAbilities[2][0].setText(getCurrentFighter().getAbilityName(2));
       jlAbilities[2][1].setText("<html>" + getCurrentFighter().getAbilityDescription(2) + "</html>");
-
-      jlAbilities[3][0].setText(getCurrentFighter().getAbilityName(3));
-      jlAbilities[3][1].setText("<html>" + getCurrentFighter().getAbilityDescription(3) + "</html>");
-
-      jlAbilities[4][0].setText(getCurrentFighter().getAbilityName(4));
-      jlAbilities[4][1].setText("<html>" + getCurrentFighter().getAbilityDescription(4) + "</html>");
    }
 
    //returns the current fighter on screen
