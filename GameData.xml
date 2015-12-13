@@ -57,7 +57,7 @@
           <abilitydescription>
             Warrior drinks a random potion from who knows where.
           </abilitydescription>
-          <value>200</value>
+          <value>300</value>
         </ability>
       </abilities>
     </player>
@@ -71,7 +71,7 @@
             The Rogue quickly rushes behind his enemy and pierces their backside causing
             them alot of pain.
           </abilitydescription>
-          <value>300</value>
+          <value>500</value>
           <healingvalue>0</healingvalue>
         </ability>
         <ability caston="friendly">
@@ -87,7 +87,7 @@
   <bosses>
     <boss id = '0'>
       <name>BlueMan</name>
-      <power>40</power>
+      <power>20</power>
       <health>2600</health>
       <Defence>10</Defence>
       <icon>boss1.png</icon>
@@ -96,7 +96,7 @@
           <abilitynumber>0</abilitynumber>
           <abilityname>Shooting</abilityname>
           <abilitydescription>...</abilitydescription>
-          <value>1000</value>
+          <value>300</value>
           <Defence>0</Defence>
         </ability>
         <ability caston="healing">
@@ -133,7 +133,7 @@
           <abilitynumber>1</abilitynumber>
           <abilityname>Death Beam</abilityname>
           <abilitydescription>A singular shot with the power to cripple enemies in just one shot.</abilitydescription>
-          <value>250</value>
+          <value>300</value>
           <Defence>18</Defence>
         </ability>
         <ability caston="attack">
@@ -158,7 +158,7 @@
           <abilitynumber>0</abilitynumber>
           <abilityname>Normal Punch</abilityname>
           <abilitydescription>This singular energy beam has the right balance of speed and power and can be used a multitude of time.</abilitydescription>
-          <value>400</value>
+          <value>350</value>
           <Defence>-10</Defence>
         </ability>
         <ability caston="healing">
