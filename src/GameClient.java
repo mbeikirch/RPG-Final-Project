@@ -193,6 +193,14 @@ public class GameClient
       }
    }
 
+   private void followText(){
+
+      int focusIn = jtaMessages.getDocument().getLength();
+      jtaMessages.setCaretPosition(focusIn);
+      jtaMessages.requestFocusInWindow();
+
+   }
+
    class SendButtonListener implements ActionListener
    {
       public void actionPerformed(ActionEvent ae)
@@ -201,9 +209,7 @@ public class GameClient
          {
 
             String message = myFighter.getName() + ": " + jtfSendMessage.getText();
-            int focusIn = jtaMessages.getDocument().getLength();
-            jtaMessages.setCaretPosition(focusIn);
-            jtaMessages.requestFocusInWindow();
+            followText();
             oos.writeObject(message);
             oos.flush();
          }
@@ -225,11 +231,13 @@ public class GameClient
             if (choice == jbAbility1)
             {
                oos.writeObject(myFighter.getName() + " attacked " + clientList.get(0).getName() + " for " + myFighter.ability1() + " damage!");
+               followText();
                clientList.get(0).changeCurrentHealth(-myFighter.ability1());
             }
             else if (choice == jbAbility2)
             {
                oos.writeObject(myFighter.getName() + " performed " + myFighter.getAbilityName(2) + " and healed for " + myFighter.ability2() + " hp!");
+               followText();
                clientList.get(myTurnNumber).changeCurrentHealth(myFighter.ability1());
             }
 
