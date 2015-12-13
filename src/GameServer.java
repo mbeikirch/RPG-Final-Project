@@ -246,6 +246,7 @@ public class GameServer implements Serializable
             if(clientList.get(i).getCurrentHealth() <= 0)
             {
                clientList.get(i).setCurrentHealth(0);
+               clientList.get(i).setIcon("dead.png");
                clientList.get(i).setFighterAlive(DEAD);
             }
          }

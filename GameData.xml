@@ -96,7 +96,7 @@
           <abilitynumber>0</abilitynumber>
           <abilityname>Shooting</abilityname>
           <abilitydescription>...</abilitydescription>
-          <value>50</value>
+          <value>1000</value>
           <Defence>0</Defence>
         </ability>
         <ability caston="healing">

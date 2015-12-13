@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import java.io.*;
@@ -13,15 +14,18 @@ public class GameClient
    private JTextField jtfSendMessage;
    private String ipAddr = "localhost";
    private int port = 4444;
+   private int currentTurnNumber;
    private Fighter myFighter;
+   private ImageIcon turnIcon;
    Integer myTurnNumber;
    Vector<Fighter> clientList;
 
    //arrays to hold JLabels for all of the class info(health/names/pictures)
                                                //boss              //first          //second             //third
    private JProgressBar[] fighterHealths = {new JProgressBar(), new JProgressBar(), new JProgressBar(), new JProgressBar()};
-   private JLabel[] fighterPictures = {new JLabel(" "), new JLabel(" "), new JLabel(" "), new JLabel(" ")};
-   private JLabel[] playerNames     = {new JLabel(" Connected Players: "), new JLabel(""), new JLabel(" "), new JLabel(" ")};
+   private JLabel[] turnIndicator        = {new JLabel(" "), new JLabel(" "), new JLabel(" "), new JLabel(" ")};
+   private JLabel[] fighterPictures      = {new JLabel(" "), new JLabel(" "), new JLabel(" "), new JLabel(" ")};
+   private JLabel[] playerNames          = {new JLabel(" Connected Players: "), new JLabel(""), new JLabel(" "), new JLabel(" ")};
 
    private JButton jbAbility1 = new JButton();
    private JButton jbAbility2 = new JButton();
@@ -55,6 +59,14 @@ public class GameClient
       inputThread.start();
 
       setButtonsEnabled(false);
+
+      //make the turn indicator icon
+      try
+      {
+         Image icon = ImageIO.read(getClass().getResource("turnIndicator.png"));
+         turnIcon = new ImageIcon(icon);
+      }
+      catch(IOException ioe){ ioe.printStackTrace(); }
    }
 
    private void drawGame()
@@ -92,6 +104,7 @@ public class GameClient
       {
          fighterHealths[i].setVisible(false);
          JPanel bla = new JPanel(new FlowLayout());
+         bla.add(turnIndicator[i]);
          bla.add(fighterPictures[i]);
          bla.add(fighterHealths[i]);
          jpFighterArea.add(bla);
@@ -110,7 +123,6 @@ public class GameClient
 
       //holds the user text field/send button and the ability buttons
       JPanel jpBottomRight = new JPanel(new GridLayout(2,0));
-
 
          //holds the ability buttons
          JPanel jpAbilities = new JPanel(new FlowLayout());
@@ -193,12 +205,11 @@ public class GameClient
       }
    }
 
-   private void followText(){
-
+   private void followText()
+   {
       int focusIn = jtaMessages.getDocument().getLength();
       jtaMessages.setCaretPosition(focusIn);
       jtaMessages.requestFocusInWindow();
-
    }
 
    class SendButtonListener implements ActionListener
@@ -207,9 +218,7 @@ public class GameClient
       {
          try
          {
-
             String message = myFighter.getName() + ": " + jtfSendMessage.getText();
-            followText();
             oos.writeObject(message);
             oos.flush();
          }
@@ -231,17 +240,13 @@ public class GameClient
             if (choice == jbAbility1)
             {
                oos.writeObject(myFighter.getName() + " attacked " + clientList.get(0).getName() + " for " + myFighter.ability1() + " damage!");
-               followText();
                clientList.get(0).changeCurrentHealth(-myFighter.ability1());
             }
             else if (choice == jbAbility2)
             {
                oos.writeObject(myFighter.getName() + " performed " + myFighter.getAbilityName(2) + " and healed for " + myFighter.ability2() + " hp!");
-               followText();
                clientList.get(myTurnNumber).changeCurrentHealth(myFighter.ability1());
             }
-
-            fighterHealths[myTurnNumber].setIndeterminate(false);
             setButtonsEnabled(false);
             oos.writeObject(clientList);
             oos.flush();
@@ -276,6 +281,7 @@ public class GameClient
                   else
                   {
                      jtaMessages.append(obj + "\n");
+                     followText();
                   }
                }
                else if(obj instanceof Vector)
@@ -285,12 +291,19 @@ public class GameClient
                }
                else if(obj instanceof Integer)
                {
-                  if( ((Integer) obj).intValue() == (myTurnNumber.intValue()) )
+                  currentTurnNumber = ((Integer) obj).intValue();
+
+                  for(int i=0; i < clientList.size(); i++)
+                  {
+                     turnIndicator[i].setIcon(null);
+                  }
+                  turnIndicator[currentTurnNumber].setIcon(turnIcon);
+
+                  if(currentTurnNumber == myTurnNumber.intValue())
                   {
                      if(clientList.get(myTurnNumber.intValue()).isFighterAlive())
                      {
                         setButtonsEnabled(true);
-                        fighterHealths[myTurnNumber].setIndeterminate(true);
                      }
                      else
                      {
@@ -315,7 +328,7 @@ public class GameClient
          fighterHealths[i].setVisible(true);
          fighterHealths[i].setStringPainted(true);
          fighterHealths[i].setOpaque(false);
-         fighterHealths[i].setForeground(Color.GREEN);
+         fighterHealths[i].setForeground(Color.RED);
       }
 
       private void updateGUI(Vector<Fighter> clientList)

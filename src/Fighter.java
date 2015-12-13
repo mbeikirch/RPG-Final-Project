@@ -1,4 +1,8 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.xml.xpath.XPathExpressionException;
+import java.awt.*;
+import java.io.IOException;
 import java.io.Serializable;
 
 public class Fighter implements Serializable
@@ -7,6 +11,7 @@ public class Fighter implements Serializable
    protected String name;
    private static final long serialVersionUID = 1L;
    private boolean isAlive = true;
+   private ImageIcon myIcon;
 
    public Fighter() { }
 
@@ -52,6 +57,7 @@ public class Fighter implements Serializable
    protected String getAbilityName(int num){ return ""; }
    protected String getAbilityDescription(int num){ return ""; }
    protected ImageIcon getIcon(){ return null; }
+   protected void setIcon(String pictureName){ }
 
    protected String getClassName() { return "";  }
    protected void setName(String _name){ }

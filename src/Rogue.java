@@ -1,4 +1,7 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
 import java.io.Serializable;
 
 public class Rogue extends Fighter
@@ -39,6 +42,16 @@ public class Rogue extends Fighter
    }
 
    protected ImageIcon getIcon() { return myIcon; }
+
+   protected void setIcon(String pictureName)
+   {
+      try
+      {
+         Image icon = ImageIO.read(getClass().getResource(pictureName));
+         myIcon = new ImageIcon(icon);
+      }
+      catch(IOException ioe){ ioe.printStackTrace(); }
+   }
 
    protected String getAbilityDescription(int num) { return (myParser.getAbilityDescription(num)); }
 
