@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -103,11 +104,13 @@ public class GameClient
          jtaMessages.setLineWrap(true);
          jtaMessages.setWrapStyleWord(true);
          jtaMessages.setEditable(false);
+         jtaMessages.setLineWrap(true);
          JScrollPane jspText = new JScrollPane(jtaMessages);
          jpBottom.add(jspText);
 
       //holds the user text field/send button and the ability buttons
       JPanel jpBottomRight = new JPanel(new GridLayout(2,0));
+
 
          //holds the ability buttons
          JPanel jpAbilities = new JPanel(new FlowLayout());
@@ -196,7 +199,11 @@ public class GameClient
       {
          try
          {
+
             String message = myFighter.getName() + ": " + jtfSendMessage.getText();
+            int focusIn = jtaMessages.getDocument().getLength();
+            jtaMessages.setCaretPosition(focusIn);
+            jtaMessages.requestFocusInWindow();
             oos.writeObject(message);
             oos.flush();
          }
