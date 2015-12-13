@@ -103,14 +103,14 @@
           <abilitynumber>1</abilitynumber>
           <abilityname>Super Berzerker Dash</abilityname>
           <abilitydescription>A strong dashing technique in which the boss knocks over anyone in his way with their brute force.</abilitydescription>
-          <value>350</value>
+          <value>500</value>
           <Defence>30</Defence>
         </ability>
         <ability caston="attack">
           <abilitynumber>2</abilitynumber>
           <abilityname>Gigantic Meteor</abilityname>
           <abilitydescription>This ability shoots a giant energy blast the size of a meteor! But not everything is as it looks.</abilitydescription>
-          <value>45</value>
+          <value>90</value>
           <Defence>0</Defence>
         </ability>        
       </abilities>
@@ -118,7 +118,7 @@
     <boss id = '1'>
       <name>Demon King Piccolo</name>
       <power>100</power>
-      <health>1800</health>
+      <health>1700</health>
       <Defence>0</Defence>
       <icon>boss3.png</icon>
       <abilities>
@@ -126,21 +126,21 @@
           <abilitynumber>0</abilitynumber>
           <abilityname>Sphere of Destruction</abilityname>
           <abilitydescription>A giant sphere of energy is launched at the players having and AOE effect and extreme damage.</abilitydescription>
-          <value>500</value>
+          <value>600</value>
           <Defence>-20</Defence>
         </ability>
         <ability caston="healing">
           <abilitynumber>1</abilitynumber>
           <abilityname>Death Beam</abilityname>
           <abilitydescription>A singular shot with the power to cripple enemies in just one shot.</abilitydescription>
-          <value>150</value>
+          <value>200</value>
           <Defence>18</Defence>
         </ability>
         <ability caston="attack">
           <abilitynumber>2</abilitynumber>
           <abilityname>Gigantic Meteor</abilityname>
           <abilitydescription>...</abilitydescription>
-          <value>40</value>
+          <value>100</value>
           <Defence>0</Defence>
         </ability>
       </abilities>
@@ -158,14 +158,14 @@
           <abilitynumber>0</abilitynumber>
           <abilityname>Normal Punch</abilityname>
           <abilitydescription>This singular energy beam has the right balance of speed and power and can be used a multitude of time.</abilitydescription>
-          <value>350</value>
+          <value>400</value>
           <Defence>-10</Defence>
         </ability>
         <ability caston="healing">
           <abilitynumber>1</abilitynumber>
           <abilityname>Flex Muscle</abilityname>
           <abilitydescription>A singular shot with the power to cripple enemies in just one shot.</abilitydescription>
-          <value>250</value>
+          <value>350</value>
           <Defence>30</Defence>
         </ability>
         <ability caston="attack">
